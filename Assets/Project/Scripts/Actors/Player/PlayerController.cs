@@ -16,6 +16,7 @@ namespace Actors.Player
         private FovRenderer fovRenderer;
         private Attacker attacker;
         private Inventory inventory;
+        private Inventory equipInventory;
         private Equipper equipper;
 
         [Header("Mover")]
@@ -38,9 +39,11 @@ namespace Actors.Player
         [Header("Inventory")]
         private int inventoryCapacity = 20;
 
-        Camera mainCamera;
-        Vector3 moveDir = Vector3.zero;
-        Vector2 mouseScreenPos = Vector2.zero;
+        private Camera mainCamera;
+        private Vector3 moveDir = Vector3.zero;
+        private Vector2 mouseScreenPos = Vector2.zero;
+
+        private const int EQUIP_SLOT_COUNT = 5;
 
         private void Start()
         {
@@ -102,7 +105,7 @@ namespace Actors.Player
             }
         }
 
-        private void OnFire(InputValue value)
+        private void OnAttack(InputValue value)
         {
             attacker.Attack();
         }
@@ -122,6 +125,7 @@ namespace Actors.Player
             fovChecker = gameObject.AddComponent<FovChecker>();
             attacker = gameObject.AddComponent<Attacker>();
             inventory = gameObject.AddComponent<Inventory>();
+            equipInventory = gameObject.AddComponent<Inventory>();
             equipper = gameObject.AddComponent<Equipper>();
 
             GameObject fovObject = new GameObject("FovMesh");
@@ -133,6 +137,7 @@ namespace Actors.Player
             InitStatus();
 
             InventoryUI.Instance.SetTargetInventory(inventory);
+            EquipUI.Instance.SetTargetInventory(equipInventory);
 
             fovRenderer.Chekcer = fovChecker;
         }
@@ -151,12 +156,18 @@ namespace Actors.Player
             fovChecker.ObstacleMask = obstacleMask;
 
             inventory.InitSlot(inventoryCapacity);
+            equipInventory.InitSlot(EQUIP_SLOT_COUNT);
             equipper.Init(health, mover, attacker);
         }
 
         private void DieRoutine()
         {
 
+        }
+
+        public Inventory GetPlayerInventory()
+        {
+            return inventory;
         }
     }
 }
