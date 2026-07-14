@@ -108,8 +108,21 @@ namespace Core.System
             LootBox box = Instantiate(lootBoxPrefab, transform.position, Quaternion.identity);
 
             MoveItemsTo(box.Inventory);
+        }
 
-            for (int i = 0; i < Slots.Length; i++) Slots[i].Clear();
+        /// <summary>
+        /// 아이템 소모용 메소드
+        /// </summary>
+        /// <param name="index">슬롯 인덱스</param>
+        public void ConsumeItem(int index)
+        {
+            if (index < 0 || index >= Slots.Length) return;
+            if (Slots[index].IsEmpty()) return;
+
+            Slots[index].count--;
+            if (Slots[index].count <= 0) Slots[index].Clear();
+
+            NotifyChange();
         }
 
         public void NotifyChange()

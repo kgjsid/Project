@@ -49,6 +49,7 @@ namespace UI.Inventory
             if(item is ConsumableData consumable)
             {
                 consumable.Use(parentInventory.gameObject);
+                parentInventory.ConsumeItem(slotIndex);
             }
         }
 
