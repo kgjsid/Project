@@ -3,7 +3,7 @@ using System.Collections;
 
 using Core.System;
 using Item.Data;
-using Actors.UI;
+using UI.Inventory;
 
 namespace DebugTester
 {

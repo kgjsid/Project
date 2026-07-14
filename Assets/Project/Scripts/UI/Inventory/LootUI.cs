@@ -1,12 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
-using UI.Inventory;
-using DebugTester;
-using UnityEngine.UI;
-using Core.System;
-
-namespace Actors.UI
+namespace UI.Inventory
 {
     /// <summary>
     /// Looting 관련 UI를 관리할 싱글톤
@@ -15,7 +11,7 @@ namespace Actors.UI
     {
         private static LootUI instance;
 
-        public Inventory currentBoxInventory;
+        public Core.System.Inventory currentBoxInventory;
         public SlotUI slotUIPrefab;
         public Transform slotParent;
         public Button closeButton;
@@ -32,7 +28,7 @@ namespace Actors.UI
             gameObject.SetActive(false);
         }
 
-        public void Open(Inventory boxInventory)
+        public void Open(Core.System.Inventory boxInventory)
         {
             // 1. 기존 상자와의 이벤트 연결 해제 (안전장치)
             if (currentBoxInventory != null)

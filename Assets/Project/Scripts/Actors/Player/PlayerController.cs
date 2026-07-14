@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 using Core.System;
 using Core.Interface;
-using Actors.UI;
+using UI.Inventory;
 
 namespace Actors.Player
 {

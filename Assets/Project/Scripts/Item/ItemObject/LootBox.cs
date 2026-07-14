@@ -3,7 +3,7 @@ using UnityEngine;
 using Core.System;
 using Core.Interface;
 using Actors.Player;
-using Actors.UI;
+using UI.Inventory;
 
 namespace Item.ItemObject
 {

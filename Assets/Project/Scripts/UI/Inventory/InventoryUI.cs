@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using Core.System;
 using UI.Inventory;
 
-namespace Actors.UI
+namespace UI.Inventory
 {
     public class InventoryUI : MonoBehaviour
     {
         private static InventoryUI instance;
 
-        public Inventory targetInventory;       // UI가 보여줄 Inventory
+        public Core.System.Inventory targetInventory;       // UI가 보여줄 Inventory
         public SlotUI slotUIPrefab;
         public Transform slotParent;
 
@@ -44,7 +44,7 @@ namespace Actors.UI
             }
         }
 
-        public void SetTargetInventory(Inventory inventory)
+        public void SetTargetInventory(Core.System.Inventory inventory)
         {
             // 이전 구독 해제 (기존에 연결된 인벤토리가 있었다면)
             if (targetInventory != null)
