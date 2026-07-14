@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 using UI.Inventory;
 
@@ -41,7 +42,7 @@ public class DragManager : MonoBehaviour
     public void UpdateDrag()
     {
         if (currentDragIcon == null) return;
-        currentDragIcon.transform.position = Input.mousePosition;
+        currentDragIcon.transform.position = Mouse.current.position.ReadValue();
     }
 
     public void EndDrag()
