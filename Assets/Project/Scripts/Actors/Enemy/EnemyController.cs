@@ -106,6 +106,8 @@ namespace Actors.Enemy
             fovChecker.TargetMask = targetMask;
             fovChecker.ObstacleMask = obstacleMask;
 
+            attacker.SetLayerMask(targetMask);
+
             inventory.InitSlot(inventoryCapacity);
             equipper.Init(health, mover, attacker);
         }
@@ -137,7 +139,8 @@ namespace Actors.Enemy
 
         private void DieRoutine()
         {
-            GameObject boxObj = new GameObject($"{name}'s box");
+            GameObject boxObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            boxObj.name = $"{name}'s box";
             boxObj.transform.position = transform.position;
             boxObj.transform.rotation = Quaternion.identity;
 

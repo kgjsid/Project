@@ -14,6 +14,11 @@ namespace Core.System
 
         private float lastAttackTime = -99f;
 
+        public void SetLayerMask(LayerMask targetMask)
+        {
+            layerMask = targetMask;
+        }
+
         public void SetWeapon(WeaponData weapon)
         {
             damage = weapon.damage;

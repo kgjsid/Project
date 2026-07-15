@@ -1,9 +1,11 @@
+using Core.Interface;
+using Core.System;
+using Item.ItemObject;
+using System;
+using UI.Inventory;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-using Core.System;
-using Core.Interface;
-using UI.Inventory;
+using UnityEngine.SceneManagement;
 
 namespace Actors.Player
 {
@@ -38,6 +40,8 @@ namespace Actors.Player
 
         [Header("Inventory")]
         private int inventoryCapacity = 20;
+
+        public Action OnRunEnded;
 
         private Camera mainCamera;
         private Vector3 moveDir = Vector3.zero;
@@ -155,6 +159,8 @@ namespace Actors.Player
             fovChecker.TargetMask = targetMask;
             fovChecker.ObstacleMask = obstacleMask;
 
+            attacker.SetLayerMask(targetMask);
+
             inventory.InitSlot(inventoryCapacity);
             equipInventory.InitSlot(EQUIP_SLOT_COUNT);
             equipper.Init(health, mover, attacker);
@@ -162,7 +168,32 @@ namespace Actors.Player
 
         private void DieRoutine()
         {
+            GameObject boxObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            boxObj.name = $"{name}'s box";
+            boxObj.transform.position = transform.position;
+            boxObj.transform.rotation = Quaternion.identity;
 
+            LootBox lootBox = boxObj.AddComponent<LootBox>();
+            inventory.MoveItemsTo(lootBox.Inventory);
+
+            EndRun();
+        }
+
+        public void Escape()
+        {
+            Debug.Log("Escape Success");
+            EndRun();
+        }
+
+        private void EndRun()
+        {
+            enabled = false; 
+            Invoke(nameof(ResetScene), 2f);
+        }
+
+        private void ResetScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         public Inventory GetPlayerInventory()
