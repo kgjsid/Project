@@ -10,6 +10,7 @@ namespace World
         public void OnInteract(PlayerController player)
         {
             Debug.Log("End");
+            player.Escape();
         }
 
         public string GetInteractText()
