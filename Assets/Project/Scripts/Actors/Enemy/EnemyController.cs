@@ -1,140 +1,91 @@
-using UnityEngine;
-
-using Core.System;
+using Actors.Enemy.States;
 using Actors.Player;
+using Core.System;
+using Core.System.FSM;
+using Item.Data;
 using Item.ItemObject;
+using System.Diagnostics;
+using UnityEngine;
 
 namespace Actors.Enemy
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : ActorController
     {
-        private Health health;
-        private Mover mover;
-        private FovChecker fovChecker;
-        private FovRenderer fovRenderer;
-        private Attacker attacker;
-        private Inventory inventory;
-        private Equipper equipper;
+        [Header("Attack Range")]
+        [SerializeField] private float attackRange = 1f;
+        [SerializeField] private float traceDist = 20f;
 
-        [Header("Mover")]
-        private float initialMoveSpeed = 5f;
-        private float initialRotationSpeed = 50f;
+        private StateMachine fsm;
+        private EnemyContext context;
 
-        [Header("Health")]
-        private float initialMaxHp = 100f;
-
-        [Header("Fov")]
-        private float initialViewAngle = 30f;
-        private float initialViewDistance = 10f;
-        public LayerMask targetMask;
-        public LayerMask obstacleMask;
-
-        [Header("Attack")]
-        private float initialDamage = 10f;
-        private float initialRange = 1f;
-        private float initialTraceDist = 20f;
-
-        [Header("Inventory")]
-        private int inventoryCapacity = 5;
-
-        private Transform target;
-
-        private void Awake()
+        public override void InitSettings()
         {
-            AddComponent();
+            base.InitSettings();
+            health.OnDie += DieRoutine;
+            SetupFSM();
+        }
+        
+        private void SetupFSM()
+        {
+            context = new EnemyContext
+            { 
+                transform = transform,
+                mover = mover,
+                attacker = attacker,
+                attackRange = attackRange,
+                traceDist = traceDist
+            };
+
+            var idleState = new IdleState(context);
+            var traceState = new TraceState(context);
+            var attackState = new AttackState(context);
+            var dieState = new DieState(context);
+
+            fsm = new StateMachine();
+
+            fsm.AddAnyTransition(dieState, () => health.IsDead());
+
+            fsm.AddTransition(idleState, traceState, () => context.target != null);
+            fsm.AddTransition(traceState, idleState, () => context.target == null);
+            fsm.AddTransition(traceState, attackState, () => context.target != null && GetTargetDistance() <= context.attackRange);
+            fsm.AddTransition(attackState, traceState, () => context.target != null && GetTargetDistance() > context.attackRange);
+            fsm.AddTransition(attackState, idleState, () => context.target == null);
+
+            fsm.SetState(idleState);
         }
 
         private void Update()
         {
-            if (health.IsDead()) return;
-
             fovChecker.FindVisibleTargets();
-            CheckTarget();
+            UpdateTarget();
+            fsm.Update();
+        }
 
-            if (target != null)
+        private void UpdateTarget()
+        {
+            if(context.target != null)
             {
-                float distance = Vector3.Distance(transform.position, target.position);
+                if(GetTargetDistance() > context.traceDist)
+                {
+                    context.target = null;
+                }
 
-                if(distance <= initialRange)
-                {
-                    StopAndAttack();
-                }
-                else if(distance <= initialTraceDist)
-                {
-                    TraceTarget();
-                }
-                else
-                {
-                    target = null;
-                }
+                return;
             }
-        }
 
-        private void AddComponent()
-        {
-            health = gameObject.AddComponent<Health>();
-            mover = gameObject.AddComponent<Mover>();
-            fovChecker = gameObject.AddComponent<FovChecker>();
-            attacker = gameObject.AddComponent<Attacker>();
-            inventory = gameObject.AddComponent<Inventory>(); 
-            equipper = gameObject.AddComponent<Equipper>();
-
-            GameObject fovObject = new GameObject("FovMesh");
-            fovObject.transform.parent = transform;
-            fovObject.transform.localPosition = Vector3.zero;
-            fovObject.transform.rotation = Quaternion.identity;
-            fovRenderer = fovObject.AddComponent<FovRenderer>();
-
-            InitStatus();
-
-            fovRenderer.Chekcer = fovChecker;
-            fovRenderer.SetColor(new Color(1f, 0.2f, 0f, 0.3f));
-
-            health.OnDie += DieRoutine;
-        }
-
-        private void InitStatus()
-        {
-            mover.BaseMoveSpeed = initialMoveSpeed;
-            mover.BaseRotationSpeed = initialRotationSpeed;
-
-            health.BaseMaxHp = initialMaxHp;
-            health.CurrentHp = initialMaxHp;
-
-            fovChecker.ViewAngle = initialViewAngle;
-            fovChecker.ViewDistance = initialViewDistance;
-            fovChecker.TargetMask = targetMask;
-            fovChecker.ObstacleMask = obstacleMask;
-
-            attacker.SetLayerMask(targetMask);
-
-            inventory.InitSlot(inventoryCapacity);
-            equipper.Init(health, mover, attacker);
-        }
-
-        private void CheckTarget()
-        {
             foreach(var visible in fovChecker.VisibleTargets)
             {
-                if(visible.TryGetComponent(out PlayerController player))
+                if (visible.TryGetComponent(out PlayerController player))
                 {
-                    target = player.transform;
+                    context.target = player.transform;
                     return;
                 }
             }
         }
 
-        private void TraceTarget()
+        private float GetTargetDistance()
         {
-            Vector3 direction = (target.position - transform.position).normalized;
-            mover.Move(direction);
-            mover.LookRotation(direction);
-        }
-
-        private void StopAndAttack()
-        {
-            mover.Move(Vector3.zero);
-            attacker.Attack();
+            return Vector3.Distance(transform.position, context.target.position);
         }
 
         private void DieRoutine()
@@ -143,6 +94,7 @@ namespace Actors.Enemy
             boxObj.name = $"{name}'s box";
             boxObj.transform.position = transform.position;
             boxObj.transform.rotation = Quaternion.identity;
+            boxObj.layer = LayerMask.NameToLayer("Interactable");
 
             LootBox lootBox = boxObj.AddComponent<LootBox>();
             inventory.MoveItemsTo(lootBox.Inventory);

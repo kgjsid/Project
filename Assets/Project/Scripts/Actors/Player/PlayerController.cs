@@ -9,39 +9,11 @@ using UnityEngine.SceneManagement;
 
 namespace Actors.Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : ActorController
     {
-        [Header("Comp")]
-        private Mover mover;
-        private Health health;
-        private FovChecker fovChecker;
-        private FovRenderer fovRenderer;
-        private Attacker attacker;
-        private Inventory inventory;
         private Inventory equipInventory;
-        private Equipper equipper;
 
-        [Header("Mover")]
-        private float initialMoveSpeed = 10f;
-        private float initialRotationSpeed = 50f;
-
-        [Header("Health")]
-        private float initialMaxHp = 100f;
-
-        [Header("Fov")]
-        private float initialViewAngle = 45f;
-        private float initialViewDistance = 10f;
-        public LayerMask targetMask;
-        public LayerMask obstacleMask;
-
-        [Header("Attack")]
-        private float initialDamage = 10f;
-        private float initialRange = 5f;
-
-        [Header("Inventory")]
-        private int inventoryCapacity = 20;
-
-        public Action OnRunEnded;
+        public event Action OnRunEnded;
 
         private Camera mainCamera;
         private Vector3 moveDir = Vector3.zero;
@@ -49,19 +21,31 @@ namespace Actors.Player
 
         private const int EQUIP_SLOT_COUNT = 5;
 
-        private void Start()
+        public override void InitSettings()
         {
-            AddComponent();
-
+            base.InitSettings();
             mainCamera = Camera.main;
-
             health.OnDie += DieRoutine;
+        }
+
+        protected override void AddComponents()
+        {
+            base.AddComponents();
+            equipInventory = gameObject.AddComponent<Inventory>();
+        }
+
+        protected override void InitStatus()
+        {
+            base.InitStatus();
+            equipInventory.InitSlot(EQUIP_SLOT_COUNT);
+
+            InventoryUI.Instance.SetTargetInventory(inventory);
+            EquipUI.Instance.SetTargetInventory(equipInventory);
         }
 
         private void Update()
         {
             mover.Move(moveDir);
-
             fovChecker.FindVisibleTargets();
         }
 
@@ -120,50 +104,6 @@ namespace Actors.Player
             {
                 InventoryUI.Instance.Toggle();
             }
-        }
-
-        private void AddComponent()
-        {
-            mover = gameObject.AddComponent<Mover>();
-            health = gameObject.AddComponent<Health>();
-            fovChecker = gameObject.AddComponent<FovChecker>();
-            attacker = gameObject.AddComponent<Attacker>();
-            inventory = gameObject.AddComponent<Inventory>();
-            equipInventory = gameObject.AddComponent<Inventory>();
-            equipper = gameObject.AddComponent<Equipper>();
-
-            GameObject fovObject = new GameObject("FovMesh");
-            fovObject.transform.parent = transform;
-            fovObject.transform.localPosition = Vector3.zero;
-            fovObject.transform.rotation = Quaternion.identity;
-            fovRenderer = fovObject.AddComponent<FovRenderer>();
-
-            InitStatus();
-
-            InventoryUI.Instance.SetTargetInventory(inventory);
-            EquipUI.Instance.SetTargetInventory(equipInventory);
-
-            fovRenderer.Chekcer = fovChecker;
-        }
-
-        private void InitStatus()
-        {
-            mover.BaseMoveSpeed = initialMoveSpeed;
-            mover.BaseRotationSpeed = initialRotationSpeed;
-
-            health.BaseMaxHp = initialMaxHp;
-            health.CurrentHp = initialMaxHp;
-
-            fovChecker.ViewAngle = initialViewAngle;
-            fovChecker.ViewDistance = initialViewDistance;
-            fovChecker.TargetMask = targetMask;
-            fovChecker.ObstacleMask = obstacleMask;
-
-            attacker.SetLayerMask(targetMask);
-
-            inventory.InitSlot(inventoryCapacity);
-            equipInventory.InitSlot(EQUIP_SLOT_COUNT);
-            equipper.Init(health, mover, attacker);
         }
 
         private void DieRoutine()
