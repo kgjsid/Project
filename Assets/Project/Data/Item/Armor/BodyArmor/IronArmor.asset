@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20b2903af04e82f49af8b6252020eec3, type: 3}
-  m_Name: TestHelmet
+  m_Name: IronArmor
   m_EditorClassIdentifier: Assembly-CSharp::Item.Data.ArmorData
-  itemName: TestHelmet
+  itemName: IronArmor
   itemType: 1
-  maxStack: 999
+  maxStack: 1
   weight: 0.1
-  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 0}
   description: 
-  equipSlot: 1
-  durability: 2
-  defense: 2
-  moveSpeedMod: 20
+  equipSlot: 2
+  durability: 1
+  defense: 10
+  moveSpeedMod: -5

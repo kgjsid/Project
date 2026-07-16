@@ -16,7 +16,7 @@ MonoBehaviour:
   itemType: 2
   maxStack: 999
   weight: 0.1
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   description: 
   effectType: 0
-  effectAmount: 5
+  effectAmount: 60
