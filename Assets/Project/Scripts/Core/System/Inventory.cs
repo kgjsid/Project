@@ -32,7 +32,19 @@ namespace Core.System
 
         public bool AddItem(ItemData item, int count = 1)
         {
+            // 1. 해당 아이템이 있는 경우(슬롯에서 찾아서 stack 추가)
             for(int i = 0; i < Slots.Length; i++)
+            {
+                if (!Slots[i].IsEmpty() && Slots[i].item == item && Slots[i].count < item.maxStack)
+                {
+                    Slots[i].count += count;
+                    NotifyChange();
+                    return true;
+                }
+            }
+
+            // 2. 없으면 빈 슬롯에 새로 배치
+            for (int i = 0; i < Slots.Length; i++)
             {
                 if (Slots[i].IsEmpty())
                 {
