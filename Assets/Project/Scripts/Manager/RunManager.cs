@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +18,10 @@ namespace Manager
         private RunState curRunState;
         public RunState State { get { return curRunState; } private set { curRunState = value; } }
 
+        private PlayerController currentPlayer;
+
+        public event Action<PlayerController> OnPlayerSpawned;
+
         private void Awake()
         {
             instance = this;
@@ -26,19 +31,32 @@ namespace Manager
         {
             State = RunState.Spawning;
 
-
-            PlayerController player = spawnManager.SpawnAll();
-
-            if (player == null)
+            currentPlayer = spawnManager.SpawnAll();
+            
+            if (currentPlayer == null)
             {
                 Debug.LogError("SpawnManager: Player SpawnPoint가 씬에 없습니다.");
                 State = RunState.Ended;
                 return;
             }
 
-            player.OnRunEnded += HandleRunEnded;
+            OnPlayerSpawned?.Invoke(currentPlayer);
 
+            currentPlayer.OnRunEnded += HandleRunEnded;
+            
             State = RunState.Playing;
+        }
+
+        public void SubscribeToPlayerSpawnEvent(Action<PlayerController> callback)
+        {
+            if(currentPlayer != null)
+            {
+                callback(currentPlayer);
+            }
+            else
+            {
+                OnPlayerSpawned += callback;
+            }
         }
 
         private void HandleRunEnded()

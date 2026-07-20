@@ -9,7 +9,7 @@ namespace Manager
     public class SpawnManager : MonoBehaviour
     {
         public GameObject playerPrefab;
-        public GameObject enemyPrefab;
+        public GameObject[] enemyPrefabs;
         public GameObject lootBoxPrefab;
 
         public List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
@@ -27,7 +27,11 @@ namespace Manager
                         player = newPlayer.GetComponent<PlayerController>();
                         break;
                     case SpawnPointType.Enemy:
-                        Instantiate(enemyPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+                        if (enemyPrefabs != null && enemyPrefabs.Length > 0)
+                        {
+                            GameObject newEnemy = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+                            Instantiate(newEnemy, spawnPoint.transform.position, spawnPoint.transform.rotation);
+                        }
                         break;
                     case SpawnPointType.LootBox:
                         Instantiate(lootBoxPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
