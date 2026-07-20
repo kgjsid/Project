@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +35,11 @@ namespace Core.System
         {
             equipped.Remove(slot);
             RecalculateStats();
+        }
+
+        public List<EquipmentData> GetEquippedItems()
+        {
+            return equipped.Values.ToList();
         }
 
         private void RecalculateStats()
