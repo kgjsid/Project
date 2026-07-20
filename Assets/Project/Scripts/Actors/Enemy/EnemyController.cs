@@ -12,20 +12,28 @@ namespace Actors.Enemy
     public class EnemyController : ActorController
     {
         [Header("Attack Range")]
-        [SerializeField] private float attackRange = 1f;
-        [SerializeField] private float traceDist = 20f;
+        [SerializeField] protected float attackRange = 1f;
+        [SerializeField] protected float traceDist = 20f;
 
-        private StateMachine fsm;
-        private EnemyContext context;
+        [Header("Enemy Inventory")]
+        [SerializeField] protected WeaponData startingWeapon;
+        [SerializeField] protected LootEntry[] lootTable;
+
+        protected StateMachine fsm;
+        protected EnemyContext context;
 
         public override void InitSettings()
         {
             base.InitSettings();
             health.OnDie += DieRoutine;
             SetupFSM();
+
+            if (startingWeapon != null) equipper.Equip(startingWeapon);
+
+            CheckLootTable();
         }
-        
-        private void SetupFSM()
+
+        protected virtual void SetupFSM()
         {
             context = new EnemyContext
             { 
@@ -54,14 +62,28 @@ namespace Actors.Enemy
             fsm.SetState(idleState);
         }
 
-        private void Update()
+        protected virtual void CheckLootTable()
+        {
+            if (lootTable == null) return;
+
+            foreach(var entry in lootTable)
+            {
+                if (entry.item == null) continue;
+                if (Random.value > entry.dropPercent) continue;
+
+                int count = Random.Range(entry.minDropCount, entry.maxDropCount + 1);
+                inventory.AddItem(entry.item, count);
+            }
+        }
+
+        protected virtual void Update()
         {
             fovChecker.FindVisibleTargets();
             UpdateTarget();
             fsm.Update();
         }
 
-        private void UpdateTarget()
+        protected virtual void UpdateTarget()
         {
             if(context.target != null)
             {
@@ -83,12 +105,12 @@ namespace Actors.Enemy
             }
         }
 
-        private float GetTargetDistance()
+        protected virtual float GetTargetDistance()
         {
             return Vector3.Distance(transform.position, context.target.position);
         }
 
-        private void DieRoutine()
+        protected virtual void DieRoutine()
         {
             GameObject boxObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
             boxObj.name = $"{name}'s box";
@@ -97,6 +119,10 @@ namespace Actors.Enemy
             boxObj.layer = LayerMask.NameToLayer("Interactable");
 
             LootBox lootBox = boxObj.AddComponent<LootBox>();
+            foreach(var equipment in equipper.GetEquippedItems())
+            {
+                inventory.AddItem(equipment);
+            }
             inventory.MoveItemsTo(lootBox.Inventory);
         }
     }
