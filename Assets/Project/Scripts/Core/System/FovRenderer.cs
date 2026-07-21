@@ -44,10 +44,10 @@ namespace Core.System
             fovMat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             fovMat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             fovMat.SetInt("_ZWrite", 0);
+            fovMat.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
             fovMat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
 
             meshRenderer.material = fovMat;
-
             meshRenderer.sortingLayerName = "Default";  // 실제 쓰시는 레이어 이름으로 교체
             meshRenderer.sortingOrder = 10;             // 캐릭터/바닥보다 위에 그려지도록 값 조정
         }
