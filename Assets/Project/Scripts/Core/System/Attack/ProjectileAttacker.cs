@@ -24,8 +24,9 @@ namespace Core.System
         public void SetWeapon(WeaponData weapon)
         {
             damage = weapon.damage;
-            projectileSpeed = weapon.projectileSpeed;
             attackSpeed = weapon.attackSpeed;
+            projectileSpeed = weapon.projectileSpeed;
+            projectilePrefab = weapon.projectilePrefab;
             hasWeapon = true;
         }
 
