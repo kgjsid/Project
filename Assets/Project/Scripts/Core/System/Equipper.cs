@@ -14,15 +14,24 @@ namespace Core.System
 
         public Health health;
         public Mover mover;
-        public Attacker attacker;
+        public MeleeAttacker meleeAttacker;
+        public ProjectileAttacker projectileAttacker;
 
         public event Action OnStatsChanged;
 
-        public void Init(Health health, Mover mover, Attacker attacker)
+        private IAttacker currentAttacker;
+
+        public IAttacker GetCurrentAttacker()
+        {
+            return currentAttacker;
+        }
+
+        public void Init(Health health, Mover mover, MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker)
         {
             this.health = health;
             this.mover = mover;
-            this.attacker = attacker;
+            this.meleeAttacker = meleeAttacker;
+            this.projectileAttacker = projectileAttacker;
         }
 
         public void Equip(EquipmentData data)
@@ -59,16 +68,34 @@ namespace Core.System
             health.BonusMaxHp = defenseBonus;
             mover.BonusMoveSpeed = moveSpeedBonus;
 
+            ApplyWeapon();
+
+            OnStatsChanged?.Invoke();
+        }
+
+        private void ApplyWeapon()
+        {
             if (equipped.TryGetValue(EquipSlotType.PrimaryWeapon, out var data) && data is WeaponData weapon)
             {
-                attacker.SetWeapon(weapon);
+                if (weapon.attackType == AttackType.Melee)
+                {
+                    meleeAttacker.SetWeapon(weapon);
+                    projectileAttacker.ClearWeapon();
+                    currentAttacker = meleeAttacker;
+                }
+                else
+                {
+                    projectileAttacker.SetWeapon(weapon);
+                    meleeAttacker.ClearWeapon();
+                    currentAttacker = projectileAttacker;
+                }
             }
             else
             {
-                attacker.ClearWeapon();
+                meleeAttacker.ClearWeapon();
+                projectileAttacker.ClearWeapon();
+                currentAttacker = null;
             }
-
-            OnStatsChanged?.Invoke();
         }
     }
 }

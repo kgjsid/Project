@@ -79,6 +79,7 @@ namespace Actors.Player
                 if (lookDir != Vector3.zero)
                 {
                     mover.LookRotation(lookDir);
+                    equipper.GetCurrentAttacker()?.SetAimDirection(lookDir);
                 }
             }
         }
@@ -95,7 +96,7 @@ namespace Actors.Player
 
         private void OnAttack(InputValue value)
         {
-            attacker.Attack();
+            equipper.GetCurrentAttacker()?.Attack();
         }
 
         private void OnInventory(InputValue value)

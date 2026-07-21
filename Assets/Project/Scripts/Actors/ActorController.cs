@@ -20,7 +20,8 @@ namespace Actors
         protected Mover mover;
         protected FovChecker fovChecker;
         protected FovRenderer fovRenderer;
-        protected Attacker attacker;
+        protected MeleeAttacker meleeAttacker;
+        protected ProjectileAttacker projectileAttacker;
         protected Inventory inventory;
         protected Equipper equipper;
 
@@ -43,7 +44,8 @@ namespace Actors
             health = gameObject.AddComponent<Health>();
             mover = gameObject.AddComponent<Mover>();
             fovChecker = gameObject.AddComponent<FovChecker>();
-            attacker = gameObject.AddComponent<Attacker>();
+            meleeAttacker = gameObject.AddComponent<MeleeAttacker>();
+            projectileAttacker = gameObject.AddComponent<ProjectileAttacker>();
             inventory = gameObject.AddComponent<Inventory>();
             equipper = gameObject.AddComponent<Equipper>();
 
@@ -71,10 +73,11 @@ namespace Actors
             fovChecker.TargetMask = targetMask;
             fovChecker.ObstacleMask = obstacleMask;
 
-            attacker.SetLayerMask(targetMask);
+            meleeAttacker.SetLayerMask(targetMask);
+            projectileAttacker.SetLayerMask(targetMask);
 
             inventory.InitSlot(stats.inventoryCapacity);
-            equipper.Init(health, mover, attacker);
+            equipper.Init(health, mover, meleeAttacker, projectileAttacker);
         }
     }
 }

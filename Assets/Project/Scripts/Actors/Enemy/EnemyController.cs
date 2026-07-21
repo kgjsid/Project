@@ -39,7 +39,7 @@ namespace Actors.Enemy
             { 
                 transform = transform,
                 mover = mover,
-                attacker = attacker,
+                equipper = equipper,
                 attackRange = attackRange,
                 traceDist = traceDist
             };
@@ -80,6 +80,7 @@ namespace Actors.Enemy
         {
             fovChecker.FindVisibleTargets();
             UpdateTarget();
+            UpdateWeaponRotation();
             fsm.Update();
         }
 
@@ -108,6 +109,15 @@ namespace Actors.Enemy
         protected virtual float GetTargetDistance()
         {
             return Vector3.Distance(transform.position, context.target.position);
+        }
+
+        protected virtual void UpdateWeaponRotation()
+        {
+            if (context.target != null)
+            {
+                Vector2 dir = (Vector2)context.target.position - (Vector2)transform.position;
+                context.equipper.GetCurrentAttacker()?.SetAimDirection(dir);
+            }
         }
 
         protected virtual void DieRoutine()

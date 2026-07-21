@@ -25,7 +25,7 @@ namespace Actors.Enemy.States
         public void Update()
         {
             context.mover.Move(Vector3.zero);
-            context.attacker.Attack();
+            context.equipper.GetCurrentAttacker()?.Attack();
         }
     }
 }

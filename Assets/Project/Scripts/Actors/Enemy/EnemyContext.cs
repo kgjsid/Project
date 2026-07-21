@@ -11,7 +11,7 @@ namespace Actors.Enemy
     {
         public Transform transform;
         public Mover mover;
-        public Attacker attacker;
+        public Equipper equipper;
 
         public Transform target;
         public float attackRange;

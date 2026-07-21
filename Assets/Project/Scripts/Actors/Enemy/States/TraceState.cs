@@ -23,9 +23,8 @@ namespace Actors.Enemy.States
         {
             if (context.target == null) return;
 
-            Vector3 dir = (context.target.position - context.transform.position).normalized;
+            Vector2 dir = ((Vector2)context.target.position - (Vector2)context.transform.position).normalized;
             context.mover.Move(dir);
-            context.mover.LookRotation(dir);
         }
     }
 }
