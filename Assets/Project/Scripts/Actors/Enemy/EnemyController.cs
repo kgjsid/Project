@@ -1,11 +1,10 @@
+using UnityEngine;
+
 using Actors.Enemy.States;
 using Actors.Player;
-using Core.System;
 using Core.System.FSM;
 using Item.Data;
 using Item.ItemObject;
-using System.Diagnostics;
-using UnityEngine;
 
 namespace Actors.Enemy
 {
@@ -80,7 +79,7 @@ namespace Actors.Enemy
         {
             fovChecker.FindVisibleTargets();
             UpdateTarget();
-            UpdateWeaponRotation();
+            UpdateFacing();
             fsm.Update();
         }
 
@@ -111,29 +110,19 @@ namespace Actors.Enemy
             return Vector3.Distance(transform.position, context.target.position);
         }
 
-        protected virtual void UpdateWeaponRotation()
+        protected virtual void UpdateFacing()
         {
             if (context.target != null)
             {
                 Vector2 dir = (Vector2)context.target.position - (Vector2)transform.position;
+                fovChecker.SetFacingDirection(dir);
                 context.equipper.GetCurrentAttacker()?.SetAimDirection(dir);
             }
         }
 
-        protected virtual void DieRoutine()
+        protected override void DieRoutine()
         {
-            GameObject boxObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            boxObj.name = $"{name}'s box";
-            boxObj.transform.position = transform.position;
-            boxObj.transform.rotation = Quaternion.identity;
-            boxObj.layer = LayerMask.NameToLayer("Interactable");
-
-            LootBox lootBox = boxObj.AddComponent<LootBox>();
-            foreach(var equipment in equipper.GetEquippedItems())
-            {
-                inventory.AddItem(equipment);
-            }
-            inventory.MoveItemsTo(lootBox.Inventory);
+            base.DieRoutine();
         }
     }
 }

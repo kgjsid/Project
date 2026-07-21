@@ -14,8 +14,13 @@ namespace Core.System
         [SerializeField] private LayerMask obstacleMask;
 
         private List<Transform> visibleTargets = new List<Transform>();
-        private Collider[] colliders = new Collider[5];
+        private Collider2D[] colliders = new Collider2D[5];
+        private ContactFilter2D contactFilter;
         private float cosAngle = 0f;
+
+        private Vector2 facingDirection = Vector2.right;
+
+        private const float ROTATION_THRESHOLD = 0.0001f;
 
         public float ViewAngle
         {
@@ -26,6 +31,7 @@ namespace Core.System
             set
             {
                 viewAngle = value;
+                cosAngle = Mathf.Cos(viewAngle * Mathf.Deg2Rad);
             }
         }
 
@@ -58,6 +64,7 @@ namespace Core.System
             set
             {
                 targetMask = value;
+                contactFilter.SetLayerMask(targetMask);
             }
         }
 
@@ -73,27 +80,43 @@ namespace Core.System
             }
         }
 
+        public Vector2 FacingDirection
+        {
+            get
+            {
+                return facingDirection;
+            }
+        }
+
         private void Start()
         {
-            cosAngle = Mathf.Cos(viewAngle * Mathf.Deg2Rad);
+            contactFilter = new ContactFilter2D();
+            contactFilter.useTriggers = true;
+        }
+
+        public void SetFacingDirection(Vector2 direction)
+        {
+            if (direction.sqrMagnitude < ROTATION_THRESHOLD) return;
+            facingDirection = direction.normalized;
         }
 
         public void FindVisibleTargets()
         {
             visibleTargets.Clear();
 
-            int size = Physics.OverlapSphereNonAlloc(transform.position, viewDistance, colliders, targetMask);
+            int size = Physics2D.OverlapCircle(transform.position, viewDistance, contactFilter, colliders);
 
-            for (int i = 0; i < size; i++)
+            for (int hitIndex = 0; hitIndex < size; hitIndex++)
             {
-                Transform target = colliders[i].transform;
-                Vector3 dirToPlayer = (target.position - transform.position).normalized;
+                Transform target = colliders[hitIndex].transform;
+                Vector2 dirToTarget = ((Vector2)target.position - (Vector2)transform.position).normalized;
 
-                if (Vector3.Dot(dirToPlayer, transform.forward) > cosAngle)
+                if (Vector2.Dot(dirToTarget, facingDirection) > cosAngle)
                 {
-                    float dstToPlayer = Vector3.Distance(transform.position, target.position);
+                    float dstToTarget = Vector2.Distance(transform.position, target.position);
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask);
 
-                    if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
+                    if (hit.collider == null)
                     {
                         visibleTargets.Add(target);
                     }

@@ -1,6 +1,6 @@
-using UnityEngine;
-
 using Core.System;
+using Item.ItemObject;
+using UnityEngine;
 
 namespace Actors
 {
@@ -15,6 +15,9 @@ namespace Actors
         [Header("LayerMask")]
         public LayerMask targetMask;
         public LayerMask obstacleMask;
+
+        [Header("LootBox Prefab")]
+        [SerializeField] protected LootBox lootBoxPrefab;
 
         protected Health health;
         protected Mover mover;
@@ -63,7 +66,6 @@ namespace Actors
         protected virtual void InitStatus()
         {
             mover.BaseMoveSpeed = stats.moveSpeed;
-            mover.BaseRotationSpeed = stats.rotationSpeed;
 
             health.BaseMaxHp = stats.maxHp;
             health.CurrentHp = stats.maxHp;
@@ -78,6 +80,20 @@ namespace Actors
 
             inventory.InitSlot(stats.inventoryCapacity);
             equipper.Init(health, mover, meleeAttacker, projectileAttacker);
+        }
+
+        protected virtual void DieRoutine()
+        {
+            LootBox lootBox = Instantiate(lootBoxPrefab, transform.position, Quaternion.identity);
+            lootBox.gameObject.name = $"{name}'s box";
+
+            // (Enemy만 해당) 장착 장비도 같이 회수
+            foreach (var equipment in equipper.GetEquippedItems())
+            {
+                inventory.AddItem(equipment);
+            }
+
+            inventory.MoveItemsTo(lootBox.Inventory);
         }
     }
 }

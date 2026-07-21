@@ -12,6 +12,8 @@ namespace Core.System
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
 
+        private List<Vector3> viewPoints = new List<Vector3>();
+
         public FovChecker Chekcer
         {
             get
@@ -23,8 +25,6 @@ namespace Core.System
                 checker = value;
             }
         }
-
-        List<Vector3> viewPoints = new List<Vector3>();
 
         private const string FOVMESH_OBJECTNAME = "FOV Mesh";
 
@@ -47,6 +47,9 @@ namespace Core.System
             fovMat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
 
             meshRenderer.material = fovMat;
+
+            meshRenderer.sortingLayerName = "Default";  // 실제 쓰시는 레이어 이름으로 교체
+            meshRenderer.sortingOrder = 10;             // 캐릭터/바닥보다 위에 그려지도록 값 조정
         }
 
         public void SetColor(Color color)
@@ -70,10 +73,10 @@ namespace Core.System
 
             for (int i = 0; i <= stepCount; i++)
             {
-                // angle -> transform y축 기준. viewAngle을 절반값 60이라면 (-30 ~ 30) 범위로 하여 하나씩 각도 계산
-                float angle = transform.eulerAngles.y - checker.ViewAngle * 0.5f + stepAngleSize * i;
-                ViewCastInfo newViewCast = ViewCast(angle);
-                viewPoints.Add(newViewCast.hitPoint);
+                // angle -> ViewAngle 기준. viewAngle을 절반값 60이라면 (-30 ~ 30) 범위로 하여 하나씩 각도 계산
+                float angleOffset = -checker.ViewAngle * 0.5f + stepAngleSize * i;
+                Vector2 dir = RotateVector(checker.FacingDirection, angleOffset);
+                viewPoints.Add(ViewCast(dir));
             }
 
             int vertexCount = viewPoints.Count + 1;
@@ -99,32 +102,21 @@ namespace Core.System
             fovMesh.triangles = triangles;
         }
 
-        /// <summary>
-        /// 각도를 벡터 방향으로 변환헤는 메소드
-        /// </summary>
-        /// <param name="angleInDegrees"></param>
-        private Vector3 DirFromAngle(float angleInDegrees)
+        private Vector2 RotateVector(Vector2 v, float degrees)
         {
-            // float => ex 45도
-            // 반지름 1인 원에서 빗변의 길이가 1이므로 
-            // sin -> y좌표, cos -> x 좌표
-            // 앞쪽이 z좌표이므로 변환
-            return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+            float rad = degrees * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(rad);
+            float sin = Mathf.Sin(rad);
+            return new Vector2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
         }
 
-        private ViewCastInfo ViewCast(float globalAngle)
+        private Vector2 ViewCast(Vector2 dir)
         {
-            Vector3 dir = DirFromAngle(globalAngle);
-            RaycastHit hit;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, checker.ViewDistance, checker.ObstacleMask);
 
-            if (Physics.Raycast(transform.position, dir, out hit, checker.ViewDistance, checker.ObstacleMask))
-            {
-                return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
-            }
-            else
-            {
-                return new ViewCastInfo(false, transform.position + dir * checker.ViewDistance, checker.ViewDistance, globalAngle);
-            }
+            return hit.collider != null
+                ? hit.point
+                : (Vector2)transform.position + dir * checker.ViewDistance;
         }
 
         public struct ViewCastInfo

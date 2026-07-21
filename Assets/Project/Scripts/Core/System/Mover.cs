@@ -4,41 +4,41 @@ namespace Core.System
 {
     /// <summary>
     /// Mover 컴포넌트
-    /// Move를 통해 움직이는 역할 제공(CharacterController 기반)
+    /// Move를 통해 움직이는 역할 제공
     /// </summary>
     public class Mover : MonoBehaviour
     {
         private float baseMoveSpeed;        // 기본 이동속도
         private float bonusMoveSpeed;       // 추가된 이동속도
-        private float baseRotationSpeed;
 
-        private CharacterController controller;
+        private Rigidbody2D rigidbody;
+        private Vector2 pendingMove = Vector2.zero;
 
         private const float ROTATE_THRESHOLD = 0.1f;
 
         public float BaseMoveSpeed { get { return baseMoveSpeed; } set { baseMoveSpeed = value; } }
         public float BonusMoveSpeed { get { return bonusMoveSpeed; } set { bonusMoveSpeed = value; } }
-        public float BaseRotationSpeed { get { return baseRotationSpeed; } set { baseRotationSpeed = value; } }
-
+        
         private void Awake()
         {
-            if(!TryGetComponent<CharacterController>(out controller))
+            if(!TryGetComponent(out rigidbody))
             {
-                controller = gameObject.AddComponent<CharacterController>();
+                rigidbody = gameObject.AddComponent<Rigidbody2D>();
             }
+
+            rigidbody.gravityScale = 0f;
+            rigidbody.freezeRotation = true;
+            rigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         }
 
-        public void Move(Vector3 movement)
+        public void Move(Vector2 direction)
         {
-            controller.Move(movement * (baseMoveSpeed + BonusMoveSpeed) * Time.deltaTime);
+            pendingMove = direction * (baseMoveSpeed + bonusMoveSpeed);
         }
 
-        public void LookRotation(Vector3 direction)
+        private void FixedUpdate()
         {
-            if (direction.sqrMagnitude < ROTATE_THRESHOLD * ROTATE_THRESHOLD) return;
-
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, baseRotationSpeed * Time.deltaTime);
+            rigidbody.MovePosition(rigidbody.position + pendingMove * Time.fixedDeltaTime);
         }
     }
 }

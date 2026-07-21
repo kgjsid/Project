@@ -51,12 +51,7 @@ namespace Actors.Player
 
         private void OnMove(InputValue value)
         {
-            Vector2 inputDir = value.Get<Vector2>();
-
-            moveDir.x = inputDir.x;
-            moveDir.z = inputDir.y;
-
-            moveDir = moveDir.normalized;
+            moveDir = value.Get<Vector2>().normalized;
         }
 
         private void OnLook(InputValue value)
@@ -65,20 +60,19 @@ namespace Actors.Player
 
             Ray ray = mainCamera.ScreenPointToRay(mouseScreenPos);
 
-            // 유저 위치에서 up(윗) 방향으로 plane 생성(유니티에서 계산을 위한 가상의 Plane)
-            Plane groundPlane = new Plane(Vector3.up, transform.position);
+            // 유저 위치에서 z 방향으로 plane 생성(유니티에서 계산을 위한 가상의 Plane)
+            Plane groundPlane = new Plane(Vector3.forward, transform.position);
 
             // plane.raycast -> 수학적으로 레이가 평면과 교차하는지 계산을 진행.
             // 평면의 방정식 + 벡터와의 교점 계산이라고 생각
             if (groundPlane.Raycast(ray, out float rayDistance))
             {
                 Vector3 lookPoint = ray.GetPoint(rayDistance);
-                Vector3 lookDir = lookPoint - transform.position;
-                lookDir.y = 0;
+                Vector2 lookDir = (Vector2)lookPoint - (Vector2)transform.position;
 
-                if (lookDir != Vector3.zero)
+                if (lookDir != Vector2.zero)
                 {
-                    mover.LookRotation(lookDir);
+                    fovChecker.SetFacingDirection(lookDir);
                     equipper.GetCurrentAttacker()?.SetAimDirection(lookDir);
                 }
             }
@@ -107,15 +101,9 @@ namespace Actors.Player
             }
         }
 
-        private void DieRoutine()
+        protected override void DieRoutine()
         {
-            GameObject boxObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            boxObj.name = $"{name}'s box";
-            boxObj.transform.position = transform.position;
-            boxObj.transform.rotation = Quaternion.identity;
-
-            LootBox lootBox = boxObj.AddComponent<LootBox>();
-            inventory.MoveItemsTo(lootBox.Inventory);
+            base.DieRoutine();
 
             EndRun();
         }
