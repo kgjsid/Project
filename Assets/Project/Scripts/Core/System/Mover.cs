@@ -13,12 +13,14 @@ namespace Core.System
 
         private Rigidbody2D rigidbody;
         private Vector2 pendingMove = Vector2.zero;
+        private float currentMoveSpeed;
 
         private const float ROTATE_THRESHOLD = 0.1f;
 
         public float BaseMoveSpeed { get { return baseMoveSpeed; } set { baseMoveSpeed = value; } }
         public float BonusMoveSpeed { get { return bonusMoveSpeed; } set { bonusMoveSpeed = value; } }
-        
+        public float CurrentMoveSpeed { get { return currentMoveSpeed; } }
+
         private void Awake()
         {
             if(!TryGetComponent(out rigidbody))
@@ -34,6 +36,8 @@ namespace Core.System
         public void Move(Vector2 direction)
         {
             pendingMove = direction * (baseMoveSpeed + bonusMoveSpeed);
+
+            currentMoveSpeed = pendingMove.magnitude;
         }
 
         private void FixedUpdate()
