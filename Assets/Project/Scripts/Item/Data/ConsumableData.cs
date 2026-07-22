@@ -17,7 +17,7 @@ namespace Item.Data
                 case ConsumableEffectType.Heal:
                     if (user.TryGetComponent(out Core.System.Health health))
                     {
-                        health.CurrentHp = Mathf.Min(health.CurrentHp + effectAmount, health.MaxHp);
+                        health.Heal(effectAmount);
                     }
                     break;
             }

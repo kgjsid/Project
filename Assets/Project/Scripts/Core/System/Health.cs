@@ -14,6 +14,8 @@ namespace Core.System
         private float currentHp;                    // 현재 체력
 
         public event Action<float> OnHpChanged;     // 체력 변화 시 실행할 이벤트
+        public event Action OnDamaged;              // 피격 시(체력 감소 시)
+        public event Action OnHealed;               // 회복 시(체력 회복 시)
         public event Action OnDie;                  // 사망 시 실행할 이벤트
 
         public float BaseMaxHp { get { return baseMaxHp; } set { baseMaxHp = value; RecalculateMaxHp(); } }
@@ -29,8 +31,19 @@ namespace Core.System
             currentHp = Mathf.Max(currentHp, 0);
 
             OnHpChanged?.Invoke(currentHp / MaxHp);
+            OnDamaged?.Invoke();
 
             if (IsDead()) Die();
+        }
+
+        public void Heal(float amount)
+        {
+            if (IsDead()) return;
+
+            currentHp = Mathf.Min(currentHp + amount, MaxHp);
+
+            OnHpChanged?.Invoke(currentHp / MaxHp);
+            OnHealed?.Invoke();
         }
 
         public bool IsDead()
