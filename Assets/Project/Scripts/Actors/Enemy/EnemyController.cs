@@ -123,6 +123,14 @@ namespace Actors.Enemy
         protected override void DieRoutine()
         {
             base.DieRoutine();
+
+            mover.Move(Vector2.zero);
+            enabled = false;
+            if (fovChecker != null && fovRenderer != null)
+            {
+                fovChecker.enabled = false;
+                fovRenderer.gameObject.SetActive(false);
+            }
         }
     }
 }
