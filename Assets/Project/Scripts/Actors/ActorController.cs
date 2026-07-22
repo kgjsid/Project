@@ -19,6 +19,9 @@ namespace Actors
         [Header("LootBox Prefab")]
         [SerializeField] protected LootBox lootBoxPrefab;
 
+        [Header("Animator")]
+        [SerializeField] protected ActorAnimator actorAnimator;
+
         protected Health health;
         protected Mover mover;
         protected FovChecker fovChecker;
@@ -80,6 +83,8 @@ namespace Actors
 
             inventory.InitSlot(stats.inventoryCapacity);
             equipper.Init(health, mover, meleeAttacker, projectileAttacker);
+
+            actorAnimator?.Init(mover, health, equipper, fovChecker);
         }
 
         protected virtual void DieRoutine()

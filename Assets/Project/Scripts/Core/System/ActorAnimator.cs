@@ -15,6 +15,7 @@ namespace Core.System
 
         private const string SPEED_PARAMETER = "Speed";
         private const string ATTACK_TRIGGER = "Attack";
+        private const string HURT_TRIGGER = "Hurt";
         private const string DIE_TRIGGHER = "Die";
 
         public void Init(Mover mover, Health health, Equipper equipper, FovChecker fovChecker)
@@ -25,6 +26,7 @@ namespace Core.System
             this.fovChecker = fovChecker;
 
             health.OnDie += HandleDieAnimation;
+            health.OnDamaged += HandleHpChanged;
             equipper.OnStatsChanged += HandleWeaponChanged;
             HandleWeaponChanged();
         }
@@ -70,6 +72,11 @@ namespace Core.System
             {
                 subscribedAttacker.OnAttackPerformed -= HandleAttackAnimation;
             }
+        }
+
+        private void HandleHpChanged()
+        {
+            if (!health.IsDead()) animator.SetTrigger(HURT_TRIGGER);
         }
 
         private void HandleAttackAnimation()
