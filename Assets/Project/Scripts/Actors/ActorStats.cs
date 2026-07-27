@@ -11,5 +11,6 @@ namespace Actors
         public float viewAngle = 45f;
         public float viewDistance = 10f;
         public int inventoryCapacity = 20;
+        public float maxWeight = 20f;
     }
 }

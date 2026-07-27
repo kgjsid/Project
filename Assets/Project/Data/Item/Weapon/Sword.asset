@@ -15,11 +15,14 @@ MonoBehaviour:
   itemName: Sword
   itemType: 1
   maxStack: 1
-  weight: 0.1
+  weight: 4
   icon: {fileID: 0}
   description: 
   equipSlot: 3
   durability: 1
+  attackType: 0
   damage: 15
   range: 2
   attackSpeed: 1
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 0

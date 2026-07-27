@@ -14,8 +14,39 @@ namespace Core.System
         public event Action OnInventoryChanged;
 
         private int capacity;
+        private float baseMaxWeight = 20f;
+        private float bonusMaxWeight;
 
         public int Capacity { get { return capacity; } }
+        public float BaseMaxWeight { get { return baseMaxWeight; } set { baseMaxWeight = value; NotifyChange(); } }
+        public float BonusMaxWeight
+        {
+            get { return bonusMaxWeight; }
+            set
+            {
+                if (Mathf.Approximately(bonusMaxWeight, value)) return;
+                bonusMaxWeight = value;
+                NotifyChange();
+            }
+        }
+        public float MaxWeight { get { return baseMaxWeight + bonusMaxWeight; } }
+
+        public float CurrentWeight
+        {
+            get
+            {
+                float total = 0f;
+                foreach (var slot in Slots)
+                {
+                    if (slot.IsEmpty()) continue;
+                    total += slot.item.weight * slot.count;
+                }
+                return total;
+            }
+        }
+
+        public bool IsOverweight { get { return CurrentWeight > MaxWeight; } }
+
         public ItemSlot[] Slots { get { return slots; } }
 
         public void InitSlot(int capacity)
@@ -35,26 +66,34 @@ namespace Core.System
             // 1. 해당 아이템이 있는 경우(슬롯에서 찾아서 stack 추가)
             for(int i = 0; i < Slots.Length; i++)
             {
-                if (!Slots[i].IsEmpty() && Slots[i].item == item && Slots[i].count < item.maxStack)
+                if (Slots[i].IsEmpty() || Slots[i].item != item) continue;
+
+                int space = item.maxStack - Slots[i].count;
+                if (space <= 0) continue;
+
+                int toAdd = Mathf.Min(space, count);
+                Slots[i].count += toAdd;
+                count -= toAdd;
+
+                if (count <= 0)
                 {
-                    Slots[i].count += count;
                     NotifyChange();
                     return true;
                 }
             }
 
-            // 2. 없으면 빈 슬롯에 새로 배치
+            // 2. 없거나 남은 수량은 빈 슬롯에 새로 배치
             for (int i = 0; i < Slots.Length; i++)
             {
-                if (Slots[i].IsEmpty())
-                {
-                    Slots[i] = new ItemSlot(item, count);
-                    NotifyChange();
-                    return true;
-                }
+                if (!Slots[i].IsEmpty()) continue;
+
+                int toAdd = Mathf.Min(item.maxStack, count);
+                Slots[i] = new ItemSlot(item, toAdd);
+                count -= toAdd;
             }
 
-            return false;
+            NotifyChange();
+            return count <= 0;
         }
 
         public void Swap(int fromIndex, int toIndex, Inventory targetInventory = null)
@@ -135,6 +174,17 @@ namespace Core.System
             if (Slots[index].count <= 0) Slots[index].Clear();
 
             NotifyChange();
+        }
+
+        /// <summary>
+        /// 아이템을 넣었을 때 무게 제한이 넘는지 검사
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public bool CanAddWeight(ItemData item, int count = 1)
+        {
+            return CurrentWeight + (item.weight * count) <= MaxWeight;
         }
 
         public void NotifyChange()

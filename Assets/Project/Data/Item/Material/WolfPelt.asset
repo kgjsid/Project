@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3803d6b15e3736c4cbeff49336cfd296, type: 3}
   m_Name: WolfPelt
   m_EditorClassIdentifier: Assembly-CSharp::Item.Data.MaterialData
-  itemName: IronOre
+  itemName: WolfPelt
   itemType: 0
   maxStack: 5
-  weight: 0.1
+  weight: 1
   icon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   description: 
   sellPrice: 8

@@ -7,5 +7,6 @@ namespace Item.Data
     {
         public int defense;
         public float moveSpeedMod;
+        public float weightBonus;
     }
 }

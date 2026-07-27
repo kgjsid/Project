@@ -14,6 +14,7 @@ namespace Core.System
 
         public Health health;
         public Mover mover;
+        public Inventory inventory;
         public MeleeAttacker meleeAttacker;
         public ProjectileAttacker projectileAttacker;
 
@@ -21,17 +22,23 @@ namespace Core.System
 
         private IAttacker currentAttacker;
 
+        // 이동 속도 패널티
+        private float overweightPenalty = 2f;
+
         public IAttacker GetCurrentAttacker()
         {
             return currentAttacker;
         }
 
-        public void Init(Health health, Mover mover, MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker)
+        public void Init(Health health, Mover mover, Inventory inventory, MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker)
         {
             this.health = health;
             this.mover = mover;
+            this.inventory = inventory;
             this.meleeAttacker = meleeAttacker;
             this.projectileAttacker = projectileAttacker;
+
+            inventory.OnInventoryChanged += RecalculateStats;
         }
 
         public void Equip(EquipmentData data)
@@ -55,6 +62,7 @@ namespace Core.System
         {
             float defenseBonus = 0f;
             float moveSpeedBonus = 0f;
+            float weightBonus = 0f;
 
             foreach(var item in equipped.Values)
             {
@@ -62,10 +70,17 @@ namespace Core.System
                 {
                     defenseBonus += armor.defense;
                     moveSpeedBonus += armor.moveSpeedMod;
+                    weightBonus += armor.weightBonus;
                 }
             }
 
             health.BonusMaxHp = defenseBonus;
+            inventory.BonusMaxWeight = weightBonus;
+
+            if (inventory.IsOverweight)
+            {
+                moveSpeedBonus -= overweightPenalty;
+            }
             mover.BonusMoveSpeed = moveSpeedBonus;
 
             ApplyWeapon();
@@ -95,6 +110,14 @@ namespace Core.System
                 meleeAttacker.ClearWeapon();
                 projectileAttacker.ClearWeapon();
                 currentAttacker = null;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (inventory != null)
+            {
+                inventory.OnInventoryChanged -= RecalculateStats;
             }
         }
     }

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: IronArmor
   itemType: 1
   maxStack: 1
-  weight: 0.1
+  weight: 8
   icon: {fileID: 0}
   description: 
   equipSlot: 2

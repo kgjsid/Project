@@ -81,8 +81,9 @@ namespace Actors
             meleeAttacker.SetLayerMask(targetMask);
             projectileAttacker.SetLayerMask(targetMask);
 
+            inventory.BaseMaxWeight = stats.maxWeight;
             inventory.InitSlot(stats.inventoryCapacity);
-            equipper.Init(health, mover, meleeAttacker, projectileAttacker);
+            equipper.Init(health, mover, inventory, meleeAttacker, projectileAttacker);
 
             actorAnimator?.Init(mover, health, equipper, fovChecker);
         }
