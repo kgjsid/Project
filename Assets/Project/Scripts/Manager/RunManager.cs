@@ -14,6 +14,7 @@ namespace Manager
         public static RunManager Instance { get { return instance; } }
 
         [SerializeField] private SpawnManager spawnManager;
+        [SerializeField] private MapManager mapManager;
 
         private RunState curRunState;
         public RunState State { get { return curRunState; } private set { curRunState = value; } }
@@ -31,7 +32,9 @@ namespace Manager
         {
             State = RunState.Spawning;
 
-            currentPlayer = spawnManager.SpawnAll();
+            mapManager.GenerateMap();
+            var points = mapManager.CollectSpawnPoints();
+            currentPlayer = spawnManager.SpawnAll(points);
             
             if (currentPlayer == null)
             {

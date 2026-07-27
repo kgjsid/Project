@@ -8,6 +8,7 @@ namespace World.Map
         public RoomType roomType;
         public GameObject roomPrefab;
         public Vector2Int size = Vector2Int.one;
+        public TextAsset layoutFile;
 
         [Header("생성 가중치")]
         [Tooltip("같은 세대 안에서 이 방이 뽑힐 확률 가중치. 0이면 안 뽑힘")]

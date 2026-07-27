@@ -14,11 +14,11 @@ namespace Manager
 
         public List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
-        public PlayerController SpawnAll()
+        public PlayerController SpawnAll(List<SpawnPoint> points)
         {
             PlayerController player = null;
 
-            foreach(var spawnPoint in spawnPoints)
+            foreach(var spawnPoint in points)
             {
                 switch(spawnPoint.type)
                 {
