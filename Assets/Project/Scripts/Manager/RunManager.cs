@@ -7,14 +7,17 @@ using Actors.Player;
 namespace Manager
 {
     public enum RunState { Spawning, Playing, Ended }
+    public enum RunResult { Escaped, Died }
 
     public class RunManager : MonoBehaviour
     {
         private static RunManager instance;
         public static RunManager Instance { get { return instance; } }
 
-        [SerializeField] private SpawnManager spawnManager;
         [SerializeField] private MapManager mapManager;
+        [SerializeField] private SpawnManager spawnManager;
+        [SerializeField] private float endDelay = 2f;
+        [SerializeField] private string hubSceneName = "HubScene";
 
         private RunState curRunState;
         public RunState State { get { return curRunState; } private set { curRunState = value; } }
@@ -43,6 +46,8 @@ namespace Manager
                 return;
             }
 
+            // -> 로비에서 가져온 아이템 전달
+            GameDataManager.Instance.ApplyLoadoutTo(currentPlayer.GetPlayerInventory());
             OnPlayerSpawned?.Invoke(currentPlayer);
 
             currentPlayer.OnRunEnded += HandleRunEnded;
@@ -62,7 +67,7 @@ namespace Manager
             }
         }
 
-        private void HandleRunEnded()
+        private void HandleRunEnded(RunResult result)
         {
             if (State == RunState.Ended)
             {
@@ -70,12 +75,24 @@ namespace Manager
             }
             State = RunState.Ended;
 
-            Invoke(nameof(ResetScene), 2f);
+            if (result == RunResult.Escaped)
+            {   
+                // 탈출 성공 시 아이템을 전부 창고로 전달
+                GameDataManager.Instance.StoreRunResult(currentPlayer.GetPlayerInventory());
+            }
+            else
+            {
+                // 실패 시 모든 아이템 분실(임시 Inventory 초기화)
+                GameDataManager.Instance.ClearLoadout();
+            }
+
+            GameDataManager.Instance.AdvanceDay();
+            Invoke(nameof(GoToHubScene), endDelay);
         }
 
-        private void ResetScene()
+        private void GoToHubScene()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(hubSceneName);
         }
     }
 }
