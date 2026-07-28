@@ -123,29 +123,5 @@ namespace Core.System
                 }
             }
         }
-
-        public IInteractable GetClosestTarget()
-        {
-            if (visibleTargets.Count == 0) return null;
-
-            IInteractable closestInteractable = null;
-            float closestDist = float.MaxValue;
-
-            foreach(var target in visibleTargets)
-            {
-                if(target.TryGetComponent(out IInteractable interactable))
-                {
-                    float dist = Vector3.Distance(transform.position, target.position);
-
-                    if(dist < closestDist)
-                    {
-                        closestDist = dist;
-                        closestInteractable = interactable;
-                    }
-                }
-            }
-
-            return closestInteractable;
-        }
     }
 }
