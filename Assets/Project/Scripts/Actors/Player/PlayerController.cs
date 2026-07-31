@@ -1,11 +1,11 @@
-using Core.Interface;
-using Core.System;
-using Item.ItemObject;
 using System;
-using UI.Inventory;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+
+using Manager;
+using Core.Interface;
+using Core.System;
+using UI.Inventory;
 
 namespace Actors.Player
 {
@@ -13,7 +13,7 @@ namespace Actors.Player
     {
         private Inventory equipInventory;
 
-        public event Action OnRunEnded;
+        public event Action<RunResult> OnRunEnded;
 
         private Camera mainCamera;
         private Vector3 moveDir = Vector3.zero;
@@ -80,7 +80,7 @@ namespace Actors.Player
 
         private void OnInteract(InputValue value)
         {
-            IInteractable closestInteractable = fovChecker.GetClosestTarget();
+            IInteractable closestInteractable = interactionDetector.GetClosestTarget();
 
             if (closestInteractable != null)
             {
@@ -105,24 +105,18 @@ namespace Actors.Player
         {
             base.DieRoutine();
 
-            EndRun();
+            EndRun(RunResult.Died);
         }
 
         public void Escape()
         {
-            Debug.Log("Escape Success");
-            EndRun();
+            EndRun(RunResult.Escaped);
         }
 
-        private void EndRun()
+        private void EndRun(RunResult result)
         {
-            enabled = false; 
-            Invoke(nameof(ResetScene), 2f);
-        }
-
-        private void ResetScene()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            enabled = false;
+            OnRunEnded?.Invoke(result);
         }
 
         public Inventory GetPlayerInventory()

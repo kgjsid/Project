@@ -22,14 +22,21 @@ namespace Actors
         [Header("Animator")]
         [SerializeField] protected ActorAnimator actorAnimator;
 
+        [Header("Effects")]
+        [SerializeField] protected HitFlash hitFlash;
+        [SerializeField] protected WeaponAimer weaponAimer;
+        [SerializeField] protected AttackEffectSpawner attackEffectSpawner;
+
         protected Health health;
         protected Mover mover;
         protected FovChecker fovChecker;
         protected FovRenderer fovRenderer;
+        protected InteractionDetector interactionDetector;
         protected MeleeAttacker meleeAttacker;
         protected ProjectileAttacker projectileAttacker;
         protected Inventory inventory;
         protected Equipper equipper;
+        protected KnockbackReceiver knockbackReceiver;
 
         protected void Awake()
         {
@@ -50,10 +57,12 @@ namespace Actors
             health = gameObject.AddComponent<Health>();
             mover = gameObject.AddComponent<Mover>();
             fovChecker = gameObject.AddComponent<FovChecker>();
+            interactionDetector = gameObject.AddComponent<InteractionDetector>();
             meleeAttacker = gameObject.AddComponent<MeleeAttacker>();
             projectileAttacker = gameObject.AddComponent<ProjectileAttacker>();
             inventory = gameObject.AddComponent<Inventory>();
             equipper = gameObject.AddComponent<Equipper>();
+            knockbackReceiver = gameObject.AddComponent<KnockbackReceiver>();
 
             GameObject fovObject = new GameObject("FovMesh");
             fovObject.transform.parent = transform;
@@ -84,8 +93,12 @@ namespace Actors
             inventory.BaseMaxWeight = stats.maxWeight;
             inventory.InitSlot(stats.inventoryCapacity);
             equipper.Init(health, mover, inventory, meleeAttacker, projectileAttacker);
+            knockbackReceiver.Init(health, mover);
 
             actorAnimator?.Init(mover, health, equipper, fovChecker);
+            hitFlash?.Init(health);
+            weaponAimer?.Init(equipper);
+            attackEffectSpawner?.Init(equipper);
         }
 
         protected virtual void DieRoutine()
