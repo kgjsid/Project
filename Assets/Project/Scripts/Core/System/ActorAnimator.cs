@@ -25,10 +25,16 @@ namespace Core.System
             this.equipper = equipper;
             this.fovChecker = fovChecker;
 
-            health.OnDie += HandleDieAnimation;
-            health.OnDamaged += HandleHpChanged;
-            equipper.OnStatsChanged += HandleWeaponChanged;
-            HandleWeaponChanged();
+            if (health != null)
+            {
+                health.OnDie += HandleDieAnimation;
+                health.OnDamaged += HandleHpChanged;
+            }
+            if (equipper != null)
+            {
+                equipper.OnStatsChanged += HandleWeaponChanged;
+                HandleWeaponChanged();
+            }
         }
 
         private void OnDisable()
@@ -74,7 +80,7 @@ namespace Core.System
             }
         }
 
-        private void HandleHpChanged()
+        private void HandleHpChanged(Vector2 hitDirection, float knockbackForce)
         {
             if (!health.IsDead()) animator.SetTrigger(HURT_TRIGGER);
         }

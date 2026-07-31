@@ -53,6 +53,15 @@ namespace Core.System
             RecalculateStats();
         }
 
+        public WeaponData GetEquippedWeapon()
+        {
+            if (equipped.TryGetValue(EquipSlotType.PrimaryWeapon, out var data) && data is WeaponData weapon)
+            {
+                return weapon;
+            }
+            return null;
+        }
+
         public List<EquipmentData> GetEquippedItems()
         {
             return equipped.Values.ToList();

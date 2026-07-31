@@ -13,17 +13,17 @@ namespace Core.System
         private float bonusMaxHp;                   // 추가 값(장비, 소모품)
         private float currentHp;                    // 현재 체력
 
-        public event Action<float> OnHpChanged;     // 체력 변화 시 실행할 이벤트
-        public event Action OnDamaged;              // 피격 시(체력 감소 시)
-        public event Action OnHealed;               // 회복 시(체력 회복 시)
-        public event Action OnDie;                  // 사망 시 실행할 이벤트
+        public event Action<float> OnHpChanged;         // 체력 변화 시 실행할 이벤트
+        public event Action<Vector2, float> OnDamaged;  // 피격 시(체력 감소 시)
+        public event Action OnHealed;                   // 회복 시(체력 회복 시)
+        public event Action OnDie;                      // 사망 시 실행할 이벤트
 
         public float BaseMaxHp { get { return baseMaxHp; } set { baseMaxHp = value; RecalculateMaxHp(); } }
         public float BonusMaxHp { get { return bonusMaxHp; } set { bonusMaxHp = value; RecalculateMaxHp(); } }
         public float MaxHp { get { return baseMaxHp + bonusMaxHp; } }
         public float CurrentHp { get { return currentHp; } set { currentHp = value; } }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, Vector2 hitDirection = default, float knockbackForce = 0f)
         {
             if (IsDead()) return;
 
@@ -31,7 +31,7 @@ namespace Core.System
             currentHp = Mathf.Max(currentHp, 0);
 
             OnHpChanged?.Invoke(currentHp / MaxHp);
-            OnDamaged?.Invoke();
+            OnDamaged?.Invoke(hitDirection, knockbackForce);
 
             if (IsDead()) Die();
         }

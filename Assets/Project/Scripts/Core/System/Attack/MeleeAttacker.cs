@@ -8,14 +8,17 @@ namespace Core.System
     public class MeleeAttacker : MonoBehaviour, IAttacker
     {
         public LayerMask hitMask;
-        [SerializeField] private float hitRadius = 0.6f;
-
+        [SerializeField] private float swingAngle = 100f;
+        
         private float damage;
         private float range;
         private float attackSpeed = 1f;
+        private float knockbackForce;
         private bool hasWeapon;
         private float lastAttackTime = -1f;
         private Vector2 aimDirection = Vector2.right;
+
+        private float cosHalfSwing;
 
         public event Action OnAttackPerformed;
         public event Action<Vector2> OnAimDirectionChanged;
@@ -26,11 +29,19 @@ namespace Core.System
         private const int HIT_COLLIDER_COUNT = 10;
         private const float ROTATION_THRESHOLD = 0.0001f;
 
+        public float SwingAngle { get { return swingAngle; } set { swingAngle = value; cosHalfSwing = Mathf.Cos(swingAngle * 0.5f * Mathf.Deg2Rad); } }
+
+        private void Awake()
+        {
+            cosHalfSwing = Mathf.Cos(swingAngle * 0.5f * Mathf.Deg2Rad);
+        }
+
         public void SetWeapon(WeaponData weapon)
         {
             damage = weapon.damage;
             range = weapon.range;
             attackSpeed = weapon.attackSpeed;
+            knockbackForce = weapon.knockbackForce;
             hasWeapon = true;
         }
 
@@ -64,12 +75,17 @@ namespace Core.System
 
             Vector2 hitPoint = (Vector2)transform.position + aimDirection * range;
 
-            int size = Physics2D.OverlapCircle(hitPoint, hitRadius, contactFilter, hitColliders);
-            for (int hitIndex = 0; hitIndex < size; hitIndex++)
+            int size = Physics2D.OverlapCircle(transform.position, range, contactFilter, hitColliders);
+
+            for (int i = 0; i < size; i++)
             {
-                if (hitColliders[hitIndex].TryGetComponent(out Health health))
+                Vector2 toTarget = ((Vector2)hitColliders[i].transform.position - (Vector2)transform.position).normalized;
+
+                if (Vector2.Dot(toTarget, aimDirection) < cosHalfSwing) continue;
+
+                if (hitColliders[i].TryGetComponent(out Health health))
                 {
-                    health.TakeDamage(damage);
+                    health.TakeDamage(damage, toTarget, knockbackForce);
                 }
             }
 

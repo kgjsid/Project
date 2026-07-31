@@ -64,7 +64,7 @@ namespace Core.System
         public bool AddItem(ItemData item, int count = 1)
         {
             // 1. 해당 아이템이 있는 경우(슬롯에서 찾아서 stack 추가)
-            for(int i = 0; i < Slots.Length; i++)
+            for(int i = 0; i < Slots.Length && count > 0; i++)
             {
                 if (Slots[i].IsEmpty() || Slots[i].item != item) continue;
 
@@ -83,10 +83,9 @@ namespace Core.System
             }
 
             // 2. 없거나 남은 수량은 빈 슬롯에 새로 배치
-            for (int i = 0; i < Slots.Length; i++)
+            for (int i = 0; i < Slots.Length && count > 0; i++)
             {
                 if (!Slots[i].IsEmpty()) continue;
-
                 int toAdd = Mathf.Min(item.maxStack, count);
                 Slots[i] = new ItemSlot(item, toAdd);
                 count -= toAdd;
