@@ -17,6 +17,7 @@ namespace Item.Data
         public string itemName;
         public ItemType itemType;
         public int maxStack = 999;
+        public int sellPrice;
         public float weight = 0.1f;
 
         public Sprite icon;

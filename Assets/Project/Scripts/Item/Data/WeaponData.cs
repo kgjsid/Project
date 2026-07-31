@@ -11,9 +11,15 @@ namespace Item.Data
     {
         public AttackType attackType;
 
+        [Header("Weapon Stats")]
         public float damage;
         public float range;
         public float attackSpeed;
+        public float knockbackForce;
+
+        [Header("Effect")]
+        public GameObject effectPrefab;
+        public Color effectColor = Color.white;
 
         public Projectile projectilePrefab;
         public float projectileSpeed;

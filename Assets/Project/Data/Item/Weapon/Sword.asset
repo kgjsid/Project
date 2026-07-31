@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Sword
   itemType: 1
   maxStack: 1
+  sellPrice: 0
   weight: 4
   icon: {fileID: 0}
   description: 
@@ -24,5 +25,8 @@ MonoBehaviour:
   damage: 15
   range: 2
   attackSpeed: 1
+  knockbackForce: 10
+  effectPrefab: {fileID: 3062921058948537495, guid: 67f24896b3e7049438ef26daea6048c0, type: 3}
+  effectColor: {r: 0.7058824, g: 0.9019608, b: 1, a: 1}
   projectilePrefab: {fileID: 0}
   projectileSpeed: 0

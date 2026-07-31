@@ -91,6 +91,9 @@ MonoBehaviour:
     m_Bits: 64
   lootBoxPrefab: {fileID: 2527803299957211133, guid: 56ca8349c3f40d44da60f797febe3233, type: 3}
   actorAnimator: {fileID: 2955492199638256713}
+  hitFlash: {fileID: 4036524859280134378}
+  weaponAimer: {fileID: 0}
+  attackEffectSpawner: {fileID: 4816554756314889136}
   attackRange: 3
   traceDist: 20
   startingWeapon: {fileID: 11400000, guid: 10900627c6747434b830199b8e3f1957, type: 2}
@@ -107,6 +110,8 @@ GameObject:
   - component: {fileID: 7191359306557767457}
   - component: {fileID: 3902453615712019334}
   - component: {fileID: 2955492199638256713}
+  - component: {fileID: 4036524859280134378}
+  - component: {fileID: 4816554756314889136}
   m_Layer: 7
   m_Name: Visual
   m_TagString: Untagged
@@ -224,3 +229,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.ActorAnimator
   animator: {fileID: 3902453615712019334}
   spriteRenderer: {fileID: 7191359306557767457}
+--- !u!114 &4036524859280134378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8005148476760581943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8d17e55653fac42b8e74bf6242ef3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitFlash
+  spriteRenderer: {fileID: 7191359306557767457}
+  hitColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  flashDuration: 0.06
+--- !u!114 &4816554756314889136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8005148476760581943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40182b222eabb3844ad78ab41fc2513b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.System.AttackEffectSpawner
+  spawnPoint: {fileID: 2630299387090880415}
