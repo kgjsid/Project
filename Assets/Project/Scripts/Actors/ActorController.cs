@@ -68,8 +68,8 @@ namespace Actors
             fovObject.transform.parent = transform;
             fovObject.transform.localPosition = Vector3.zero;
             fovObject.transform.rotation = Quaternion.identity;
-            fovRenderer = fovObject.AddComponent<FovRenderer>();
-            fovRenderer.Chekcer = fovChecker;
+            // fovRenderer = fovObject.AddComponent<FovRenderer>();
+            // fovRenderer.Chekcer = fovChecker;
         }
 
         /// <summary>
@@ -93,6 +93,8 @@ namespace Actors
             inventory.BaseMaxWeight = stats.maxWeight;
             inventory.InitSlot(stats.inventoryCapacity);
             equipper.Init(health, mover, inventory, meleeAttacker, projectileAttacker);
+
+            knockbackReceiver.KnockbackResistance = stats.knockbackResistance;
             knockbackReceiver.Init(health, mover);
 
             actorAnimator?.Init(mover, health, equipper, fovChecker);
