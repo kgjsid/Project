@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Orc
   m_EditorClassIdentifier: Assembly-CSharp::Actors.ActorStats
   moveSpeed: 3.5
-  rotationSpeed: 50
-  maxHp: 20
-  viewAngle: 40
-  viewDistance: 8
+  maxHp: 160
+  knockbackResistance: 0.15
+  viewAngle: 70
+  viewDistance: 9
+  attackRange: 2
+  traceDist: 12
+  telegraphDuration: 1
+  attackRecovery: 0.7
   inventoryCapacity: 5
+  maxWeight: 999

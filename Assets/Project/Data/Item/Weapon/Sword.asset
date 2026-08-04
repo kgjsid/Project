@@ -23,7 +23,7 @@ MonoBehaviour:
   durability: 1
   attackType: 0
   damage: 15
-  range: 2
+  range: 2.5
   attackSpeed: 1
   knockbackForce: 10
   effectPrefab: {fileID: 3062921058948537495, guid: 67f24896b3e7049438ef26daea6048c0, type: 3}
