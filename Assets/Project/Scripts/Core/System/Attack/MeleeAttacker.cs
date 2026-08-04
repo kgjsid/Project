@@ -31,17 +31,13 @@ namespace Core.System
 
         public float SwingAngle { get { return swingAngle; } set { swingAngle = value; cosHalfSwing = Mathf.Cos(swingAngle * 0.5f * Mathf.Deg2Rad); } }
 
-        private void Awake()
-        {
-            cosHalfSwing = Mathf.Cos(swingAngle * 0.5f * Mathf.Deg2Rad);
-        }
-
         public void SetWeapon(WeaponData weapon)
         {
             damage = weapon.damage;
             range = weapon.range;
             attackSpeed = weapon.attackSpeed;
             knockbackForce = weapon.knockbackForce;
+            SwingAngle = weapon.swingAngle;
             hasWeapon = true;
         }
 

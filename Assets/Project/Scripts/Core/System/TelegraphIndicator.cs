@@ -42,6 +42,11 @@ namespace Core.System
             indicatorRenderer.transform.localScale = new Vector3(scale, scale, 1f);
         }
 
+        public void SetSprite(Sprite telegraphSprite)
+        {
+            indicatorRenderer.sprite = telegraphSprite;
+        }
+
         public void SetDirection(Vector2 dir)
         {
             if (indicatorRenderer == null || dir.sqrMagnitude < 0.0001f) return;

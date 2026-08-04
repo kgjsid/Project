@@ -21,6 +21,9 @@ namespace Item.Data
         public GameObject effectPrefab;
         public Color effectColor = Color.white;
 
+        public Sprite telegraphSprite;
+        public float swingAngle;
+
         public Projectile projectilePrefab;
         public float projectileSpeed;
     }
