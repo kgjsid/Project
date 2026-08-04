@@ -51,10 +51,23 @@ namespace Core.System
         {
             if (!hasWeapon || projectilePrefab == null) return;
             if (Time.time - lastAttackTime < 1f / attackSpeed) return;
+            
+            ExecuteAttack();
+        }
+
+        public void ForceAttack()
+        {
+            if (!hasWeapon || projectilePrefab == null) return;
+
+            ExecuteAttack();
+        }
+
+        private void ExecuteAttack()
+        {
             lastAttackTime = Time.time;
 
-            Projectile projectileObj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            projectileObj.Launch(aimDirection, projectileSpeed, damage, hitMask);
+            Projectile projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            projectile.Launch(aimDirection, projectileSpeed, damage, hitMask);
 
             OnAttackPerformed?.Invoke();
         }

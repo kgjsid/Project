@@ -71,19 +71,32 @@ namespace Core.System
             if (hitColliders == null) hitColliders = new Collider2D[HIT_COLLIDER_COUNT];
             if (!hasWeapon) return;
             if (Time.time - lastAttackTime < 1f / attackSpeed) return;
+
+            ExecuteAttack();
+        }
+
+        public void ForceAttack()
+        {
+            if (!hasWeapon) return;
+
+            ExecuteAttack();
+        }
+
+        private void ExecuteAttack()
+        {
             lastAttackTime = Time.time;
 
-            Vector2 hitPoint = (Vector2)transform.position + aimDirection * range;
+            if (hitColliders == null) hitColliders = new Collider2D[HIT_COLLIDER_COUNT];
 
             int size = Physics2D.OverlapCircle(transform.position, range, contactFilter, hitColliders);
 
-            for (int i = 0; i < size; i++)
+            for (int hitIndex = 0; hitIndex < size; hitIndex++)
             {
-                Vector2 toTarget = ((Vector2)hitColliders[i].transform.position - (Vector2)transform.position).normalized;
+                Vector2 toTarget = ((Vector2)hitColliders[hitIndex].transform.position - (Vector2)transform.position).normalized;
 
                 if (Vector2.Dot(toTarget, aimDirection) < cosHalfSwing) continue;
 
-                if (hitColliders[i].TryGetComponent(out Health health))
+                if (hitColliders[hitIndex].TryGetComponent(out Health health))
                 {
                     health.TakeDamage(damage, toTarget, knockbackForce);
                 }
@@ -91,6 +104,5 @@ namespace Core.System
 
             OnAttackPerformed?.Invoke();
         }
-
     }
 }

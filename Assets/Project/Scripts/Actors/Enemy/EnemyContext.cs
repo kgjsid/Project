@@ -16,5 +16,11 @@ namespace Actors.Enemy
         public Transform target;
         public float attackRange;
         public float traceDist;
+
+        public TelegraphIndicator telegraphIndicator;
+        public KnockbackReceiver knockbackReceiver;
+        public float telegraphDuration = 0.4f;
+        public float attackRecovery = 0.3f;
+        public bool isAimLocked = false;
     }
 }

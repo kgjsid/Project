@@ -31,7 +31,7 @@ namespace Core.System
             set
             {
                 viewAngle = value;
-                cosAngle = Mathf.Cos(viewAngle * Mathf.Deg2Rad);
+                cosAngle = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
             }
         }
 

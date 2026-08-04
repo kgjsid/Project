@@ -4,11 +4,16 @@ namespace Core.System
 {
     public class KnockbackReceiver : MonoBehaviour
     {
-        [SerializeField] private float knockbackResistance = 0f;
         [SerializeField] private float knockbackDuration = 0.15f;
 
         private Health health;
         private Mover mover;
+
+        private bool isImmune;
+        private float knockbackResistance;
+
+        public float KnockbackResistance { get { return knockbackResistance; } set { knockbackResistance = value; } }
+        public bool IsImmune { get { return isImmune; } set { isImmune = value; } }
 
         public void Init(Health health, Mover mover)
         {
@@ -25,6 +30,9 @@ namespace Core.System
 
         private void HandleDamaged(Vector2 hitDirection, float force)
         {
+            // 경직 면역 상태
+            if (IsImmune) return;
+
             // Resistance : 1 -> 완전 면역
             float actualForce = force * (1f - knockbackResistance);
             if (actualForce <= 0f) return;

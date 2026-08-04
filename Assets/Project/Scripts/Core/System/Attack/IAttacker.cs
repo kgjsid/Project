@@ -15,5 +15,7 @@ namespace Core.System
         void SetLayerMask(LayerMask targetMask);
         void SetAimDirection(Vector2 direction);
         void Attack();
+
+        void ForceAttack();
     }
 }

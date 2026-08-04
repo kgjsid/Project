@@ -3,16 +3,15 @@ using UnityEngine;
 using Actors.Enemy.States;
 using Actors.Player;
 using Core.System.FSM;
+using Core.System;
 using Item.Data;
-using Item.ItemObject;
 
 namespace Actors.Enemy
 {
     public class EnemyController : ActorController
     {
-        [Header("Attack Range")]
-        [SerializeField] protected float attackRange = 1f;
-        [SerializeField] protected float traceDist = 20f;
+        [Header("Attack TelegraphIndicator")]
+        [SerializeField] protected TelegraphIndicator telegraphIndicator;
 
         [Header("Enemy Inventory")]
         [SerializeField] protected WeaponData startingWeapon;
@@ -39,24 +38,39 @@ namespace Actors.Enemy
                 transform = transform,
                 mover = mover,
                 equipper = equipper,
-                attackRange = attackRange,
-                traceDist = traceDist
+                attackRange = stats.attackRange,
+                traceDist = stats.traceDist,
+                telegraphIndicator = telegraphIndicator,
+                knockbackReceiver = knockbackReceiver,
+                telegraphDuration = stats.telegraphDuration,
+                attackRecovery = stats.attackRecovery,
             };
 
             var idleState = new IdleState(context);
             var traceState = new TraceState(context);
+            var telegraphState = new TelegraphState(context);
             var attackState = new AttackState(context);
             var dieState = new DieState(context);
 
             fsm = new StateMachine();
 
+            // 사망 상태
             fsm.AddAnyTransition(dieState, () => health.IsDead());
 
+            // 추격 상태
             fsm.AddTransition(idleState, traceState, () => context.target != null);
             fsm.AddTransition(traceState, idleState, () => context.target == null);
-            fsm.AddTransition(traceState, attackState, () => context.target != null && GetTargetDistance() <= context.attackRange);
-            fsm.AddTransition(attackState, traceState, () => context.target != null && GetTargetDistance() > context.attackRange);
-            fsm.AddTransition(attackState, idleState, () => context.target == null);
+
+            // 추격 -> 공격 준비(예고)상태
+            fsm.AddTransition(traceState, telegraphState,
+                () => context.target != null && GetTargetDistance() <= context.attackRange);
+
+            fsm.AddTransition(telegraphState, attackState, () => telegraphState.IsFinished());
+            
+            fsm.AddTransition(attackState, traceState,
+                () => attackState.IsFinished() && context.target != null);
+            fsm.AddTransition(attackState, idleState,
+                () => attackState.IsFinished() && context.target == null);
 
             fsm.SetState(idleState);
         }
@@ -112,10 +126,14 @@ namespace Actors.Enemy
 
         protected virtual void UpdateFacing()
         {
-            if (context.target != null)
+            if (context.target == null) return;
+
+            Vector2 dir = (Vector2)context.target.position - (Vector2)transform.position;
+            fovChecker.SetFacingDirection(dir);   // 시야는 계속 따라가도 됨
+
+            // 조준은 텔레그래프/공격 중엔 고정
+            if (!context.isAimLocked)
             {
-                Vector2 dir = (Vector2)context.target.position - (Vector2)transform.position;
-                fovChecker.SetFacingDirection(dir);
                 context.equipper.GetCurrentAttacker()?.SetAimDirection(dir);
             }
         }
