@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d678bbc2695149e419adb6c6dddb3bfe, type: 3}
+  m_Name: Spear
+  m_EditorClassIdentifier: Assembly-CSharp::Item.Data.WeaponData
+  id: Spear
+  itemName: "\uCC3D"
+  itemType: 1
+  maxStack: 1
+  sellPrice: 90
+  weight: 4
+  icon: {fileID: 1331387326, guid: 12093ed343cc3244cb9a5ed53c5bdbc7, type: 3}
+  description: "\uC881\uACE0 \uAE38\uAC8C \uCC0C\uB978\uB2E4."
+  equipSlot: 1
+  durability: 100
+  attackType: 0
+  damage: 18
+  range: 3.2
+  attackSpeed: 1.1
+  knockbackForce: 8
+  effectPrefab: {fileID: 3062921058948537495, guid: 67f24896b3e7049438ef26daea6048c0, type: 3}
+  effectColor: {r: 0.8784314, g: 0.9411765, b: 1, a: 1}
+  telegraphSprite: {fileID: 21300000, guid: b1c96f37bf9a29647b5c5c4e227abc5e, type: 3}
+  swingAngle: 45
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 0

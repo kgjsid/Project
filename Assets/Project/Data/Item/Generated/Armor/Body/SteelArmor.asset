@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b2903af04e82f49af8b6252020eec3, type: 3}
+  m_Name: SteelArmor
+  m_EditorClassIdentifier: Assembly-CSharp::Item.Data.ArmorData
+  id: SteelArmor
+  itemName: "\uAC15\uCCA0 \uAC11\uC637"
+  itemType: 1
+  maxStack: 1
+  sellPrice: 160
+  weight: 10
+  icon: {fileID: 0}
+  description: "\uCD5C\uACE0\uC758 \uBC29\uC5B4, \uCD5C\uC545\uC758 \uAE30\uB3D9\uB825."
+  equipSlot: 4
+  durability: 160
+  defense: 15
+  moveSpeedMod: -0.8
+  weightBonus: -2
+  maxHpBonus: 30
+  knockbackResistBonus: 0.2

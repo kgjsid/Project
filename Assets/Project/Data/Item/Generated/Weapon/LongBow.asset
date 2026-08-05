@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d678bbc2695149e419adb6c6dddb3bfe, type: 3}
+  m_Name: LongBow
+  m_EditorClassIdentifier: Assembly-CSharp::Item.Data.WeaponData
+  id: LongBow
+  itemName: "\uC7A5\uAD81"
+  itemType: 1
+  maxStack: 1
+  sellPrice: 140
+  weight: 3
+  icon: {fileID: 634531797, guid: 12093ed343cc3244cb9a5ed53c5bdbc7, type: 3}
+  description: "\uBA40\uB9AC, \uAC15\uD558\uAC8C."
+  equipSlot: 1
+  durability: 100
+  attackType: 1
+  damage: 20
+  range: 11
+  attackSpeed: 1
+  knockbackForce: 6
+  effectPrefab: {fileID: 0}
+  effectColor: {r: 1, g: 1, b: 1, a: 1}
+  telegraphSprite: {fileID: 0}
+  swingAngle: 0
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 18

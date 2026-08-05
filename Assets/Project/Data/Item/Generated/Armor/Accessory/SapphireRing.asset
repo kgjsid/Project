@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b2903af04e82f49af8b6252020eec3, type: 3}
+  m_Name: SapphireRing
+  m_EditorClassIdentifier: Assembly-CSharp::Item.Data.ArmorData
+  id: SapphireRing
+  itemName: "\uC0AC\uD30C\uC774\uC5B4 \uBC18\uC9C0"
+  itemType: 1
+  maxStack: 1
+  sellPrice: 90
+  weight: 0.1
+  icon: {fileID: 290990183, guid: 12093ed343cc3244cb9a5ed53c5bdbc7, type: 3}
+  description: "\uCDA9\uACA9\uC744 \uD758\uB824\uBCF4\uB0B8\uB2E4."
+  equipSlot: 6
+  durability: 999
+  defense: 0
+  moveSpeedMod: 0
+  weightBonus: 0
+  maxHpBonus: 0
+  knockbackResistBonus: 0.3

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f31b377fa0cd44f47965668fbbc4efe4, type: 3}
+  m_Name: GreaterHealthPotion
+  m_EditorClassIdentifier: Assembly-CSharp::Item.Data.ConsumableData
+  id: GreaterHealthPotion
+  itemName: "\uC0C1\uAE09 \uCCB4\uB825 \uBB3C\uC57D"
+  itemType: 2
+  maxStack: 5
+  sellPrice: 55
+  weight: 0.8
+  icon: {fileID: 801765862, guid: fae1a0d675ced8549848fc797e32816f, type: 3}
+  description: "\uAE4A\uC740 \uC0C1\uCC98\uB3C4 \uC544\uBB38\uB2E4."
+  effectType: 0
+  effectAmount: 120
