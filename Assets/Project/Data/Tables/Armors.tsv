@@ -1,0 +1,18 @@
+id	itemName	itemType	maxStack	sellPrice	weight	iconName	description	equipSlot	defense	moveSpeedMod	weightBonus	maxHpBonus	knockbackResistBonus	durability
+WoodenShield	나무 방패	Equipment	1	30	3	Icon_WoodenShield	없는 것보단 낫다.	OffHand	4	-0.2	0	0	0.1	60
+IronShield	철 방패	Equipment	1	70	5.5	Icon_IronShield	묵직하게 버틴다.	OffHand	8	-0.5	0	0	0.2	100
+KiteShield	카이트 실드	Equipment	1	130	7	Icon_KiteShield	전신을 가린다.	OffHand	12	-0.8	0	0	0.3	140
+LeatherHelmet	가죽 투구	Equipment	1	20	1.5	Icon_LeatherHelmet	가볍고 시야가 트인다.	Head	3	0	0	5	0	50
+IronHelmet	철 투구	Equipment	1	45	3.5	Icon_IronHelmet	머리를 확실히 지킨다.	Head	6	-0.2	0	10	0.05	90
+SteelHelmet	강철 투구	Equipment	1	90	5	Icon_SteelHelmet	무겁지만 든든하다.	Head	9	-0.3	0	15	0.1	130
+LeatherArmor	가죽 갑옷	Equipment	1	35	3	Icon_LeatherArmor	움직임이 편하다.	Body	5	0	2	10	0	60
+IronArmor	철 갑옷	Equipment	1	80	7	Icon_IronArmor	무게만큼 지켜준다.	Body	10	-0.5	0	20	0.1	110
+SteelArmor	강철 갑옷	Equipment	1	160	10	Icon_SteelArmor	최고의 방어, 최악의 기동력.	Body	15	-0.8	-2	30	0.2	160
+LeatherBoots	가죽 장화	Equipment	1	25	1	Icon_LeatherBoots	발이 편하다.	Feet	2	0.3	0	0	0	50
+IronBoots	철 장화	Equipment	1	55	3	Icon_IronBoots	단단하지만 둔하다.	Feet	5	-0.3	0	5	0.1	90
+SwiftBoots	질풍의 장화	Equipment	1	120	0.8	Icon_SwiftBoots	발끝이 가벼워진다.	Feet	1	1	0	0	0	70
+RubyRing	루비 반지	Equipment	1	100	0.1	Icon_RubyRing	생명력이 차오른다.	Accessory	0	0	0	25	0	999
+SapphireRing	사파이어 반지	Equipment	1	90	0.1	Icon_SapphireRing	충격을 흘려보낸다.	Accessory	0	0	0	0	0.3	999
+EmeraldRing	에메랄드 반지	Equipment	1	110	0.1	Icon_EmeraldRing	짐이 가벼워진다.	Accessory	0	0	5	0	0	999
+SmallPouch	작은 주머니	Equipment	1	40	0.5	Icon_Pouch	조금 더 담을 수 있다.	Backpack	0	0	5	0	0	999
+LargeBackpack	큰 배낭	Equipment	1	150	1.5	Icon_Backpack	욕심을 부릴 수 있다.	Backpack	0	-0.2	12	0	0	999

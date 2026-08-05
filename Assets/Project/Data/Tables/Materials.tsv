@@ -1,0 +1,9 @@
+id	itemName	itemType	maxStack	sellPrice	weight	iconName	description
+ClothScrap	천 조각	Material	20	4	0.3	Icon_ClothScrap	여기저기 쓸모가 있다.
+Bone	뼛조각	Material	10	6	0.8	Icon_Bone	무언가의 흔적.
+Rope	밧줄	Material	5	10	1.5	Icon_Rope	질기고 튼튼하다.
+Leather	가죽	Material	10	12	1	Icon_Leather	무두질이 잘 되어 있다.
+IronOre	철광석	Material	5	15	2	Icon_IronOre	무겁지만 값이 나간다.
+IronIngot	철 주괴	Material	5	40	3	Icon_IronIngot	제련을 마친 덩어리.
+Ruby	루비	Material	5	90	0.2	Icon_Ruby	작지만 비싸다.
+RustyKey	녹슨 열쇠	Material	1	5	0.2	Icon_RustyKey	어딘가의 문을 열 것 같다.

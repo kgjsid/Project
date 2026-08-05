@@ -1,0 +1,6 @@
+id	itemName	itemType	maxStack	sellPrice	weight	iconName	description	effectType	effectAmount
+Bandage	붕대	Consumable	10	8	0.3	Icon_Bandage	급한 대로 지혈한다.	Heal	30
+Rations	건량	Consumable	10	14	0.6	Icon_Rations	씹는 동안 기운이 돈다.	Heal	45
+HealthPotion	체력 물약	Consumable	10	20	0.5	Icon_HealthPotion	붉은 액체가 상처를 메운다.	Heal	60
+GreaterHealthPotion	상급 체력 물약	Consumable	5	55	0.8	Icon_GreaterHealthPotion	깊은 상처도 아문다.	Heal	120
+ElixirOfLife	생명의 영약	Consumable	3	150	1	Icon_ElixirOfLife	한 모금이면 되살아난다.	Heal	200
