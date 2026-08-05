@@ -55,7 +55,7 @@ namespace Core.System
 
         public WeaponData GetEquippedWeapon()
         {
-            if (equipped.TryGetValue(EquipSlotType.PrimaryWeapon, out var data) && data is WeaponData weapon)
+            if (equipped.TryGetValue(EquipSlotType.MainHand, out var data) && data is WeaponData weapon)
             {
                 return weapon;
             }
@@ -99,7 +99,7 @@ namespace Core.System
 
         private void ApplyWeapon()
         {
-            if (equipped.TryGetValue(EquipSlotType.PrimaryWeapon, out var data) && data is WeaponData weapon)
+            if (equipped.TryGetValue(EquipSlotType.MainHand, out var data) && data is WeaponData weapon)
             {
                 if (weapon.attackType == AttackType.Melee)
                 {

@@ -9,6 +9,7 @@ namespace Manager
         private void Start()
         {
             InventoryUI.Instance.SetTargetInventory(GameDataManager.Instance.LoadoutInventory);
+            GameDataManager.Instance.Save();
         }
     }
 }

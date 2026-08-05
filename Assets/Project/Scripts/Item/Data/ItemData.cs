@@ -9,13 +9,16 @@ namespace Item.Data
     /// <summary>
     /// 장비 타입(헬멧, 아머, 첫번째 무기,..)
     /// </summary>
-    public enum EquipSlotType { None, Helmet, Armor, PrimaryWeapon, SecondaryWeapon, Backpack}
+    public enum EquipSlotType { None, MainHand, OffHand, Helmet, Body, Feet, Accessory, Backpack}
 
     [CreateAssetMenu(fileName = "NewItem", menuName = "Item/ItemData")]
     public class ItemData : ScriptableObject
     {
+        public string id;
+
         public string itemName;
         public ItemType itemType;
+
         public int maxStack = 999;
         public int sellPrice;
         public float weight = 0.1f;

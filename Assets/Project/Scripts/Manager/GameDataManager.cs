@@ -19,8 +19,11 @@ namespace Manager
         [SerializeField] private int debtRemaining = 1000;
         [SerializeField] private int currentDay = 1;
 
-        private Inventory stashInventory;
-        private Inventory loadoutInventory;
+        [SerializeField] private SaveManager saveManager;
+        [SerializeField] private GameConfig config;
+
+        private Inventory stashInventory;               // 창고 인벤토리
+        private Inventory loadoutInventory;             // 허브용 인벤토리
 
         public Inventory StashInventory { get { return stashInventory; } }
         public Inventory LoadoutInventory { get { return loadoutInventory; } }
@@ -40,6 +43,8 @@ namespace Manager
             instance = this;
             DontDestroyOnLoad(gameObject);
             CreateInventories();
+
+            saveManager?.Load(this);
         }
 
         public void ApplyLoadoutTo(Inventory playerInventory)
@@ -90,6 +95,18 @@ namespace Manager
             currentDay++;
         }
 
+        public void RestoreProgress(int gold, int debtRemaining, int currentDay)
+        {
+            this.gold = gold;
+            this.debtRemaining = debtRemaining;
+            this.currentDay = currentDay;
+        }
+
+        public void Save()
+        {
+            saveManager?.Save(this);
+        }
+
         private void CreateInventories()
         {
             stashInventory = gameObject.AddComponent<Inventory>();
@@ -99,6 +116,13 @@ namespace Manager
             loadoutInventory = gameObject.AddComponent<Inventory>();
             loadoutInventory.InitSlot(loadoutCapacity);
             loadoutInventory.BaseMaxWeight = loadoutMaxWeight;
+        }
+
+        private void StartNewGame()
+        {
+            gold = config.startingGold;
+            debtRemaining = config.startingDebt;
+            currentDay = config.startingDay;
         }
     }
 }

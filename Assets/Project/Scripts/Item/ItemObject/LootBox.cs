@@ -14,7 +14,7 @@ namespace Item.ItemObject
         private Inventory inventory;
 
         private int boxSize = 12;
-        private BoxState currentState = BoxState.Closed;
+        // private BoxState currentState = BoxState.Closed;
 
         public Inventory Inventory { private set { inventory = value; } get { return inventory; } }
 

@@ -19,7 +19,7 @@ namespace Actors.Player
         private Vector3 moveDir = Vector3.zero;
         private Vector2 mouseScreenPos = Vector2.zero;
 
-        private const int EQUIP_SLOT_COUNT = 5;
+        private const int EQUIP_SLOT_COUNT = 7;
 
         public override void InitSettings()
         {
