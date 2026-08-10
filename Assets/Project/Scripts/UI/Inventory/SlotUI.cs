@@ -31,14 +31,19 @@ namespace UI.Inventory
             if(slot == null || slot.IsEmpty())
             {
                 itemIcon.gameObject.SetActive(false);
-                countText.text = string.Empty;
-
+                if (countText != null)
+                {
+                    countText.text = string.Empty;
+                }
                 return;
             }
 
             itemIcon.gameObject.SetActive(true);
             itemIcon.sprite = slot.item.icon != null? slot.item.icon : null;
-            countText.text = slot.count > 1 ? slot.count.ToString() : string.Empty;
+            if (countText != null)
+            {
+                countText.text = slot.count > 1 ? slot.count.ToString() : string.Empty;
+            }
         }
 
         public void OnPointerClick(PointerEventData eventData)
