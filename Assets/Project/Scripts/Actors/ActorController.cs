@@ -1,5 +1,6 @@
 using Core.System;
 using Item.ItemObject;
+using UI.HUD;
 using UnityEngine;
 
 namespace Actors
@@ -26,6 +27,9 @@ namespace Actors
         [SerializeField] protected HitFlash hitFlash;
         [SerializeField] protected WeaponAimer weaponAimer;
         [SerializeField] protected AttackEffectSpawner attackEffectSpawner;
+
+        [Header("HUD")]
+        [SerializeField] protected HealthBarUI healthBar;
 
         protected Health health;
         protected Mover mover;
@@ -101,6 +105,8 @@ namespace Actors
             hitFlash?.Init(health);
             weaponAimer?.Init(equipper);
             attackEffectSpawner?.Init(equipper);
+
+            healthBar?.SetTarget(health);
         }
 
         protected virtual void DieRoutine()
