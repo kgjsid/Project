@@ -38,6 +38,7 @@ namespace Actors.Player
         {
             base.InitStatus();
             equipInventory.InitSlot(EQUIP_SLOT_COUNT);
+            interactionDetector.SetLayerMask(LayerMask.GetMask("Interactable"));
 
             InventoryUI.Instance.SetTargetInventory(inventory);
             EquipUI.Instance.SetTargetInventory(equipInventory);

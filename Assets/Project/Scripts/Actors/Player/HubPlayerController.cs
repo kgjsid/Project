@@ -1,7 +1,9 @@
-using Core.Interface;
-using Core.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+using Core.Interface;
+using Core.System;
+using UI.Inventory;
 
 namespace Actors.Player
 {
@@ -26,6 +28,7 @@ namespace Actors.Player
             actorAnimator.Init(mover, null, null, fovChecker);
 
             mover.BaseMoveSpeed = moveSpeed;
+            detector.SetLayerMask(LayerMask.GetMask("Interactable"));
         }
 
         private void Update()
@@ -44,6 +47,14 @@ namespace Actors.Player
 
             IInteractable target = detector.GetClosestTarget();
             target?.OnInteract(null);
+        }
+
+        private void OnInventory(InputValue value)
+        {
+            if (value.isPressed)
+            {
+                InventoryUI.Instance.Toggle();
+            }
         }
     }
 }
