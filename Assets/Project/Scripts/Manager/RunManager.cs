@@ -47,7 +47,7 @@ namespace Manager
             }
 
             // -> 로비에서 가져온 아이템 전달
-            // GameDataManager.Instance.ApplyLoadoutTo(currentPlayer.GetPlayerInventory());
+            GameDataManager.Instance.ApplyLoadoutTo(currentPlayer.GetPlayerInventory());
             OnPlayerSpawned?.Invoke(currentPlayer);
 
             currentPlayer.OnRunEnded += HandleRunEnded;

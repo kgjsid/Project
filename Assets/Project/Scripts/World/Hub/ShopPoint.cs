@@ -2,6 +2,7 @@ using UnityEngine;
 
 using Actors.Player;
 using Core.Interface;
+using UI.Hub;
 
 namespace World.Hub
 {
@@ -14,7 +15,7 @@ namespace World.Hub
 
         public void OnInteract(PlayerController player)
         {
-            // Open Shop UI
+            ShopUI.Instance.Open();
         }
     }
 }
