@@ -1,5 +1,6 @@
 using UnityEngine;
 
+using Item.Data;
 using Core.System;
 
 namespace Manager
@@ -24,13 +25,17 @@ namespace Manager
 
         private Inventory stashInventory;               // 창고 인벤토리
         private Inventory loadoutInventory;             // 허브용 인벤토리
+        private Inventory loadoutEquipInventory;        // 허브용 장비 인벤토리
 
         public Inventory StashInventory { get { return stashInventory; } }
         public Inventory LoadoutInventory { get { return loadoutInventory; } }
+        public Inventory LoadoutEquipInventory { get { return loadoutEquipInventory; } }
 
         public int Gold { get { return gold; } }
         public int DebtRemaining { get { return debtRemaining; } }
         public int CurrentDay { get { return currentDay; } }
+
+        private const int LOADOUT_EQUIP_SLOT_COUNT = 7;
 
         private void Awake()
         {
@@ -56,15 +61,24 @@ namespace Manager
             }
         }
 
-        public void StoreRunResult(Inventory playerInventory)
+        public void StoreRunResult(Inventory playerBagInventory, Inventory playerEquipInventory)
         {
             ClearLoadout();
 
-            foreach (var slot in playerInventory.Slots)
+            foreach (var slot in playerBagInventory.Slots)
             {
                 if (slot.IsEmpty()) continue;
                 loadoutInventory.AddItem(slot.item, slot.count);
             }
+            loadoutInventory.NotifyChange();
+
+            for(int i = 0; i < playerEquipInventory.Slots.Length; i++)
+            {
+                var slot = playerEquipInventory.Slots[i];
+                if (slot.IsEmpty()) continue;
+                loadoutEquipInventory.Slots[i] = new ItemSlot(slot.item, slot.count);
+            }
+            loadoutEquipInventory.NotifyChange();
         }
 
         public void ClearLoadout()
@@ -74,6 +88,12 @@ namespace Manager
                 loadoutInventory.Slots[i].Clear();
             }
             loadoutInventory.NotifyChange();
+
+            for (int i = 0; i < loadoutEquipInventory.Slots.Length; i++)
+            {
+                loadoutEquipInventory.Slots[i].Clear();
+            }
+            loadoutEquipInventory.NotifyChange();
         }
 
         public void AddGold(int amount)
@@ -116,6 +136,10 @@ namespace Manager
             loadoutInventory = gameObject.AddComponent<Inventory>();
             loadoutInventory.InitSlot(loadoutCapacity);
             loadoutInventory.BaseMaxWeight = loadoutMaxWeight;
+
+            loadoutEquipInventory = gameObject.AddComponent<Inventory>();
+            loadoutEquipInventory.InitSlot(LOADOUT_EQUIP_SLOT_COUNT);
+            loadoutEquipInventory.BaseMaxWeight = float.MaxValue;
         }
 
         private void StartNewGame()

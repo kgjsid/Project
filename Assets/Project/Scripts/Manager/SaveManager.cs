@@ -24,6 +24,7 @@ namespace Manager
 
             WriteInventory(gameDataManager.StashInventory, data.stash);
             WriteInventory(gameDataManager.LoadoutInventory, data.loadout);
+            WriteInventory(gameDataManager.LoadoutEquipInventory, data.loadoutEquip);
 
             try
             {
@@ -55,6 +56,7 @@ namespace Manager
 
             ReadInventory(save.stash, gameDataManager.StashInventory);
             ReadInventory(save.loadout, gameDataManager.LoadoutInventory);
+            ReadInventory(save.loadoutEquip, gameDataManager.LoadoutEquipInventory);
         }
 
         public void DeleteSave()

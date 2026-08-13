@@ -60,8 +60,10 @@ namespace UI.Inventory
 
         public void RefreshAll()
         {
+            if (targetInventory == null) return;
             for (int i = 0; i < equipSlots.Length; i++)
             {
+                if (equipSlots[i] == null) continue;
                 equipSlots[i].SetData(targetInventory.Slots[i]);
             }
         }

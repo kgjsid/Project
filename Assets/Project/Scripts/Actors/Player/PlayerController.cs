@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using Manager;
+using Item.Data;
 using Core.Interface;
 using Core.System;
 using UI.Inventory;
@@ -123,6 +124,38 @@ namespace Actors.Player
         public Inventory GetPlayerInventory()
         {
             return inventory;
+        }
+
+        public Inventory GetEquipInventory()
+        {
+            return equipInventory;
+        }
+
+        public void ApplyLoadout()
+        {
+            GameDataManager data = GameDataManager.Instance;
+            if (data == null) return;
+
+            foreach(var slot in data.LoadoutInventory.Slots)
+            {
+                if (slot.IsEmpty()) continue;
+                inventory.AddItem(slot.item, slot.count);
+            }
+
+            Inventory equip = data.LoadoutEquipInventory;
+            for(int i = 0; i < equip.Slots.Length; i++)
+            {
+                var slot = equip.Slots[i];
+                if (slot.IsEmpty()) continue;
+
+                equipInventory.Slots[i] = new ItemSlot(slot.item, slot.count);
+
+                if(slot.item is EquipmentData equipItem)
+                {
+                    equipper.Equip(equipItem);
+                }
+            }
+            equipInventory.NotifyChange();
         }
     }
 }

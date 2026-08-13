@@ -47,7 +47,7 @@ namespace Manager
             }
 
             // -> 로비에서 가져온 아이템 전달
-            GameDataManager.Instance.ApplyLoadoutTo(currentPlayer.GetPlayerInventory());
+            currentPlayer.ApplyLoadout();
             OnPlayerSpawned?.Invoke(currentPlayer);
 
             currentPlayer.OnRunEnded += HandleRunEnded;
@@ -78,7 +78,10 @@ namespace Manager
             if (result == RunResult.Escaped)
             {   
                 // 탈출 성공 시 아이템을 전부 창고로 전달
-                GameDataManager.Instance.StoreRunResult(currentPlayer.GetPlayerInventory());
+                GameDataManager.Instance.StoreRunResult(
+                    currentPlayer.GetPlayerInventory(), 
+                    currentPlayer.GetEquipInventory()
+                    );
             }
             else
             {

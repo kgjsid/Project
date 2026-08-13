@@ -22,5 +22,6 @@ namespace Manager
 
         public List<SlotSaveData> stash = new List<SlotSaveData>();
         public List<SlotSaveData> loadout = new List<SlotSaveData>();
+        public List<SlotSaveData> loadoutEquip = new List<SlotSaveData>();
     }
 }
