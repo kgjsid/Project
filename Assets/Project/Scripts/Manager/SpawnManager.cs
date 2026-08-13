@@ -11,6 +11,7 @@ namespace Manager
         public GameObject playerPrefab;
         public GameObject[] enemyPrefabs;
         public GameObject lootBoxPrefab;
+        public GameObject escapePointPrefab;
 
         public List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
@@ -35,6 +36,9 @@ namespace Manager
                         break;
                     case SpawnPointType.LootBox:
                         Instantiate(lootBoxPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+                        break;
+                    case SpawnPointType.EscapePoint:
+                        Instantiate(escapePointPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
                         break;
                 }
             }

@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace World.Map
 {
-    public enum TileGlyph { Wall, Floor, Door, PlayerSpawn, MonsterSpawn, LootSpawn }
+    public enum TileGlyph { Wall, Floor, Door, PlayerSpawn, MonsterSpawn, LootSpawn, EscapePointSpawn }
 
     public class RoomLayout
     {
@@ -56,6 +55,7 @@ namespace World.Map
                 case 'P': return TileGlyph.PlayerSpawn;
                 case 'M': return TileGlyph.MonsterSpawn;
                 case 'L': return TileGlyph.LootSpawn;
+                case 'E': return TileGlyph.EscapePointSpawn;
                 default: return TileGlyph.Wall;
             }
         }

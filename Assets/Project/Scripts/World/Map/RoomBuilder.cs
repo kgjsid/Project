@@ -48,6 +48,9 @@ namespace World.Map
                         case TileGlyph.LootSpawn:
                             CreateSpawnPoint(worldPos, SpawnPointType.LootBox);
                             break;
+                        case TileGlyph.EscapePointSpawn:
+                            CreateSpawnPoint(worldPos, SpawnPointType.EscapePoint);
+                            break;
                     }
                 }
             }
