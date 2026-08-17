@@ -16,7 +16,7 @@ namespace World.Hub
 
         public void OnInteract(PlayerController player)
         {
-            LootUI.Instance.Open(GameDataManager.Instance.StashInventory);
+            StorageUI.Instance.Open(GameDataManager.Instance.StashInventory);
         }
     }
 }

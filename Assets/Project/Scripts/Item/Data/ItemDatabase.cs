@@ -16,6 +16,8 @@ namespace Item.Data
         {
             if (string.IsNullOrEmpty(id)) return null;
 
+            if (lookup == null) BuildLookup();
+
             return lookup.TryGetValue(id, out ItemData result) ? result : null;
         }
 
