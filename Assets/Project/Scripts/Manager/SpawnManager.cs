@@ -3,6 +3,7 @@ using UnityEngine;
 
 using Actors.Player;
 using World;
+using Item.ItemObject;
 
 namespace Manager
 {
@@ -35,7 +36,8 @@ namespace Manager
                         }
                         break;
                     case SpawnPointType.LootBox:
-                        Instantiate(lootBoxPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+                        LootBox prefab = Instantiate(lootBoxPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation).GetComponent<LootBox>();
+                        prefab.FillFromTable();
                         break;
                     case SpawnPointType.EscapePoint:
                         Instantiate(escapePointPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);

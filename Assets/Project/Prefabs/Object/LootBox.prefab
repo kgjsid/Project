@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4059729640704527804}
   - component: {fileID: -5644325360784120973}
   - component: {fileID: 2527803299957211133}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LootBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,3 +151,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b2c8391d731774b9c4393d14a3e814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item.ItemObject.LootBox
+  lootTable: {fileID: 11400000, guid: ebb7635089142dd44b784ce2b04caddd, type: 2}

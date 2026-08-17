@@ -4,6 +4,7 @@ using Core.System;
 using Core.Interface;
 using Actors.Player;
 using UI.Inventory;
+using Item.Data;
 
 namespace Item.ItemObject
 {
@@ -11,10 +12,11 @@ namespace Item.ItemObject
     {
         public enum BoxState { Closed, Opened }
 
+        [SerializeField] private LootTable lootTable;
+
         private Inventory inventory;
 
-        private int boxSize = 12;
-        // private BoxState currentState = BoxState.Closed;
+        private int boxSize = 20;
 
         public Inventory Inventory { private set { inventory = value; } get { return inventory; } }
 
@@ -32,7 +34,18 @@ namespace Item.ItemObject
         {
             return string.Empty;
         }
-       
+
+        public void FillFromTable()
+        {
+            if (lootTable == null) return;
+
+            var rolled = lootTable.Roll();
+            foreach (var (item, count) in rolled)
+            {
+                Inventory.AddItem(item, count);
+            }
+        }
+
         private void AddComponent()
         {
             Inventory = gameObject.AddComponent<Inventory>();
