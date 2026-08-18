@@ -7,7 +7,7 @@ namespace Core.System
 {
     public class MeleeAttacker : MonoBehaviour, IAttacker
     {
-        public LayerMask hitMask;
+        private LayerMask hitMask;
         [SerializeField] private float swingAngle = 100f;
         
         private float damage;
@@ -25,6 +25,9 @@ namespace Core.System
 
         private ContactFilter2D contactFilter;
         private Collider2D[] hitColliders;
+
+        private HitStop ownerHitStop;
+        [SerializeField] private float hitStopDuration = 0.08f;
 
         private const int HIT_COLLIDER_COUNT = 10;
         private const float ROTATION_THRESHOLD = 0.0001f;
@@ -62,6 +65,11 @@ namespace Core.System
             contactFilter.useTriggers = true;
         }
 
+        public void SetHitStop(HitStop hitStop)
+        {
+            this.ownerHitStop = hitStop;
+        }
+
         public void Attack()
         {
             if (hitColliders == null) hitColliders = new Collider2D[HIT_COLLIDER_COUNT];
@@ -86,6 +94,8 @@ namespace Core.System
 
             int size = Physics2D.OverlapCircle(transform.position, range, contactFilter, hitColliders);
 
+            bool anyHit = false;
+
             for (int hitIndex = 0; hitIndex < size; hitIndex++)
             {
                 Vector2 toTarget = ((Vector2)hitColliders[hitIndex].transform.position - (Vector2)transform.position).normalized;
@@ -95,7 +105,18 @@ namespace Core.System
                 if (hitColliders[hitIndex].TryGetComponent(out Health health))
                 {
                     health.TakeDamage(damage, toTarget, knockbackForce);
+                    anyHit = true;
+
+                    if (hitColliders[hitIndex].TryGetComponent(out HitStop targetHitStop))
+                    {
+                        targetHitStop.Freeze(hitStopDuration);
+                    }
                 }
+            }
+
+            if (anyHit && ownerHitStop != null)
+            {
+                ownerHitStop.Freeze(hitStopDuration);
             }
 
             OnAttackPerformed?.Invoke();

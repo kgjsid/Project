@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 8967731584821277994}
   - component: {fileID: 1529291430181062550}
   - component: {fileID: 7435115692984292478}
+  - component: {fileID: 255680104790183565}
   m_Layer: 7
   m_Name: Slime
   m_TagString: Untagged
@@ -156,10 +157,24 @@ MonoBehaviour:
   hitFlash: {fileID: 6036689755305885587}
   weaponAimer: {fileID: 0}
   attackEffectSpawner: {fileID: 5484493555530832228}
+  hitStop: {fileID: 0}
   healthBar: {fileID: 4584085728645207132}
   telegraphIndicator: {fileID: 4683506798664176821}
   startingWeapon: {fileID: 11400000, guid: 230de4ee806a0534b86a77648320d719, type: 2}
   lootTable: []
+--- !u!114 &255680104790183565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3127630643338122214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b25363926137947a08154b103a70de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitStop
+  animator: {fileID: 4746318201480559304}
 --- !u!1 &3185296733879845351
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitFlash
   spriteRenderer: {fileID: 4592308631618967479}
-  hitColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  hitColor: {r: 0.9019608, g: 0.078431375, b: 0.078431375, a: 1}
   flashDuration: 0.06
 --- !u!114 &5484493555530832228
 MonoBehaviour:

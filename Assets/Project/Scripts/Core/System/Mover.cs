@@ -16,12 +16,14 @@ namespace Core.System
         private Vector2 knockbackVelocity;
         private float knockbackTimer;
         private float currentMoveSpeed;
+        private bool isFrozen;
 
         private const float KNOCKBACK_THRESHOLD = 0.0001f;
 
         public float BaseMoveSpeed { get { return baseMoveSpeed; } set { baseMoveSpeed = value; } }
         public float BonusMoveSpeed { get { return bonusMoveSpeed; } set { bonusMoveSpeed = value; } }
         public float CurrentMoveSpeed { get { return currentMoveSpeed; } }
+        public bool IsFrozen { get { return isFrozen; } set { isFrozen = value; moverRigidbody.bodyType = value ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic; } }
 
         private void Awake()
         {
@@ -52,6 +54,12 @@ namespace Core.System
 
         private void FixedUpdate()
         {
+            if (IsFrozen)
+            {
+                Debug.Log("IsFrozen");
+                return;
+            }
+
             Vector2 velocity = pendingMove;
 
             if (knockbackTimer > 0f)

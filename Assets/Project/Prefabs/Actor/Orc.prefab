@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 4554607074009123211}
   - component: {fileID: 2602886633442470878}
   - component: {fileID: 1114946107915584038}
+  - component: {fileID: 4210026115371889985}
   m_Layer: 7
   m_Name: Orc
   m_TagString: Untagged
@@ -675,10 +676,24 @@ MonoBehaviour:
   hitFlash: {fileID: 4036524859280134378}
   weaponAimer: {fileID: 0}
   attackEffectSpawner: {fileID: 4816554756314889136}
+  hitStop: {fileID: 0}
   healthBar: {fileID: 4010375736172654109}
   telegraphIndicator: {fileID: 7495378833692825869}
   startingWeapon: {fileID: 11400000, guid: 5257da84836740f40bdf29ca8fb6c500, type: 2}
   lootTable: []
+--- !u!114 &4210026115371889985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7415594315590718140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b25363926137947a08154b103a70de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitStop
+  animator: {fileID: 3902453615712019334}
 --- !u!1 &8005148476760581943
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,7 +839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitFlash
   spriteRenderer: {fileID: 7191359306557767457}
-  hitColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  hitColor: {r: 0.8627451, g: 0.078431375, b: 0.078431375, a: 1}
   flashDuration: 0.06
 --- !u!114 &4816554756314889136
 MonoBehaviour:

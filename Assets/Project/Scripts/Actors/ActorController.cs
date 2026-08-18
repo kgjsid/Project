@@ -27,6 +27,7 @@ namespace Actors
         [SerializeField] protected HitFlash hitFlash;
         [SerializeField] protected WeaponAimer weaponAimer;
         [SerializeField] protected AttackEffectSpawner attackEffectSpawner;
+        [SerializeField] protected HitStop hitStop;
 
         [Header("HUD")]
         [SerializeField] protected HealthBarUI healthBar;
@@ -105,6 +106,8 @@ namespace Actors
             hitFlash?.Init(health);
             weaponAimer?.Init(equipper);
             attackEffectSpawner?.Init(equipper);
+            hitStop?.Init(mover);
+            meleeAttacker.SetHitStop(hitStop);
 
             healthBar?.SetTarget(health);
         }

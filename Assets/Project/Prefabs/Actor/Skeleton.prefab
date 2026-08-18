@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7647309336493190414}
   - component: {fileID: 385287370463928850}
   - component: {fileID: 1992840585376018323}
+  - component: {fileID: 4734496592949198750}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Untagged
@@ -96,10 +97,24 @@ MonoBehaviour:
   hitFlash: {fileID: 3097822001611852581}
   weaponAimer: {fileID: 0}
   attackEffectSpawner: {fileID: 1442634818018186977}
+  hitStop: {fileID: 0}
   healthBar: {fileID: 8560471116979216750}
   telegraphIndicator: {fileID: 8920001375972943426}
   startingWeapon: {fileID: 11400000, guid: da6e781402c82cf449772f8c25bd42b3, type: 2}
   lootTable: []
+--- !u!114 &4734496592949198750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216713908970551554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b25363926137947a08154b103a70de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitStop
+  animator: {fileID: 6540055127905692804}
 --- !u!1 &1195869435347752785
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,7 +643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitFlash
   spriteRenderer: {fileID: 2185013212935292561}
-  hitColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  hitColor: {r: 0.9019608, g: 0.078431375, b: 0.078431375, a: 1}
   flashDuration: 0.06
 --- !u!114 &1442634818018186977
 MonoBehaviour:
