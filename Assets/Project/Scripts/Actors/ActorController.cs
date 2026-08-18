@@ -31,6 +31,7 @@ namespace Actors
 
         [Header("HUD")]
         [SerializeField] protected HealthBarUI healthBar;
+        [SerializeField] protected DamageNumberSpawner damageNumberSpawner;
 
         protected Health health;
         protected Mover mover;
@@ -110,6 +111,7 @@ namespace Actors
             meleeAttacker.SetHitStop(hitStop);
 
             healthBar?.SetTarget(health);
+            damageNumberSpawner?.Init(health);
         }
 
         protected virtual void DieRoutine()

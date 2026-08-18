@@ -300,6 +300,7 @@ GameObject:
   - component: {fileID: 5172440744508454264}
   - component: {fileID: 8995717258074980191}
   - component: {fileID: 5569983272500092972}
+  - component: {fileID: 7429540406731762003}
   m_Layer: 3
   m_Name: Warrior
   m_TagString: Untagged
@@ -387,6 +388,7 @@ MonoBehaviour:
   attackEffectSpawner: {fileID: 7846683365540297833}
   hitStop: {fileID: 0}
   healthBar: {fileID: 0}
+  damageNumberSpawner: {fileID: 7429540406731762003}
 --- !u!114 &8995717258074980191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,6 +432,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.HitStop
   animator: {fileID: 2018580180765703446}
+--- !u!114 &7429540406731762003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544575761859238108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85dd8f12310717499c7a81f8c9cf608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.HUD.DamageNumberSpawner
+  spawnOffset: {x: 0, y: 0.5, z: 0}
 --- !u!1 &5435895197835426227
 GameObject:
   m_ObjectHideFlags: 0

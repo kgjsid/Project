@@ -80,7 +80,7 @@ namespace Core.System
             }
         }
 
-        private void HandleHpChanged(Vector2 hitDirection, float knockbackForce)
+        private void HandleHpChanged(float damage, Vector2 hitDirection, float knockbackForce)
         {
             if (!health.IsDead()) animator.SetTrigger(HURT_TRIGGER);
         }

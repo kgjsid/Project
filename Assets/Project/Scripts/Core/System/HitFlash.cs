@@ -36,7 +36,7 @@ namespace Core.System
             }
         }
 
-        private void HandleDamaged(Vector2 hitDirection, float knockbackForce)
+        private void HandleDamaged(float damage, Vector2 hitDirection, float knockbackForce)
         {
             if (spriteRenderer == null) return;
 

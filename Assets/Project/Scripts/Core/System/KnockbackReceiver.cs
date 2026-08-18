@@ -28,7 +28,7 @@ namespace Core.System
             if (health != null) health.OnDamaged -= HandleDamaged;
         }
 
-        private void HandleDamaged(Vector2 hitDirection, float force)
+        private void HandleDamaged(float damage,Vector2 hitDirection, float force)
         {
             // 경직 면역 상태
             if (IsImmune) return;

@@ -914,6 +914,7 @@ Transform:
   - {fileID: 1675450223}
   - {fileID: 932325930}
   - {fileID: 589384384}
+  - {fileID: 1712401311}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1304903175
@@ -1074,6 +1075,53 @@ MonoBehaviour:
   spawnManager: {fileID: 1081211713}
   endDelay: 2
   hubSceneName: HubScene
+--- !u!1 &1712401310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1712401311}
+  - component: {fileID: 1712401312}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1712401311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712401310}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1180303951}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1712401312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712401310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3a32362c1b3714182e73e45cf757ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.System.Pooling.PoolManager
+  configs:
+  - prefab: {fileID: 2534475381091948521, guid: 594d8c32e579fc745bdda332743b955f, type: 3}
+    capacity: 4
 --- !u!1 &1748508755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,8 +1339,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1145526312592042139, guid: efa16f3970952ca4ca62058d368d72fe, type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1145526312592042139, guid: efa16f3970952ca4ca62058d368d72fe, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1145526312592042139, guid: efa16f3970952ca4ca62058d368d72fe, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0007019043
       objectReference: {fileID: 0}
     - target: {fileID: 4604400649338720341, guid: efa16f3970952ca4ca62058d368d72fe, type: 3}
       propertyPath: m_Value
@@ -1304,6 +1360,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5338634630364866212, guid: efa16f3970952ca4ca62058d368d72fe, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5338634630364866212, guid: efa16f3970952ca4ca62058d368d72fe, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6817573865362530842, guid: efa16f3970952ca4ca62058d368d72fe, type: 3}
