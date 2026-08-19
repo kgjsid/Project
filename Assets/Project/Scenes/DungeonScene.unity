@@ -198,7 +198,7 @@ MonoBehaviour:
   playerInventory: {fileID: 0}
   itemA: {fileID: 11400000, guid: 9c26fd03c5f0c9346b08f5192d322f25, type: 2}
   itemB: {fileID: 11400000, guid: a2e41e4e57a802c41be5ab1f0662bfe6, type: 2}
-  itemC: {fileID: 11400000, guid: ed13c9a1ac4116044a2dfa25762d42ee, type: 2}
+  itemC: {fileID: 11400000, guid: c368571c921d61e418dacb460c999d18, type: 2}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,6 +1121,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.Pooling.PoolManager
   configs:
   - prefab: {fileID: 2534475381091948521, guid: 594d8c32e579fc745bdda332743b955f, type: 3}
+    capacity: 4
+  - prefab: {fileID: 2709813716867115355, guid: 2558d38f51b21b84f96423be5cd9bf31, type: 3}
     capacity: 4
 --- !u!1 &1748508755
 GameObject:

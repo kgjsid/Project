@@ -1,31 +1,37 @@
-using Item.Data;
 using System;
 using UnityEngine;
+
+using Core.System.Pooling;
+using Item.Data;
 
 namespace Core.System
 {
     public class ProjectileAttacker : MonoBehaviour, IAttacker
     {
-        public Projectile projectilePrefab;
-        public LayerMask hitMask;
+        private Projectile projectilePrefab;
 
         private float damage;
         private float projectileSpeed;
+        private float knockbackForce;
         private float attackSpeed = 1f;
         private bool hasWeapon;
         private float lastAttackTime = -1f;
         private Vector2 aimDirection = Vector2.right;
 
+        private LayerMask hitMask;
+        private LayerMask obstacleMask;
+
         public event Action OnAttackPerformed;
         public event Action<Vector2> OnAimDirectionChanged;
 
-        private const float ROTATION_THRESHOLD = 0.0001f;
+        private const float ROTATION_THRESHOLD = 0.00001f;
 
         public void SetWeapon(WeaponData weapon)
         {
             damage = weapon.damage;
             attackSpeed = weapon.attackSpeed;
             projectileSpeed = weapon.projectileSpeed;
+            knockbackForce = weapon.knockbackForce;
             projectilePrefab = weapon.projectilePrefab;
             hasWeapon = true;
         }
@@ -35,9 +41,14 @@ namespace Core.System
             hasWeapon = false;
         }
 
-        public void SetLayerMask(LayerMask targetMask)
+        public void SetLayerMask(LayerMask hitMask)
         {
-            hitMask = targetMask;
+            this.hitMask = hitMask;
+        }
+
+        public void SetObstacleMask(LayerMask obstacleMask)
+        {
+            this.obstacleMask = obstacleMask;
         }
 
         public void SetAimDirection(Vector2 direction)
@@ -51,7 +62,7 @@ namespace Core.System
         {
             if (!hasWeapon || projectilePrefab == null) return;
             if (Time.time - lastAttackTime < 1f / attackSpeed) return;
-            
+
             ExecuteAttack();
         }
 
@@ -64,10 +75,14 @@ namespace Core.System
 
         private void ExecuteAttack()
         {
+            Projectile projectile = PoolManager.Instance.Get<Projectile>();
+
+            if (projectile == null) return;
+
             lastAttackTime = Time.time;
 
-            Projectile projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            projectile.Launch(aimDirection, projectileSpeed, damage, hitMask);
+            projectile.transform.position = transform.position;
+            projectile.Launch(aimDirection, projectileSpeed, damage, knockbackForce, hitMask, obstacleMask);
 
             OnAttackPerformed?.Invoke();
         }

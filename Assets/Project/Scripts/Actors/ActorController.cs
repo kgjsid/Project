@@ -95,6 +95,7 @@ namespace Actors
 
             meleeAttacker.SetLayerMask(targetMask);
             projectileAttacker.SetLayerMask(targetMask);
+            projectileAttacker.SetObstacleMask(obstacleMask);
 
             inventory.BaseMaxWeight = stats.maxWeight;
             inventory.InitSlot(stats.inventoryCapacity);

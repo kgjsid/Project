@@ -28,8 +28,6 @@ namespace UI.HUD
 
             if (PoolManager.Instance == null) return;
 
-            Debug.Log("데미지 생성");
-
             DamageNumber number = PoolManager.Instance.Get<DamageNumber>();
             if(number != null)
             {
