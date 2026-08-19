@@ -14,6 +14,11 @@ namespace Core.System
         private float projectileSpeed;
         private float knockbackForce;
         private float attackSpeed = 1f;
+        private Sprite projectileSprite;
+        private Color projectileColor;
+        private int projectileCount = 1;
+        private float spreadAngle = 0f;
+
         private bool hasWeapon;
         private float lastAttackTime = -1f;
         private Vector2 aimDirection = Vector2.right;
@@ -33,6 +38,10 @@ namespace Core.System
             projectileSpeed = weapon.projectileSpeed;
             knockbackForce = weapon.knockbackForce;
             projectilePrefab = weapon.projectilePrefab;
+            projectileSprite = weapon.projectileSprite;
+            projectileColor = weapon.effectColor;
+            projectileCount = weapon.projectileCount;
+            spreadAngle = weapon.spreadAngle;
             hasWeapon = true;
         }
 
@@ -75,16 +84,39 @@ namespace Core.System
 
         private void ExecuteAttack()
         {
+            lastAttackTime = Time.time;
+
+            float startAngle = -spreadAngle * 0.5f;
+            float step = projectileCount > 1 ? spreadAngle / (projectileCount - 1) : 0f;
+
+            for(int i = 0; i < projectileCount; i++)
+            {
+                float angle = startAngle + step * i;
+                Vector2 dir = Rotate(aimDirection, angle);
+                FireProjectile(dir);
+            }
+
+            OnAttackPerformed?.Invoke();
+        }
+
+        private void FireProjectile(Vector2 dir)
+        {
             Projectile projectile = PoolManager.Instance.Get<Projectile>();
 
             if (projectile == null) return;
-
-            lastAttackTime = Time.time;
+            
 
             projectile.transform.position = transform.position;
-            projectile.Launch(aimDirection, projectileSpeed, damage, knockbackForce, hitMask, obstacleMask);
+            projectile.Launch(dir, projectileSpeed, damage, knockbackForce,
+                              hitMask, obstacleMask, projectileSprite, projectileColor);
+        }
 
-            OnAttackPerformed?.Invoke();
+        private Vector2 Rotate(Vector2 v, float degrees)
+        {
+            float rad = degrees * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(rad);
+            float sin = Mathf.Sin(rad);
+            return new Vector2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
         }
     }
 }

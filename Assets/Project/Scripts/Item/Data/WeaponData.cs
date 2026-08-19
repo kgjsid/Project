@@ -24,7 +24,11 @@ namespace Item.Data
         public Sprite telegraphSprite;
         public float swingAngle;
 
+        [Header("Projectile")]
         public Projectile projectilePrefab;
         public float projectileSpeed;
+        public Sprite projectileSprite;
+        public int projectileCount = 1;
+        public float spreadAngle = 0f;
     }
 }

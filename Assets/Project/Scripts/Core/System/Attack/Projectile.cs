@@ -6,6 +6,7 @@ namespace Core.System
 {
     public class Projectile : MonoBehaviour, IPoolable
     {
+        [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private float lifeTime = 3f;
 
         private Vector2 direction;
@@ -19,7 +20,8 @@ namespace Core.System
         private bool isActive;
 
         public void Launch(Vector2 direction, float speed, float damage,
-                           float knockbackForce, LayerMask hitMask, LayerMask obstacleMask)
+                           float knockbackForce, LayerMask hitMask, LayerMask obstacleMask,
+                           Sprite sprite, Color color)
         {
             this.direction = direction;
             this.speed = speed;
@@ -29,6 +31,12 @@ namespace Core.System
             this.obstacleMask = obstacleMask;
 
             transform.right = this.direction;
+
+            if (spriteRenderer != null)
+            {
+                if (sprite != null) spriteRenderer.sprite = sprite;
+                spriteRenderer.color = color;
+            }
 
             lifeTimer = lifeTime;
             isActive = true;

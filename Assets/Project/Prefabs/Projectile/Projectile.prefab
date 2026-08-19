@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8523406615088223617}
   - component: {fileID: 2709813716867115355}
   - component: {fileID: 6838588636522736161}
-  - component: {fileID: 1196668880545373688}
+  - component: {fileID: -4077181537378894088}
   - component: {fileID: -5340423196312353797}
   m_Layer: 0
   m_Name: Projectile
@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4164b9e9b86f1448668796b61322c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.Projectile
-  lifeTime: 3
+  spriteRenderer: {fileID: 6838588636522736161}
+  lifeTime: 2
 --- !u!212 &6838588636522736161
 SpriteRenderer:
   serializedVersion: 2
@@ -107,8 +108,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!61 &1196668880545373688
-BoxCollider2D:
+--- !u!58 &-4077181537378894088
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -141,18 +142,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.000000059604645, y: 0.0041000545}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.625, y: 1.25}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.6555973, y: 1.3526027}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
 --- !u!50 &-5340423196312353797
 Rigidbody2D:
   serializedVersion: 5

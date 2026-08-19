@@ -31,5 +31,8 @@ MonoBehaviour:
   effectColor: {r: 0.78431374, g: 0.627451, b: 1, a: 1}
   telegraphSprite: {fileID: 0}
   swingAngle: 0
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 2709813716867115355, guid: 2558d38f51b21b84f96423be5cd9bf31, type: 3}
   projectileSpeed: 9
+  projectileSprite: {fileID: 1916669790, guid: 6d6b026b747bff44cbe53689210deeb5, type: 3}
+  projectileCount: 1
+  spreadAngle: 0
