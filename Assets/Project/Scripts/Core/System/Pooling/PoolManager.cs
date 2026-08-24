@@ -78,5 +78,18 @@ namespace Core.System.Pooling
 
             ((ObjectPool<T>)poolBase).ReturnPool(obj);
         }
+
+        public void Return(IPoolable obj)
+        {
+            if (obj == null) return;
+
+            Type type = obj.GetType();
+            if(!pools.TryGetValue(type, out var poolBase))
+            {
+                return;
+            }
+
+            poolBase.ReturnObject(obj);
+        }
     }
 }
