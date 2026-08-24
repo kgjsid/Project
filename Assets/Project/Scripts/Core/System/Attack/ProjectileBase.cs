@@ -78,7 +78,7 @@ namespace Core.System
         protected void Despawn()
         {
             isActive = false;
-            PoolManager.Instance.Return(this);
+            PoolManager.Instance.Return((IPoolable)this);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

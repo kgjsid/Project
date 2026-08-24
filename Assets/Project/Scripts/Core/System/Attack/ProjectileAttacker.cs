@@ -8,7 +8,7 @@ namespace Core.System
 {
     public class ProjectileAttacker : MonoBehaviour, IAttacker
     {
-        private Projectile projectilePrefab;
+        private ProjectileBase projectilePrefab;
 
         private float damage;
         private float projectileSpeed;
@@ -101,10 +101,10 @@ namespace Core.System
 
         private void FireProjectile(Vector2 dir)
         {
-            Projectile projectile = PoolManager.Instance.Get<Projectile>();
+            IPoolable poolObj = PoolManager.Instance.Get(projectilePrefab.GetType());
 
-            if (projectile == null) return;
-            
+            if (poolObj == null) return;
+            if (poolObj is not ProjectileBase projectile) return;
 
             projectile.transform.position = transform.position;
             projectile.Launch(dir, projectileSpeed, damage, knockbackForce,

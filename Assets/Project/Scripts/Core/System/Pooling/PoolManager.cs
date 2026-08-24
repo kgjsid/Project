@@ -67,6 +67,16 @@ namespace Core.System.Pooling
             return ((ObjectPool<T>)poolBase).GetPool();
         }
 
+        public IPoolable Get(Type type)
+        {
+            if (!pools.TryGetValue(type, out var poolBase))
+            {
+                return null;
+            }
+
+            return poolBase.GetObject();
+        }
+
         public void Return<T>(T obj) where T : Component, IPoolable
         {
             if (obj == null) return;

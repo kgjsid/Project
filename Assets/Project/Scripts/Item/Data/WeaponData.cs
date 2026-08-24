@@ -25,7 +25,7 @@ namespace Item.Data
         public float swingAngle;
 
         [Header("Projectile")]
-        public Projectile projectilePrefab;
+        public ProjectileBase projectilePrefab;
         public float projectileSpeed;
         public Sprite projectileSprite;
         public int projectileCount = 1;

@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace Core.System.Pooling
 {
-    public abstract class ObjectPoolBase 
+    public abstract class ObjectPoolBase
     {
         public abstract void ReturnObject(IPoolable obj);
+        public abstract IPoolable GetObject();
     }
 
     public class ObjectPool<T> : ObjectPoolBase where T : Component, IPoolable
@@ -46,6 +47,11 @@ namespace Core.System.Pooling
         public override void ReturnObject(IPoolable obj)
         {
             ReturnPool((T)obj);
+        }
+
+        public override IPoolable GetObject()
+        {
+            return GetPool();
         }
 
         private T CreateNew()
