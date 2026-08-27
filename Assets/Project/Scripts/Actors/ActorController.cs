@@ -40,6 +40,7 @@ namespace Actors
         protected InteractionDetector interactionDetector;
         protected MeleeAttacker meleeAttacker;
         protected ProjectileAttacker projectileAttacker;
+        protected RaycastAttacker raycastAttacker;
         protected Inventory inventory;
         protected Equipper equipper;
         protected KnockbackReceiver knockbackReceiver;
@@ -66,6 +67,7 @@ namespace Actors
             interactionDetector = gameObject.AddComponent<InteractionDetector>();
             meleeAttacker = gameObject.AddComponent<MeleeAttacker>();
             projectileAttacker = gameObject.AddComponent<ProjectileAttacker>();
+            raycastAttacker = gameObject.AddComponent<RaycastAttacker>();
             inventory = gameObject.AddComponent<Inventory>();
             equipper = gameObject.AddComponent<Equipper>();
             knockbackReceiver = gameObject.AddComponent<KnockbackReceiver>();
@@ -96,10 +98,12 @@ namespace Actors
             meleeAttacker.SetLayerMask(targetMask);
             projectileAttacker.SetLayerMask(targetMask);
             projectileAttacker.SetObstacleMask(obstacleMask);
+            raycastAttacker.SetLayerMask(targetMask);
+            raycastAttacker.SetObstacleMask(obstacleMask);
 
             inventory.BaseMaxWeight = stats.maxWeight;
             inventory.InitSlot(stats.inventoryCapacity);
-            equipper.Init(health, mover, inventory, meleeAttacker, projectileAttacker);
+            equipper.Init(health, mover, inventory, meleeAttacker, projectileAttacker, raycastAttacker);
 
             knockbackReceiver.KnockbackResistance = stats.knockbackResistance;
             knockbackReceiver.Init(health, mover);

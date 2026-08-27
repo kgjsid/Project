@@ -17,6 +17,7 @@ namespace Core.System
         public Inventory inventory;
         public MeleeAttacker meleeAttacker;
         public ProjectileAttacker projectileAttacker;
+        public RaycastAttacker raycastAttacker;
 
         public event Action OnStatsChanged;
 
@@ -30,13 +31,14 @@ namespace Core.System
             return currentAttacker;
         }
 
-        public void Init(Health health, Mover mover, Inventory inventory, MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker)
+        public void Init(Health health, Mover mover, Inventory inventory, MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker, RaycastAttacker raycastAttacker)
         {
             this.health = health;
             this.mover = mover;
             this.inventory = inventory;
             this.meleeAttacker = meleeAttacker;
             this.projectileAttacker = projectileAttacker;
+            this.raycastAttacker = raycastAttacker;
 
             inventory.OnInventoryChanged += RecalculateStats;
         }
@@ -105,19 +107,29 @@ namespace Core.System
                 {
                     meleeAttacker.SetWeapon(weapon);
                     projectileAttacker.ClearWeapon();
+                    raycastAttacker.ClearWeapon();
                     currentAttacker = meleeAttacker;
                 }
-                else
+                else if(weapon.attackType == AttackType.Ranged)
                 {
                     projectileAttacker.SetWeapon(weapon);
                     meleeAttacker.ClearWeapon();
+                    raycastAttacker.ClearWeapon();
                     currentAttacker = projectileAttacker;
+                }
+                else if(weapon.attackType == AttackType.Beam)
+                {
+                    raycastAttacker.SetWeapon(weapon);
+                    meleeAttacker.ClearWeapon();
+                    projectileAttacker.ClearWeapon();
+                    currentAttacker = raycastAttacker;
                 }
             }
             else
             {
                 meleeAttacker.ClearWeapon();
                 projectileAttacker.ClearWeapon();
+                raycastAttacker.ClearWeapon();
                 currentAttacker = null;
             }
         }

@@ -4,7 +4,7 @@ using Core.System;
 
 namespace Item.Data
 {
-    public enum AttackType { Melee, Ranged }
+    public enum AttackType { Melee, Ranged, Beam }
 
     [CreateAssetMenu(fileName = "NewWeapon", menuName = "Items/Weapon")]
     public class WeaponData : EquipmentData
