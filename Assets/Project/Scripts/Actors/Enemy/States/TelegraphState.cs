@@ -36,8 +36,8 @@ namespace Actors.Enemy.States
             }
 
             WeaponData weapon = context.equipper.GetEquippedWeapon();
-            context.telegraphIndicator?.SetRange(weapon != null ? weapon.range : context.attackRange);
-            context.telegraphIndicator?.SetSprite(weapon != null && weapon.telegraphSprite != null ? weapon.telegraphSprite : null);
+            context.telegraphIndicator?.SetRange(weapon != null ? weapon.melee.range : context.attackRange);
+            context.telegraphIndicator?.SetSprite(weapon != null && weapon.melee.telegraphSprite != null ? weapon.melee.telegraphSprite : null);
             context.telegraphIndicator?.ShowIndicator();
         }
 

@@ -4,31 +4,58 @@ using Core.System;
 
 namespace Item.Data
 {
-    public enum AttackType { Melee, Ranged, Beam }
+    [System.Flags]
+    public enum AttackType { None = 0, Melee = 1, Projectile = 2, Raycast = 4 }
+
+    [System.Serializable]
+    public class MeleeStats
+    {
+        public float damage;
+        public float knockbackForce;
+        public float attackSpeed;
+        public float range;
+        public float swingAngle;
+        public Sprite telegraphSprite;
+    }
+
+    [System.Serializable]
+    public class ProjectileStats
+    {
+        public float damage;
+        public float knockbackForce;
+        public float attackSpeed = 1f;
+        public ProjectileBase projectilePrefab;
+        public float projectileSpeed;
+        public Sprite projectileSprite;
+        public int projectileCount;
+        public float spreadAngle;
+    }
+
+    [System.Serializable]
+    public class RaycastStats
+    {
+        public float damage;
+        public float knockbackForce;
+        public float attackSpeed;
+        public float range;
+        public float boxWidth;
+        public int beamCount;
+        public float spreadAngle;
+    }
 
     [CreateAssetMenu(fileName = "NewWeapon", menuName = "Items/Weapon")]
     public class WeaponData : EquipmentData
     {
+        [Header("Attack Type (여럿 선택 시 하이브리드)")]
         public AttackType attackType;
 
-        [Header("Weapon Stats")]
-        public float damage;
-        public float range;
-        public float attackSpeed;
-        public float knockbackForce;
-
-        [Header("Effect")]
-        public GameObject effectPrefab;
+        [Header("Common")]
         public Color effectColor = Color.white;
+        public GameObject effectPrefab;
 
-        public Sprite telegraphSprite;
-        public float swingAngle;
-
-        [Header("Projectile")]
-        public ProjectileBase projectilePrefab;
-        public float projectileSpeed;
-        public Sprite projectileSprite;
-        public int projectileCount = 1;
-        public float spreadAngle = 0f;
+        [Header("Parts - attackType에 켠 것만 사용")]
+        public MeleeStats melee;
+        public ProjectileStats projectile;
+        public RaycastStats raycast;
     }
 }

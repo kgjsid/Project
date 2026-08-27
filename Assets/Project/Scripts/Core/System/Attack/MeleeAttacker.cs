@@ -36,11 +36,11 @@ namespace Core.System
 
         public void SetWeapon(WeaponData weapon)
         {
-            damage = weapon.damage;
-            range = weapon.range;
-            attackSpeed = weapon.attackSpeed;
-            knockbackForce = weapon.knockbackForce;
-            SwingAngle = weapon.swingAngle;
+            damage = weapon.melee.damage;
+            range = weapon.melee.range;
+            attackSpeed = weapon.melee.attackSpeed;
+            knockbackForce = weapon.melee.knockbackForce;
+            SwingAngle = weapon.melee.swingAngle;
             hasWeapon = true;
         }
 

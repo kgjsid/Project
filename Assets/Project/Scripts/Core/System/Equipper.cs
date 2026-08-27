@@ -94,44 +94,41 @@ namespace Core.System
             }
             mover.BonusMoveSpeed = moveSpeedBonus;
 
-            ApplyWeapon();
+            if (equipped.ContainsKey(EquipSlotType.MainHand))
+                ApplyWeapon(equipped[EquipSlotType.MainHand] as WeaponData);
 
             OnStatsChanged?.Invoke();
         }
 
-        private void ApplyWeapon()
+        private void ApplyWeapon(WeaponData weapon)
         {
-            if (equipped.TryGetValue(EquipSlotType.MainHand, out var data) && data is WeaponData weapon)
-            {
-                if (weapon.attackType == AttackType.Melee)
-                {
-                    meleeAttacker.SetWeapon(weapon);
-                    projectileAttacker.ClearWeapon();
-                    raycastAttacker.ClearWeapon();
-                    currentAttacker = meleeAttacker;
-                }
-                else if(weapon.attackType == AttackType.Ranged)
-                {
-                    projectileAttacker.SetWeapon(weapon);
-                    meleeAttacker.ClearWeapon();
-                    raycastAttacker.ClearWeapon();
-                    currentAttacker = projectileAttacker;
-                }
-                else if(weapon.attackType == AttackType.Beam)
-                {
-                    raycastAttacker.SetWeapon(weapon);
-                    meleeAttacker.ClearWeapon();
-                    projectileAttacker.ClearWeapon();
-                    currentAttacker = raycastAttacker;
-                }
-            }
-            else
+            if (weapon == null)
             {
                 meleeAttacker.ClearWeapon();
                 projectileAttacker.ClearWeapon();
                 raycastAttacker.ClearWeapon();
                 currentAttacker = null;
+
+                return;
             }
+
+            bool hasMelee = weapon.attackType.HasFlag(AttackType.Melee);
+            bool hasProjectile = weapon.attackType.HasFlag(AttackType.Projectile);
+            bool hasRaycast = weapon.attackType.HasFlag(AttackType.Raycast);
+
+            if (hasMelee) meleeAttacker.SetWeapon(weapon);
+            else meleeAttacker.ClearWeapon();
+
+            if (hasProjectile) projectileAttacker.SetWeapon(weapon);
+            else projectileAttacker.ClearWeapon();
+
+            if (hasRaycast) raycastAttacker.SetWeapon(weapon);
+            else raycastAttacker.ClearWeapon();
+
+            if (hasMelee) currentAttacker = meleeAttacker;
+            else if (hasProjectile) currentAttacker = projectileAttacker;
+            else if (hasRaycast) currentAttacker = raycastAttacker;
+            else currentAttacker = null;
         }
 
         private void OnDisable()

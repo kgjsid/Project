@@ -7,14 +7,13 @@ namespace Core.System
 {
     public class RaycastAttacker : MonoBehaviour, IAttacker
     {
-        [SerializeField] private float boxWidth = 0.3f;
-        [SerializeField] private int beamCount = 1;
-        [SerializeField] private float spreadAngle = 0f;
-
         private float damage;
         private float range;
         private float attackSpeed = 1f;
         private float knockbackForce;
+        private float boxWidth = 0.3f;
+        private int beamCount = 1;
+        private float spreadAngle = 0f;
         private bool hasWeapon;
         private float lastAttackTime = 1f;
         private Vector2 aimDirection = Vector2.right;
@@ -36,12 +35,15 @@ namespace Core.System
             obstacleResult = new RaycastHit2D[1];
         }
 
-        public void SetWeapon(WeaponData weaponData)
+        public void SetWeapon(WeaponData weapon)
         {
-            damage = weaponData.damage;
-            range = weaponData.range;
-            attackSpeed = weaponData.attackSpeed;
-            knockbackForce = weaponData.knockbackForce;
+            damage = weapon.raycast.damage;
+            range = weapon.raycast.range;
+            attackSpeed = weapon.raycast.attackSpeed;
+            knockbackForce = weapon.raycast.knockbackForce;
+            boxWidth = weapon.raycast.boxWidth;
+            beamCount = Mathf.Max(1, weapon.raycast.beamCount);
+            spreadAngle = weapon.raycast.spreadAngle;
             hasWeapon = true;
         }
 

@@ -107,18 +107,57 @@ public static class ItemTableImporter
     {
         w.equipSlot = row.GetEnum("equipSlot", EquipSlotType.MainHand);
         w.attackType = row.GetEnum("attackType", AttackType.Melee);
-        w.damage = row.GetFloat("damage");
-        w.range = row.GetFloat("range");
-        w.swingAngle = row.GetFloat("swingAngle", 100f);
-        w.attackSpeed = row.GetFloat("attackSpeed", 1f);
-        w.knockbackForce = row.GetFloat("knockbackForce");
         w.durability = row.GetInt("durability");
         w.effectColor = ParseColor(row.GetString("effectColorHex"));
         w.effectPrefab = FindAsset<GameObject>(row.GetString("effectPrefabName"));
-        w.telegraphSprite = FindSprite(row.GetString("telegraphSpriteName"));
-        w.projectileSpeed = row.GetFloat("projectileSpeed");
-        GameObject proj = FindAsset<GameObject>(row.GetString("projectilePrefabName"));
-        w.projectilePrefab = proj != null ? proj.GetComponent<Core.System.Projectile>() : null;
+
+        float damage = row.GetFloat("damage");
+        float knockback = row.GetFloat("knockbackForce");
+        float attackSpeed = row.GetFloat("attackSpeed", 1f);
+        float range = row.GetFloat("range");
+
+        if (w.attackType.HasFlag(AttackType.Melee))
+        {
+            w.melee = new MeleeStats
+            {
+                damage = damage,
+                knockbackForce = knockback,
+                attackSpeed = attackSpeed,
+                range = range,
+                swingAngle = row.GetFloat("swingAngle", 100f),
+                telegraphSprite = FindSprite(row.GetString("telegraphSpriteName"))
+            };
+        }
+
+        if (w.attackType.HasFlag(AttackType.Projectile))
+        {
+            GameObject proj = FindAsset<GameObject>(row.GetString("projectilePrefabName"));
+            w.projectile = new ProjectileStats
+            {
+                damage = damage,
+                knockbackForce = knockback,
+                attackSpeed = attackSpeed,
+                projectileSpeed = row.GetFloat("projectileSpeed"),
+                projectilePrefab = proj != null ? proj.GetComponent<Core.System.ProjectileBase>() : null,
+                projectileSprite = FindSprite(row.GetString("projectileSpriteName")),
+                projectileCount = row.GetInt("projectileCount"),
+                spreadAngle = row.GetFloat("spreadAngle")
+            };
+        }
+
+        if (w.attackType.HasFlag(AttackType.Raycast))
+        {
+            w.raycast = new RaycastStats
+            {
+                damage = damage,
+                knockbackForce = knockback,
+                attackSpeed = attackSpeed,
+                range = range,
+                boxWidth = row.GetFloat("boxWidth", 0.3f),
+                beamCount = row.GetInt("beamCount"),
+                spreadAngle = row.GetFloat("spreadAngle")
+            };
+        }
     }
 
     private static void ApplyArmor(ArmorData a, Row row)

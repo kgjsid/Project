@@ -33,15 +33,15 @@ namespace Core.System
 
         public void SetWeapon(WeaponData weapon)
         {
-            damage = weapon.damage;
-            attackSpeed = weapon.attackSpeed;
-            projectileSpeed = weapon.projectileSpeed;
-            knockbackForce = weapon.knockbackForce;
-            projectilePrefab = weapon.projectilePrefab;
-            projectileSprite = weapon.projectileSprite;
-            projectileColor = weapon.effectColor;
-            projectileCount = weapon.projectileCount;
-            spreadAngle = weapon.spreadAngle;
+            damage = weapon.projectile.damage;
+            attackSpeed = weapon.projectile.attackSpeed;
+            projectileSpeed = weapon.projectile.projectileSpeed;
+            knockbackForce = weapon.projectile.knockbackForce;
+            projectilePrefab = weapon.projectile.projectilePrefab;
+            projectileSprite = weapon.projectile.projectileSprite;
+            projectileColor = weapon.effectColor; 
+            projectileCount = Mathf.Max(1, weapon.projectile.projectileCount);
+            spreadAngle = weapon.projectile.spreadAngle;
             hasWeapon = true;
         }
 
