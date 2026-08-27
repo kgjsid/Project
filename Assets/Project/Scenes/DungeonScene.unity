@@ -197,7 +197,7 @@ MonoBehaviour:
   player: {fileID: 0}
   playerInventory: {fileID: 0}
   itemA: {fileID: 11400000, guid: 9c26fd03c5f0c9346b08f5192d322f25, type: 2}
-  itemB: {fileID: 11400000, guid: a2e41e4e57a802c41be5ab1f0662bfe6, type: 2}
+  itemB: {fileID: 11400000, guid: 14c375ba18ae77749b8db91b18aa72cc, type: 2}
   itemC: {fileID: 11400000, guid: c368571c921d61e418dacb460c999d18, type: 2}
 --- !u!1 &330585543
 GameObject:
@@ -1123,7 +1123,13 @@ MonoBehaviour:
   - prefab: {fileID: 2534475381091948521, guid: 594d8c32e579fc745bdda332743b955f, type: 3}
     capacity: 4
   - prefab: {fileID: 2709813716867115355, guid: 2558d38f51b21b84f96423be5cd9bf31, type: 3}
-    capacity: 4
+    capacity: 20
+  - prefab: {fileID: 2706463697353876155, guid: 326f468e72820a440acaf68d19b91a5c, type: 3}
+    capacity: 20
+  - prefab: {fileID: -4368216540088306733, guid: c4436b2160c799d4296eba6fce03268e, type: 3}
+    capacity: 10
+  - prefab: {fileID: -4602087580483400182, guid: a73808d850020f74d8a0c780b6e2cdd5, type: 3}
+    capacity: 20
 --- !u!1 &1748508755
 GameObject:
   m_ObjectHideFlags: 0

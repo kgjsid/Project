@@ -15,8 +15,8 @@ namespace Core.System
         protected float damage;
         protected float knockbackForce;
 
-        private LayerMask hitMask;
-        private LayerMask obstacleMask;
+        protected LayerMask hitMask;
+        protected LayerMask obstacleMask;
 
         private float lifeTimer;
         private bool isActive;
@@ -64,13 +64,13 @@ namespace Core.System
             transform.position += (Vector3)(direction * speed * Time.deltaTime);
         }
 
-        public void OnDespawn()
+        public virtual void OnDespawn()
         {
             isActive = false;
             direction = Vector2.zero;
         }
 
-        public void OnSpawn()
+        public virtual void OnSpawn()
         {
 
         }
@@ -78,6 +78,7 @@ namespace Core.System
         protected void Despawn()
         {
             isActive = false;
+            OnBeforeDespawn();
             PoolManager.Instance.Return((IPoolable)this);
         }
 
@@ -103,5 +104,6 @@ namespace Core.System
         }
 
         protected abstract void OnHitEnemy(Health health);
+        protected virtual void OnBeforeDespawn() { }
     }
 }
