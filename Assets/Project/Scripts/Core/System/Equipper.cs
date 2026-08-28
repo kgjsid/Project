@@ -18,6 +18,7 @@ namespace Core.System
         public MeleeAttacker meleeAttacker;
         public ProjectileAttacker projectileAttacker;
         public RaycastAttacker raycastAttacker;
+        public HybridAttacker hybridAttacker;
 
         public event Action OnStatsChanged;
 
@@ -31,7 +32,8 @@ namespace Core.System
             return currentAttacker;
         }
 
-        public void Init(Health health, Mover mover, Inventory inventory, MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker, RaycastAttacker raycastAttacker)
+        public void Init(Health health, Mover mover, Inventory inventory, 
+            MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker, RaycastAttacker raycastAttacker, HybridAttacker hybridAttacker)
         {
             this.health = health;
             this.mover = mover;
@@ -39,6 +41,7 @@ namespace Core.System
             this.meleeAttacker = meleeAttacker;
             this.projectileAttacker = projectileAttacker;
             this.raycastAttacker = raycastAttacker;
+            this.hybridAttacker = hybridAttacker;
 
             inventory.OnInventoryChanged += RecalculateStats;
         }
@@ -107,6 +110,7 @@ namespace Core.System
                 meleeAttacker.ClearWeapon();
                 projectileAttacker.ClearWeapon();
                 raycastAttacker.ClearWeapon();
+                hybridAttacker.ClearWeapon();
                 currentAttacker = null;
 
                 return;
@@ -116,19 +120,43 @@ namespace Core.System
             bool hasProjectile = weapon.attackType.HasFlag(AttackType.Projectile);
             bool hasRaycast = weapon.attackType.HasFlag(AttackType.Raycast);
 
-            if (hasMelee) meleeAttacker.SetWeapon(weapon);
-            else meleeAttacker.ClearWeapon();
+            int partCount = (hasMelee ? 1 : 0) + (hasProjectile ? 1 : 0) + (hasRaycast ? 1 : 0);
 
-            if (hasProjectile) projectileAttacker.SetWeapon(weapon);
-            else projectileAttacker.ClearWeapon();
+            if (partCount >= 2)
+            {
+                hybridAttacker.SetWeapon(weapon);
+                currentAttacker = hybridAttacker;
+            }
+            else
+            {
+                hybridAttacker.ClearWeapon();
 
-            if (hasRaycast) raycastAttacker.SetWeapon(weapon);
-            else raycastAttacker.ClearWeapon();
-
-            if (hasMelee) currentAttacker = meleeAttacker;
-            else if (hasProjectile) currentAttacker = projectileAttacker;
-            else if (hasRaycast) currentAttacker = raycastAttacker;
-            else currentAttacker = null;
+                if (hasMelee)
+                {
+                    meleeAttacker.SetWeapon(weapon);
+                    projectileAttacker.ClearWeapon();
+                    raycastAttacker.ClearWeapon();
+                    currentAttacker = meleeAttacker;
+                }
+                else if (hasProjectile)
+                {
+                    projectileAttacker.SetWeapon(weapon);
+                    meleeAttacker.ClearWeapon();
+                    raycastAttacker.ClearWeapon();
+                    currentAttacker = projectileAttacker;
+                }
+                else if (hasRaycast)
+                {
+                    raycastAttacker.SetWeapon(weapon);
+                    meleeAttacker.ClearWeapon();
+                    projectileAttacker.ClearWeapon();
+                    currentAttacker = raycastAttacker;
+                }
+                else
+                {
+                    currentAttacker = null;
+                }
+            }
         }
 
         private void OnDisable()
