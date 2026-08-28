@@ -23,8 +23,12 @@ namespace Core.System
         private RaycastHit2D[] hitResults;
         private RaycastHit2D[] obstacleResult;
 
+        private BeamRenderer beamRenderer;
+        private Vector3[] beamEnds;
+
         private const int HIT_RESULT_COUNT = 16;
         private const float ROTATION_THRESHOLD = 0.0001f;
+        private const int MAX_BEAM_COUNT = 8;
 
         public event Action OnAttackPerformed;
         public event Action<Vector2> OnAimDirectionChanged;
@@ -33,6 +37,13 @@ namespace Core.System
         {
             hitResults = new RaycastHit2D[HIT_RESULT_COUNT];
             obstacleResult = new RaycastHit2D[1];
+
+            beamEnds = new Vector3[MAX_BEAM_COUNT];
+        }
+
+        public void Init(BeamRenderer beamRenderer)
+        {
+            this.beamRenderer = beamRenderer;
         }
 
         public void SetWeapon(WeaponData weapon)
@@ -97,13 +108,18 @@ namespace Core.System
             {
                 float angle = startAngle + step * i;
                 Vector2 dir = Rotate(aimDirection, angle);
-                FireBeam(dir);
+                FireBeam(dir, i);
+            }
+
+            if (beamRenderer != null)
+            {
+                beamRenderer.ShowBeams(transform.position, beamEnds, beamCount, boxWidth);
             }
 
             OnAttackPerformed?.Invoke();
         }
 
-        private void FireBeam(Vector2 dir)
+        private void FireBeam(Vector2 dir, int beamIndex)
         {
             float boxAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             Vector2 boxSize = new Vector2(boxWidth, boxWidth);
@@ -119,6 +135,8 @@ namespace Core.System
 
             int count = Physics2D.BoxCast(transform.position, boxSize, boxAngle,
                               dir, hitFilter, hitResults, effectiveRange);
+
+            beamEnds[beamIndex] = transform.position + (Vector3)(dir * effectiveRange);
 
             for (int i = 0; i < count; i++)
             {

@@ -6,7 +6,8 @@ namespace Core.System
     {
         private Collider2D[] explosionHits;
         private ContactFilter2D filter;
-        private float explosionRadius = 5f;
+        private float explosionRadius = 3f;
+        [SerializeField] private ExpandingEffect explosionEffectPrefab;
 
         protected override void Awake()
         {
@@ -23,6 +24,13 @@ namespace Core.System
 
         protected override void OnBeforeDespawn()
         {
+            if (explosionEffectPrefab != null)
+            {
+                ExpandingEffect effect = Instantiate(explosionEffectPrefab,
+                                                     transform.position, Quaternion.identity);
+                effect.Play(explosionRadius, spriteRenderer.color);
+            }
+
             filter.SetLayerMask(hitMask);
             filter.useTriggers = true;
 

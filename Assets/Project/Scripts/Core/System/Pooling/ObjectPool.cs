@@ -32,6 +32,12 @@ namespace Core.System.Pooling
         {
             T obj = pool.Count > 0 ? pool.Dequeue() : null;
 
+            if(obj == null)
+            {
+                obj = CreateNew();
+                pool.Enqueue(obj);
+            }
+
             obj.gameObject.SetActive(true);
             obj.OnSpawn();
             return obj;

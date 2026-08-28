@@ -8,7 +8,7 @@ namespace Core.System
     public abstract class ProjectileBase : MonoBehaviour, IPoolable
     {
         [SerializeField] private float lifeTime = 3f;
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] protected SpriteRenderer spriteRenderer;
 
         protected Vector2 direction;
         protected float speed;

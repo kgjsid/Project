@@ -301,6 +301,7 @@ GameObject:
   - component: {fileID: 8995717258074980191}
   - component: {fileID: 5569983272500092972}
   - component: {fileID: 7429540406731762003}
+  - component: {fileID: 4367429902609257466}
   m_Layer: 3
   m_Name: Warrior
   m_TagString: Untagged
@@ -386,6 +387,7 @@ MonoBehaviour:
   hitFlash: {fileID: 6731168044989308363}
   weaponAimer: {fileID: 656445640102150407}
   attackEffectSpawner: {fileID: 7846683365540297833}
+  beamRenderer: {fileID: 4367429902609257466}
   hitStop: {fileID: 0}
   healthBar: {fileID: 0}
   damageNumberSpawner: {fileID: 7429540406731762003}
@@ -445,6 +447,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI.HUD.DamageNumberSpawner
   spawnOffset: {x: 0, y: 0.5, z: 0}
+--- !u!114 &4367429902609257466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544575761859238108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e37c600c5202c249ad5db22a0e92e8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.System.BeamRenderer
+  beamLinePrefab: {fileID: 3183444384026481012, guid: 7ebe95bbe4f9f4b4793b54cb2d23f263, type: 3}
+  visibleTime: 0.12
 --- !u!1 &5435895197835426227
 GameObject:
   m_ObjectHideFlags: 0

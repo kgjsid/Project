@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Core.System.ExplosiveProjectile
   lifeTime: 3
   spriteRenderer: {fileID: 6838588636522736161}
+  explosionEffectPrefab: {fileID: 7690005508111867242, guid: e139912c4cdc832409fa3ea452715f59, type: 3}
 --- !u!212 &6838588636522736161
 SpriteRenderer:
   serializedVersion: 2

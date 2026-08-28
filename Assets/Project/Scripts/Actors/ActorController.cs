@@ -27,6 +27,7 @@ namespace Actors
         [SerializeField] protected HitFlash hitFlash;
         [SerializeField] protected WeaponAimer weaponAimer;
         [SerializeField] protected AttackEffectSpawner attackEffectSpawner;
+        [SerializeField] protected BeamRenderer beamRenderer;
         [SerializeField] protected HitStop hitStop;
 
         [Header("HUD")]
@@ -102,6 +103,7 @@ namespace Actors
             projectileAttacker.SetObstacleMask(obstacleMask);
             raycastAttacker.SetLayerMask(targetMask);
             raycastAttacker.SetObstacleMask(obstacleMask);
+            raycastAttacker.Init(beamRenderer);
             hybridAttacker.Init(meleeAttacker, projectileAttacker, raycastAttacker);
 
             inventory.BaseMaxWeight = stats.maxWeight;
