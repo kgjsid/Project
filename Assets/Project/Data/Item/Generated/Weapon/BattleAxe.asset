@@ -22,14 +22,30 @@ MonoBehaviour:
   description: "\uB113\uAC8C \uC4F8\uC5B4 \uB118\uAE34\uB2E4."
   equipSlot: 1
   durability: 110
-  attackType: 0
-  damage: 26
-  range: 2.3
-  attackSpeed: 0.8
-  knockbackForce: 14
-  effectPrefab: {fileID: 3062921058948537495, guid: 67f24896b3e7049438ef26daea6048c0, type: 3}
+  attackType: 3
   effectColor: {r: 1, g: 0.8784314, b: 0.627451, a: 1}
-  telegraphSprite: {fileID: 21300000, guid: a6e3898a1ec372b4b9a9f4fb4bb3525b, type: 3}
-  swingAngle: 120
-  projectilePrefab: {fileID: 0}
-  projectileSpeed: 0
+  effectPrefab: {fileID: 3062921058948537495, guid: 67f24896b3e7049438ef26daea6048c0, type: 3}
+  melee:
+    damage: 5
+    knockbackForce: 1
+    attackSpeed: 0.5
+    range: 1
+    swingAngle: 45
+    telegraphSprite: {fileID: 21300000, guid: b1c96f37bf9a29647b5c5c4e227abc5e, type: 3}
+  projectile:
+    damage: 5
+    knockbackForce: 1
+    attackSpeed: 1
+    projectilePrefab: {fileID: 2709813716867115355, guid: 2558d38f51b21b84f96423be5cd9bf31, type: 3}
+    projectileSpeed: 5
+    projectileSprite: {fileID: -355500523, guid: 6d6b026b747bff44cbe53689210deeb5, type: 3}
+    projectileCount: 3
+    spreadAngle: 90
+  raycast:
+    damage: 0
+    knockbackForce: 0
+    attackSpeed: 0
+    range: 0
+    boxWidth: 0
+    beamCount: 0
+    spreadAngle: 0

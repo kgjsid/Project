@@ -20,7 +20,7 @@ MonoBehaviour:
   weight: 5
   icon: {fileID: 0}
   description: "\uBB34\uAC81\uC9C0\uB9CC \uB4E0\uB4E0\uD558\uB2E4."
-  equipSlot: 4
+  equipSlot: 3
   durability: 130
   defense: 9
   moveSpeedMod: -0.3

@@ -22,17 +22,30 @@ MonoBehaviour:
   description: "\uAC00\uBCCD\uAC8C \uC3DC\uB2E4."
   equipSlot: 1
   durability: 80
-  attackType: 1
-  damage: 12
-  range: 8
-  attackSpeed: 1.4
-  knockbackForce: 4
-  effectPrefab: {fileID: 0}
+  attackType: 2
   effectColor: {r: 1, g: 1, b: 1, a: 1}
-  telegraphSprite: {fileID: 0}
-  swingAngle: 0
-  projectilePrefab: {fileID: 2709813716867115355, guid: 2558d38f51b21b84f96423be5cd9bf31, type: 3}
-  projectileSpeed: 5
-  projectileSprite: {fileID: -355500523, guid: 12093ed343cc3244cb9a5ed53c5bdbc7, type: 3}
-  projectileCount: 5
-  spreadAngle: 90
+  effectPrefab: {fileID: 0}
+  melee:
+    damage: 0
+    knockbackForce: 0
+    attackSpeed: 0
+    range: 0
+    swingAngle: 0
+    telegraphSprite: {fileID: 0}
+  projectile:
+    damage: 12
+    knockbackForce: 4
+    attackSpeed: 1.4
+    projectilePrefab: {fileID: -4368216540088306733, guid: c4436b2160c799d4296eba6fce03268e, type: 3}
+    projectileSpeed: 14
+    projectileSprite: {fileID: -2068551549, guid: 6d6b026b747bff44cbe53689210deeb5, type: 3}
+    projectileCount: 1
+    spreadAngle: 0
+  raycast:
+    damage: 0
+    knockbackForce: 0
+    attackSpeed: 0
+    range: 0
+    boxWidth: 0
+    beamCount: 0
+    spreadAngle: 0

@@ -106,26 +106,21 @@ public static class ItemTableImporter
     private static void ApplyWeapon(WeaponData w, Row row)
     {
         w.equipSlot = row.GetEnum("equipSlot", EquipSlotType.MainHand);
-        w.attackType = row.GetEnum("attackType", AttackType.Melee);
+        w.attackType = ParseAttackType(row.GetString("attackType"));
         w.durability = row.GetInt("durability");
         w.effectColor = ParseColor(row.GetString("effectColorHex"));
         w.effectPrefab = FindAsset<GameObject>(row.GetString("effectPrefabName"));
-
-        float damage = row.GetFloat("damage");
-        float knockback = row.GetFloat("knockbackForce");
-        float attackSpeed = row.GetFloat("attackSpeed", 1f);
-        float range = row.GetFloat("range");
 
         if (w.attackType.HasFlag(AttackType.Melee))
         {
             w.melee = new MeleeStats
             {
-                damage = damage,
-                knockbackForce = knockback,
-                attackSpeed = attackSpeed,
-                range = range,
-                swingAngle = row.GetFloat("swingAngle", 100f),
-                telegraphSprite = FindSprite(row.GetString("telegraphSpriteName"))
+                damage = row.GetFloat("meleeDamage"),
+                knockbackForce = row.GetFloat("meleeKnockback"),
+                attackSpeed = row.GetFloat("meleeAttackSpeed", 1f),
+                range = row.GetFloat("meleeRange"),
+                swingAngle = row.GetFloat("meleeSwingAngle", 100f),
+                telegraphSprite = FindSprite(row.GetString("meleeTelegraphSprite"))
             };
         }
 
@@ -134,14 +129,14 @@ public static class ItemTableImporter
             GameObject proj = FindAsset<GameObject>(row.GetString("projectilePrefabName"));
             w.projectile = new ProjectileStats
             {
-                damage = damage,
-                knockbackForce = knockback,
-                attackSpeed = attackSpeed,
+                damage = row.GetFloat("projectileDamage"),
+                knockbackForce = row.GetFloat("projectileKnockback"),
+                attackSpeed = row.GetFloat("projectileAttackSpeed", 1f),
                 projectileSpeed = row.GetFloat("projectileSpeed"),
                 projectilePrefab = proj != null ? proj.GetComponent<Core.System.ProjectileBase>() : null,
-                projectileSprite = FindSprite(row.GetString("projectileSpriteName")),
+                projectileSprite = FindSprite(row.GetString("projectileSprite")),
                 projectileCount = row.GetInt("projectileCount"),
-                spreadAngle = row.GetFloat("spreadAngle")
+                spreadAngle = row.GetFloat("projectileSpread")
             };
         }
 
@@ -149,15 +144,33 @@ public static class ItemTableImporter
         {
             w.raycast = new RaycastStats
             {
-                damage = damage,
-                knockbackForce = knockback,
-                attackSpeed = attackSpeed,
-                range = range,
-                boxWidth = row.GetFloat("boxWidth", 0.3f),
-                beamCount = row.GetInt("beamCount"),
-                spreadAngle = row.GetFloat("spreadAngle")
+                damage = row.GetFloat("raycastDamage"),
+                knockbackForce = row.GetFloat("raycastKnockback"),
+                attackSpeed = row.GetFloat("raycastAttackSpeed", 1f),
+                range = row.GetFloat("raycastRange"),
+                boxWidth = row.GetFloat("raycastBoxWidth", 0.3f),
+                beamCount = row.GetInt("raycastBeamCount"),
+                spreadAngle = row.GetFloat("raycastSpread")
             };
         }
+    }
+
+    private static AttackType ParseAttackType(string raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) return AttackType.Melee;
+
+        AttackType result = AttackType.None;
+        string[] tokens = raw.Split(new[] { '|', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string token in tokens)
+        {
+            if (Enum.TryParse(token.Trim(), true, out AttackType flag))
+                result |= flag;
+            else
+                Debug.LogWarning($"알 수 없는 attackType 토큰: '{token.Trim()}'");
+        }
+
+        return result == AttackType.None ? AttackType.Melee : result;
     }
 
     private static void ApplyArmor(ArmorData a, Row row)
