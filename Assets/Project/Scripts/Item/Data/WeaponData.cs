@@ -29,6 +29,7 @@ namespace Item.Data
         public Sprite projectileSprite;
         public int projectileCount;
         public float spreadAngle;
+        public Sprite telegraphSprite;
     }
 
     [System.Serializable]
@@ -57,5 +58,27 @@ namespace Item.Data
         public MeleeStats melee;
         public ProjectileStats projectile;
         public RaycastStats raycast;
+
+        private const float RANGED_TELEGRAPH_LENGTH = 5f;
+
+        public Sprite GetTelegraphSprite()
+        {
+            if (attackType.HasFlag(AttackType.Melee) && melee.telegraphSprite != null)
+                return melee.telegraphSprite;
+            if (attackType.HasFlag(AttackType.Projectile) && projectile.telegraphSprite != null)
+                return projectile.telegraphSprite;
+            return null;
+        }
+
+        public float GetTelegraphRange()
+        {
+            if (attackType.HasFlag(AttackType.Melee))
+                return melee.range;
+            if (attackType.HasFlag(AttackType.Raycast))
+                return raycast.range;
+            if (attackType.HasFlag(AttackType.Projectile))
+                return RANGED_TELEGRAPH_LENGTH;
+            return 0f;
+        }
     }
 }
