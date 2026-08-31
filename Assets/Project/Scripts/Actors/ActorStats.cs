@@ -25,5 +25,7 @@ namespace Actors
         [Header("Inventory")]
         public int inventoryCapacity = 20;
         public float maxWeight = 20f;
+
+        public float deathDuration;
     }
 }

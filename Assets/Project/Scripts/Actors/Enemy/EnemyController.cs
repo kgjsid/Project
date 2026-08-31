@@ -5,6 +5,7 @@ using Actors.Player;
 using Core.System.FSM;
 using Core.System;
 using Item.Data;
+using Item.ItemObject;
 
 namespace Actors.Enemy
 {
@@ -35,6 +36,7 @@ namespace Actors.Enemy
         {
             context = new EnemyContext
             { 
+                enemyController = this,
                 transform = transform,
                 mover = mover,
                 equipper = equipper,
@@ -44,6 +46,8 @@ namespace Actors.Enemy
                 knockbackReceiver = knockbackReceiver,
                 telegraphDuration = stats.telegraphDuration,
                 attackRecovery = stats.attackRecovery,
+                deathDuration = 1f,
+                // deathDuration = stats.deathDuration
             };
 
             var idleState = new IdleState(context);
@@ -140,15 +144,30 @@ namespace Actors.Enemy
 
         protected override void DieRoutine()
         {
-            base.DieRoutine();
-
             mover.Move(Vector2.zero);
-            enabled = false;
+            
             if (fovChecker != null && fovRenderer != null)
             {
                 fovChecker.enabled = false;
                 fovRenderer.gameObject.SetActive(false);
             }
+
+            Collider2D collider = GetComponent<Collider2D>();
+            if (collider != null) collider.enabled = false;
+        }
+
+        public void SpawnLootBox()
+        {
+            LootBox lootBox = Instantiate(lootBoxPrefab, transform.position, Quaternion.identity);
+            lootBox.gameObject.name = $"{name}'s box";
+
+            foreach(var equipment in equipper.GetEquippedItems())
+            {
+                inventory.AddItem(equipment);
+            }
+            inventory.MoveItemsTo(lootBox.Inventory);
+
+            Destroy(gameObject);
         }
     }
 }

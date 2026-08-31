@@ -9,6 +9,8 @@ namespace Actors.Enemy
     /// </summary>
     public class EnemyContext
     {
+        public EnemyController enemyController;
+
         public Transform transform;
         public Mover mover;
         public Equipper equipper;
@@ -22,5 +24,7 @@ namespace Actors.Enemy
         public float telegraphDuration = 0.4f;
         public float attackRecovery = 0.3f;
         public bool isAimLocked = false;
+
+        public float deathDuration;
     }
 }

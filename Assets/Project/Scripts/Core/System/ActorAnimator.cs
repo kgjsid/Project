@@ -12,6 +12,7 @@ namespace Core.System
         private Equipper equipper;
         private FovChecker fovChecker;
         private IAttacker subscribedAttacker;
+        private bool isDead;
 
         private const string SPEED_PARAMETER = "Speed";
         private const string ATTACK_TRIGGER = "Attack";
@@ -53,6 +54,7 @@ namespace Core.System
         private void Update()
         {
             if (mover == null) return;
+            if (isDead) return;
 
             animator.SetFloat(SPEED_PARAMETER, mover.CurrentMoveSpeed);
 
@@ -92,6 +94,7 @@ namespace Core.System
 
         private void HandleDieAnimation()
         {
+            isDead = true;
             animator.SetTrigger(DIE_TRIGGHER);
         }
     }
