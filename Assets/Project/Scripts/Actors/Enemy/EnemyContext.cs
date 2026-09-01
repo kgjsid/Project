@@ -19,6 +19,13 @@ namespace Actors.Enemy
         public float attackRange;
         public float traceDist;
 
+        public bool isTargetVisible = false;
+        public Vector2 lastTargetPosition;
+        public float searchArriveDistance = 0.3f;
+        public float searchTimeout = 2f;
+        public float searchStuckTime = 0.4f;
+        public float searchStuckThreshold = 0.1f;
+
         public TelegraphIndicator telegraphIndicator;
         public KnockbackReceiver knockbackReceiver;
         public float telegraphDuration = 0.4f;

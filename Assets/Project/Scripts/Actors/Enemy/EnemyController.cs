@@ -25,6 +25,7 @@ namespace Actors.Enemy
         {
             base.InitSettings();
             health.OnDie += DieRoutine;
+            health.OnDamaged += HandleDamaged;
             SetupFSM();
 
             if (startingWeapon != null) equipper.Equip(startingWeapon);
@@ -52,6 +53,7 @@ namespace Actors.Enemy
 
             var idleState = new IdleState(context);
             var traceState = new TraceState(context);
+            var searchState = new SearchState(context);
             var telegraphState = new TelegraphState(context);
             var attackState = new AttackState(context);
             var dieState = new DieState(context);
@@ -64,6 +66,16 @@ namespace Actors.Enemy
             // 추격 상태
             fsm.AddTransition(idleState, traceState, () => context.target != null);
             fsm.AddTransition(traceState, idleState, () => context.target == null);
+
+            // 추격 -> 탐색 상태
+            fsm.AddTransition(traceState, searchState,
+                () => context.target != null && !context.isTargetVisible);
+
+            fsm.AddTransition(searchState, traceState,
+                () => context.isTargetVisible);
+
+            fsm.AddTransition(searchState, idleState,
+                () => context.target == null);
 
             // 추격 -> 공격 준비(예고)상태
             fsm.AddTransition(traceState, telegraphState,
@@ -105,19 +117,31 @@ namespace Actors.Enemy
         {
             if(context.target != null)
             {
-                if(GetTargetDistance() > context.traceDist)
+                bool visible = fovChecker.VisibleTargets.Contains(context.target);
+                context.isTargetVisible = visible;
+
+                if(visible)
+                {
+                    context.lastTargetPosition = context.target.position;
+                }
+
+                if (GetTargetDistance() > context.traceDist)
                 {
                     context.target = null;
+                    context.isTargetVisible = false;
                 }
 
                 return;
             }
 
+            context.isTargetVisible = false;
             foreach(var visible in fovChecker.VisibleTargets)
             {
                 if (visible.TryGetComponent(out PlayerController player))
                 {
                     context.target = player.transform;
+                    context.isTargetVisible = true;
+                    context.lastTargetPosition = player.transform.position;
                     return;
                 }
             }
@@ -139,6 +163,17 @@ namespace Actors.Enemy
             if (!context.isAimLocked)
             {
                 context.equipper.GetCurrentAttacker()?.SetAimDirection(dir);
+            }
+        }
+
+        protected virtual void HandleDamaged(float damage, Vector2 hitDirection, float knockbackForce)
+        {
+            if (context.isAimLocked) return;
+            if (context.target != null) return;
+
+            if(hitDirection.sqrMagnitude > 0.0001f)
+            {
+                fovChecker.SetFacingDirection(-hitDirection);
             }
         }
 

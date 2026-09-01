@@ -97,6 +97,7 @@ namespace Actors
             fovChecker.ViewDistance = stats.viewDistance;
             fovChecker.TargetMask = targetMask;
             fovChecker.ObstacleMask = obstacleMask;
+            fovChecker.ViewRadius = 2f;
 
             meleeAttacker.SetLayerMask(targetMask);
             projectileAttacker.SetLayerMask(targetMask);

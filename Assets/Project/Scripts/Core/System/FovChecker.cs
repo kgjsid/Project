@@ -9,6 +9,7 @@ namespace Core.System
     {
         [SerializeField] private float viewAngle;
         [SerializeField] private float viewDistance;
+        [SerializeField] private float viewRadius;
 
         [SerializeField] private LayerMask targetMask;
         [SerializeField] private LayerMask obstacleMask;
@@ -44,6 +45,18 @@ namespace Core.System
             set
             {
                 viewDistance = value;
+            }
+        }
+
+        public float ViewRadius
+        {
+            get
+            {
+                return viewRadius;
+            }
+            set
+            {
+                viewRadius = value;
             }
         }
 
@@ -110,10 +123,15 @@ namespace Core.System
             {
                 Transform target = colliders[hitIndex].transform;
                 Vector2 dirToTarget = ((Vector2)target.position - (Vector2)transform.position).normalized;
+                float dstToTarget = Vector2.Distance(transform.position, target.position);
 
-                if (Vector2.Dot(dirToTarget, facingDirection) > cosAngle)
+                // 1. 원형 범위 체크
+                bool inRadius = dstToTarget <= viewRadius;
+                // 2. 시야각 체크
+                bool inViewAngle = Vector2.Dot(dirToTarget, facingDirection) > cosAngle;
+
+                if (inRadius || inViewAngle)
                 {
-                    float dstToTarget = Vector2.Distance(transform.position, target.position);
                     RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask);
 
                     if (hit.collider == null)
