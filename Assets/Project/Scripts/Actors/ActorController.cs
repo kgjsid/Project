@@ -79,8 +79,8 @@ namespace Actors
             fovObject.transform.parent = transform;
             fovObject.transform.localPosition = Vector3.zero;
             fovObject.transform.rotation = Quaternion.identity;
-            // fovRenderer = fovObject.AddComponent<FovRenderer>();
-            // fovRenderer.Chekcer = fovChecker;
+            fovRenderer = fovObject.AddComponent<FovRenderer>();
+            fovRenderer.Chekcer = fovChecker;
         }
 
         /// <summary>

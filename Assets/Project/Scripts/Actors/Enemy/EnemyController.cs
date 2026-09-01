@@ -41,6 +41,7 @@ namespace Actors.Enemy
                 transform = transform,
                 mover = mover,
                 equipper = equipper,
+                fovChecker = fovChecker,
                 attackRange = stats.attackRange,
                 traceDist = stats.traceDist,
                 telegraphIndicator = telegraphIndicator,
@@ -48,10 +49,12 @@ namespace Actors.Enemy
                 telegraphDuration = stats.telegraphDuration,
                 attackRecovery = stats.attackRecovery,
                 deathDuration = 1f,
+                spawnPosition = transform.position,
                 // deathDuration = stats.deathDuration
             };
 
             var idleState = new IdleState(context);
+            var patrolState = new PatrolState(context);
             var traceState = new TraceState(context);
             var searchState = new SearchState(context);
             var telegraphState = new TelegraphState(context);
@@ -62,6 +65,16 @@ namespace Actors.Enemy
 
             // 사망 상태
             fsm.AddAnyTransition(dieState, () => health.IsDead());
+
+            // 배회 상태
+            fsm.AddTransition(idleState, patrolState,
+                () => context.target == null && idleState.CheckStartPatrol());
+
+            fsm.AddTransition(patrolState, idleState,
+                () => context.target == null && patrolState.IsPatrolFinished());
+
+            fsm.AddTransition(patrolState, traceState,
+                () => context.target != null);
 
             // 추격 상태
             fsm.AddTransition(idleState, traceState, () => context.target != null);
