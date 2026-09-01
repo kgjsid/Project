@@ -5,7 +5,7 @@ using Core.System;
 namespace Item.Data
 {
     [System.Flags]
-    public enum AttackType { None = 0, Melee = 1, Projectile = 2, Raycast = 4 }
+    public enum AttackType { None = 0, Melee = 1, Projectile = 2, Raycast = 4, Charge = 8, }
 
     [System.Serializable]
     public class MeleeStats
@@ -44,6 +44,18 @@ namespace Item.Data
         public float spreadAngle;
     }
 
+    [System.Serializable]
+    public class ChargeStats
+    {
+        public float damage;
+        public float knockbackForce;
+        public float attackSpeed;
+        public float dashSpeed;
+        public float dashDuration;
+        public float hitRadius;
+        public Sprite telegraphSprite;
+    }
+
     [CreateAssetMenu(fileName = "NewWeapon", menuName = "Items/Weapon")]
     public class WeaponData : EquipmentData
     {
@@ -58,6 +70,7 @@ namespace Item.Data
         public MeleeStats melee;
         public ProjectileStats projectile;
         public RaycastStats raycast;
+        public ChargeStats charge;
 
         private const float RANGED_TELEGRAPH_LENGTH = 5f;
 
@@ -67,6 +80,8 @@ namespace Item.Data
                 return melee.telegraphSprite;
             if (attackType.HasFlag(AttackType.Projectile) && projectile.telegraphSprite != null)
                 return projectile.telegraphSprite;
+            if (attackType.HasFlag(AttackType.Charge) && charge.telegraphSprite != null)
+                return charge.telegraphSprite;
             return null;
         }
 
@@ -78,6 +93,8 @@ namespace Item.Data
                 return raycast.range;
             if (attackType.HasFlag(AttackType.Projectile))
                 return RANGED_TELEGRAPH_LENGTH;
+            if (attackType.HasFlag(AttackType.Charge))
+                return charge.dashDuration * charge.dashDuration;
             return 0f;
         }
     }

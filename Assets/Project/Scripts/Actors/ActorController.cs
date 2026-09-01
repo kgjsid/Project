@@ -42,6 +42,7 @@ namespace Actors
         protected MeleeAttacker meleeAttacker;
         protected ProjectileAttacker projectileAttacker;
         protected RaycastAttacker raycastAttacker;
+        protected ChargeAttacker chargeAttacker;
         protected HybridAttacker hybridAttacker;
         protected Inventory inventory;
         protected Equipper equipper;
@@ -70,17 +71,18 @@ namespace Actors
             meleeAttacker = gameObject.AddComponent<MeleeAttacker>();
             projectileAttacker = gameObject.AddComponent<ProjectileAttacker>();
             raycastAttacker = gameObject.AddComponent<RaycastAttacker>();
+            chargeAttacker = gameObject.AddComponent<ChargeAttacker>();
             hybridAttacker = gameObject.AddComponent<HybridAttacker>();
             inventory = gameObject.AddComponent<Inventory>();
             equipper = gameObject.AddComponent<Equipper>();
             knockbackReceiver = gameObject.AddComponent<KnockbackReceiver>();
 
-            GameObject fovObject = new GameObject("FovMesh");
-            fovObject.transform.parent = transform;
-            fovObject.transform.localPosition = Vector3.zero;
-            fovObject.transform.rotation = Quaternion.identity;
-            fovRenderer = fovObject.AddComponent<FovRenderer>();
-            fovRenderer.Chekcer = fovChecker;
+            // GameObject fovObject = new GameObject("FovMesh");
+            // fovObject.transform.parent = transform;
+            // fovObject.transform.localPosition = Vector3.zero;
+            // fovObject.transform.rotation = Quaternion.identity;
+            // fovRenderer = fovObject.AddComponent<FovRenderer>();
+            // fovRenderer.Chekcer = fovChecker;
         }
 
         /// <summary>
@@ -93,11 +95,9 @@ namespace Actors
             health.BaseMaxHp = stats.maxHp;
             health.CurrentHp = stats.maxHp;
 
-            fovChecker.ViewAngle = stats.viewAngle;
             fovChecker.ViewDistance = stats.viewDistance;
             fovChecker.TargetMask = targetMask;
             fovChecker.ObstacleMask = obstacleMask;
-            fovChecker.ViewRadius = 2f;
 
             meleeAttacker.SetLayerMask(targetMask);
             projectileAttacker.SetLayerMask(targetMask);
@@ -105,11 +105,13 @@ namespace Actors
             raycastAttacker.SetLayerMask(targetMask);
             raycastAttacker.SetObstacleMask(obstacleMask);
             raycastAttacker.Init(beamRenderer);
-            hybridAttacker.Init(meleeAttacker, projectileAttacker, raycastAttacker);
+            chargeAttacker.Init(mover);
+            chargeAttacker.SetLayerMask(targetMask);
+            hybridAttacker.Init(meleeAttacker, projectileAttacker, raycastAttacker, chargeAttacker);
 
             inventory.BaseMaxWeight = stats.maxWeight;
             inventory.InitSlot(stats.inventoryCapacity);
-            equipper.Init(health, mover, inventory, meleeAttacker, projectileAttacker, raycastAttacker, hybridAttacker);
+            equipper.Init(health, mover, inventory, meleeAttacker, projectileAttacker, raycastAttacker, chargeAttacker, hybridAttacker);
 
             knockbackReceiver.KnockbackResistance = stats.knockbackResistance;
             knockbackReceiver.Init(health, mover);

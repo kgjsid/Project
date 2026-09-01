@@ -18,6 +18,7 @@ namespace Core.System
         public MeleeAttacker meleeAttacker;
         public ProjectileAttacker projectileAttacker;
         public RaycastAttacker raycastAttacker;
+        public ChargeAttacker chargeAttacker;
         public HybridAttacker hybridAttacker;
 
         public event Action OnStatsChanged;
@@ -33,7 +34,8 @@ namespace Core.System
         }
 
         public void Init(Health health, Mover mover, Inventory inventory, 
-            MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker, RaycastAttacker raycastAttacker, HybridAttacker hybridAttacker)
+            MeleeAttacker meleeAttacker, ProjectileAttacker projectileAttacker, RaycastAttacker raycastAttacker, 
+            ChargeAttacker chargeAttacker, HybridAttacker hybridAttacker)
         {
             this.health = health;
             this.mover = mover;
@@ -41,6 +43,7 @@ namespace Core.System
             this.meleeAttacker = meleeAttacker;
             this.projectileAttacker = projectileAttacker;
             this.raycastAttacker = raycastAttacker;
+            this.chargeAttacker = chargeAttacker;
             this.hybridAttacker = hybridAttacker;
 
             inventory.OnInventoryChanged += RecalculateStats;
@@ -111,6 +114,7 @@ namespace Core.System
                 projectileAttacker.ClearWeapon();
                 raycastAttacker.ClearWeapon();
                 hybridAttacker.ClearWeapon();
+                chargeAttacker.ClearWeapon();
                 currentAttacker = null;
 
                 return;
@@ -119,8 +123,9 @@ namespace Core.System
             bool hasMelee = weapon.attackType.HasFlag(AttackType.Melee);
             bool hasProjectile = weapon.attackType.HasFlag(AttackType.Projectile);
             bool hasRaycast = weapon.attackType.HasFlag(AttackType.Raycast);
+            bool hasCharge = weapon.attackType.HasFlag(AttackType.Charge);
 
-            int partCount = (hasMelee ? 1 : 0) + (hasProjectile ? 1 : 0) + (hasRaycast ? 1 : 0);
+            int partCount = (hasMelee ? 1 : 0) + (hasProjectile ? 1 : 0) + (hasRaycast ? 1 : 0) + (hasCharge ? 1 : 0);
 
             if (partCount >= 2)
             {
@@ -136,6 +141,7 @@ namespace Core.System
                     meleeAttacker.SetWeapon(weapon);
                     projectileAttacker.ClearWeapon();
                     raycastAttacker.ClearWeapon();
+                    chargeAttacker.ClearWeapon();
                     currentAttacker = meleeAttacker;
                 }
                 else if (hasProjectile)
@@ -143,6 +149,7 @@ namespace Core.System
                     projectileAttacker.SetWeapon(weapon);
                     meleeAttacker.ClearWeapon();
                     raycastAttacker.ClearWeapon();
+                    chargeAttacker.ClearWeapon();
                     currentAttacker = projectileAttacker;
                 }
                 else if (hasRaycast)
@@ -150,7 +157,16 @@ namespace Core.System
                     raycastAttacker.SetWeapon(weapon);
                     meleeAttacker.ClearWeapon();
                     projectileAttacker.ClearWeapon();
+                    chargeAttacker.ClearWeapon();
                     currentAttacker = raycastAttacker;
+                }
+                else if (hasCharge)
+                {
+                    chargeAttacker.SetWeapon(weapon);
+                    meleeAttacker.ClearWeapon();
+                    projectileAttacker.ClearWeapon();
+                    raycastAttacker.ClearWeapon();
+                    currentAttacker = chargeAttacker;
                 }
                 else
                 {

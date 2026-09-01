@@ -12,11 +12,14 @@ namespace Core.System
         private float bonusMoveSpeed;       // 추가된 이동속도
 
         private Rigidbody2D moverRigidbody;
-        private Vector2 pendingMove = Vector2.zero;
+        private Vector2 targetMovement = Vector2.zero;
         private Vector2 knockbackVelocity;
         private float knockbackTimer;
         private float currentMoveSpeed;
         private bool isFrozen;
+
+        private Vector2 dashVelocity;
+        private float dashTimer;
 
         private const float KNOCKBACK_THRESHOLD = 0.0001f;
 
@@ -24,6 +27,7 @@ namespace Core.System
         public float BonusMoveSpeed { get { return bonusMoveSpeed; } set { bonusMoveSpeed = value; } }
         public float CurrentMoveSpeed { get { return currentMoveSpeed; } }
         public bool IsFrozen { get { return isFrozen; } set { isFrozen = value; moverRigidbody.bodyType = value ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic; } }
+        public bool IsDashing { get { return dashTimer > 0f; } }
 
         private void Awake()
         {
@@ -39,9 +43,9 @@ namespace Core.System
 
         public void Move(Vector2 direction)
         {
-            pendingMove = direction * (baseMoveSpeed + bonusMoveSpeed);
+            targetMovement = direction * (baseMoveSpeed + bonusMoveSpeed);
 
-            currentMoveSpeed = pendingMove.magnitude;
+            currentMoveSpeed = targetMovement.magnitude;
         }
 
         public void ApplyKnockback(Vector2 direction, float force, float duration = 0.15f)
@@ -52,26 +56,36 @@ namespace Core.System
             knockbackTimer = duration;
         }
 
+        public void ApplyDash(Vector2 direction, float speed, float duration)
+        {
+            if (direction.sqrMagnitude < KNOCKBACK_THRESHOLD) return;
+            dashVelocity = direction.normalized * speed;
+            dashTimer = duration;
+        }
+
         private void FixedUpdate()
         {
-            if (IsFrozen)
+            if (IsFrozen) return;
+
+            Vector2 velocity = targetMovement;
+
+            if (dashTimer > 0f)
             {
-                Debug.Log("IsFrozen");
-                return;
+                velocity = dashVelocity;
+                dashTimer -= Time.fixedDeltaTime;
             }
-
-            Vector2 velocity = pendingMove;
-
-            if (knockbackTimer > 0f)
+            else
             {
-                velocity += knockbackVelocity;
-                knockbackTimer -= Time.fixedDeltaTime;
+                if (knockbackTimer > 0f)
+                {
+                    velocity += knockbackVelocity;
+                    knockbackTimer -= Time.fixedDeltaTime;
 
-                knockbackVelocity = Vector2.Lerp(knockbackVelocity, Vector2.zero, Time.fixedDeltaTime * 8f);
+                    knockbackVelocity = Vector2.Lerp(knockbackVelocity, Vector2.zero, Time.fixedDeltaTime * 8f);
 
-                if (knockbackTimer <= 0f) knockbackVelocity = Vector2.zero;
+                    if (knockbackTimer <= 0f) knockbackVelocity = Vector2.zero;
+                }
             }
-
             moverRigidbody.MovePosition(moverRigidbody.position + velocity * Time.fixedDeltaTime);
         }
     }

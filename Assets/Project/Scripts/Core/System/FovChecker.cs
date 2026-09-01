@@ -1,15 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-using Core.Interface;
-
 namespace Core.System
 {
     public class FovChecker : MonoBehaviour
     {
-        [SerializeField] private float viewAngle;
         [SerializeField] private float viewDistance;
-        [SerializeField] private float viewRadius;
+        [SerializeField] private float backDistanceRatio = 0.3f; 
 
         [SerializeField] private LayerMask targetMask;
         [SerializeField] private LayerMask obstacleMask;
@@ -17,24 +14,10 @@ namespace Core.System
         private List<Transform> visibleTargets = new List<Transform>();
         private Collider2D[] colliders = new Collider2D[5];
         private ContactFilter2D contactFilter;
-        private float cosAngle = 0f;
 
         private Vector2 facingDirection = Vector2.right;
 
         private const float ROTATION_THRESHOLD = 0.0001f;
-
-        public float ViewAngle
-        {
-            get
-            {
-                return viewAngle;
-            }
-            set
-            {
-                viewAngle = value;
-                cosAngle = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
-            }
-        }
 
         public float ViewDistance
         {
@@ -48,15 +31,15 @@ namespace Core.System
             }
         }
 
-        public float ViewRadius
+        public float BackDistanceRatio
         {
             get
             {
-                return viewRadius;
+                return backDistanceRatio;
             }
             set
             {
-                viewRadius = value;
+                backDistanceRatio = value;
             }
         }
 
@@ -125,15 +108,15 @@ namespace Core.System
                 Vector2 dirToTarget = ((Vector2)target.position - (Vector2)transform.position).normalized;
                 float dstToTarget = Vector2.Distance(transform.position, target.position);
 
-                // 1. 원형 범위 체크
-                bool inRadius = dstToTarget <= viewRadius;
-                // 2. 시야각 체크
-                bool inViewAngle = Vector2.Dot(dirToTarget, facingDirection) > cosAngle;
+                float dot = Vector2.Dot(dirToTarget, facingDirection);
+                float t = (dot + 1f) * 0.5f;
 
-                if (inRadius || inViewAngle)
+                float allowedDistance = Mathf.Lerp(viewDistance * backDistanceRatio, viewDistance, t);
+
+                if (dstToTarget <= allowedDistance)
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask);
 
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask);
                     if (hit.collider == null)
                     {
                         visibleTargets.Add(target);

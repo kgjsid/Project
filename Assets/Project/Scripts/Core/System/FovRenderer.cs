@@ -39,7 +39,7 @@ namespace Core.System
 
             Material fovMat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
 
-            fovMat.color = new Color(1f, 1f, 1f, 0.3f);
+            fovMat.color = new Color(0.2f, 1f, 0.2f, 0.3f);
             fovMat.SetFloat("_Surface", 1);
             fovMat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             fovMat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -67,14 +67,14 @@ namespace Core.System
             if (Mathf.Approximately(meshResolution, 0f))
                 return;
 
-            int stepCount = Mathf.RoundToInt(checker.ViewAngle * meshResolution);
-            float stepAngleSize = checker.ViewAngle / stepCount;
+            int stepCount = 1; // Mathf.RoundToInt(checker.ViewAngle * meshResolution);
+            float stepAngleSize = 1f;// checker.ViewAngle / stepCount;
             viewPoints.Clear();
 
             for (int i = 0; i <= stepCount; i++)
             {
                 // angle -> ViewAngle 기준. viewAngle을 절반값 60이라면 (-30 ~ 30) 범위로 하여 하나씩 각도 계산
-                float angleOffset = -checker.ViewAngle * 0.5f + stepAngleSize * i;
+                float angleOffset = stepAngleSize;// -checker.ViewAngle * 0.5f + stepAngleSize * i;
                 Vector2 dir = RotateVector(checker.FacingDirection, angleOffset);
                 viewPoints.Add(ViewCast(dir));
             }
