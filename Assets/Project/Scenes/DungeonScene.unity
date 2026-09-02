@@ -196,9 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DebugTester.InventoryTester
   player: {fileID: 0}
   playerInventory: {fileID: 0}
-  itemA: {fileID: 11400000, guid: 9c26fd03c5f0c9346b08f5192d322f25, type: 2}
-  itemB: {fileID: 11400000, guid: 14c375ba18ae77749b8db91b18aa72cc, type: 2}
-  itemC: {fileID: 11400000, guid: c368571c921d61e418dacb460c999d18, type: 2}
+  itemA: {fileID: 11400000, guid: 5257da84836740f40bdf29ca8fb6c500, type: 2}
+  itemB: {fileID: 11400000, guid: 301ac5f29942c6d489984228b7221721, type: 2}
+  itemC: {fileID: 11400000, guid: 14c375ba18ae77749b8db91b18aa72cc, type: 2}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +689,7 @@ MonoBehaviour:
     maxGeneration: 5
     roomsPerGenerationPercent: 0.7
   mapRoot: {fileID: 1748508757}
-  cellSize: 21
+  cellSize: 40
   useFixedSeed: 0
   seed: 0
 --- !u!224 &677187596 stripped
