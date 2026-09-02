@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace World
 {
-    public enum SpawnPointType { Player, Enemy, LootBox, EscapePoint }
+    public enum SpawnPointType { Player, Enemy, Boss, LootBox, EscapePoint }
 
     public class SpawnPoint : MonoBehaviour
     {

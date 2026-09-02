@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace World.Map
 {
-    public enum TileGlyph { Wall, Floor, Door, PlayerSpawn, MonsterSpawn, LootSpawn, EscapePointSpawn }
+    public enum TileGlyph { Wall, Floor, Door, PlayerSpawn, 
+        MonsterSpawn, BossSpawn, LootSpawn, EscapePointSpawn }
 
     public class RoomLayout
     {
@@ -54,6 +55,7 @@ namespace World.Map
                 case 'D': return TileGlyph.Door;
                 case 'P': return TileGlyph.PlayerSpawn;
                 case 'M': return TileGlyph.MonsterSpawn;
+                case 'B': return TileGlyph.BossSpawn;
                 case 'L': return TileGlyph.LootSpawn;
                 case 'E': return TileGlyph.EscapePointSpawn;
                 default: return TileGlyph.Wall;

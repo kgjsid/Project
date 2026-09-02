@@ -45,6 +45,9 @@ namespace World.Map
                         case TileGlyph.MonsterSpawn:
                             CreateSpawnPoint(worldPos, SpawnPointType.Enemy);
                             break;
+                        case TileGlyph.BossSpawn:
+                            CreateSpawnPoint(worldPos, SpawnPointType.Boss);
+                            break;
                         case TileGlyph.LootSpawn:
                             CreateSpawnPoint(worldPos, SpawnPointType.LootBox);
                             break;

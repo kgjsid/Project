@@ -11,6 +11,7 @@ namespace Manager
     {
         public GameObject playerPrefab;
         public GameObject[] enemyPrefabs;
+        public GameObject bossPrefab;
         public GameObject lootBoxPrefab;
         public GameObject escapePointPrefab;
 
@@ -34,6 +35,9 @@ namespace Manager
                             GameObject newEnemy = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
                             Instantiate(newEnemy, spawnPoint.transform.position, spawnPoint.transform.rotation);
                         }
+                        break;
+                    case SpawnPointType.Boss:
+                        Instantiate(bossPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
                         break;
                     case SpawnPointType.LootBox:
                         LootBox prefab = Instantiate(lootBoxPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation).GetComponent<LootBox>();
