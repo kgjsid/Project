@@ -873,6 +873,8 @@ MonoBehaviour:
   - {fileID: 7415594315590718140, guid: 26a95c460bec0ac4099e9196c1bd39ac, type: 3}
   - {fileID: 3127630643338122214, guid: 0616d4246bdf75c4dbacf892d1389036, type: 3}
   - {fileID: 216713908970551554, guid: e46caf379820960438c2b4da4bb82c2f, type: 3}
+  - {fileID: 7305113116417224387, guid: ad6611caf91f8c14091f2e4b2c1ae16c, type: 3}
+  bossPrefab: {fileID: 3863421878115061920, guid: b8145a7777e21e74aa3105d9f729d29f, type: 3}
   lootBoxPrefab: {fileID: 3007821277094276123, guid: 56ca8349c3f40d44da60f797febe3233, type: 3}
   escapePointPrefab: {fileID: 4669282858902675133, guid: 08c369e1c296d2445a7db26870c5a6dd, type: 3}
   spawnPoints:
