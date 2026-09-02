@@ -27,15 +27,16 @@ namespace Actors.Enemy.States
                 context.knockbackReceiver.IsImmune = true;
             }
 
+            WeaponData weapon = context.equipper.GetEquippedWeapon();
+
             if (context.target != null)
             {
                 Vector2 dir = ((Vector2)context.target.position - (Vector2)context.transform.position).normalized;
-                context.telegraphIndicator?.SetDirection(dir);
+                context.telegraphIndicator?.SetDirection(dir, weapon != null ? weapon.GetTelegraphCount() : 1, weapon != null ? weapon.GetTelegraphSpread() : 0f);
                 context.equipper.GetCurrentAttacker()?.SetAimDirection(dir);
                 context.isAimLocked = true;
             }
 
-            WeaponData weapon = context.equipper.GetEquippedWeapon();
             context.telegraphIndicator?.SetRange(weapon != null ? weapon.GetTelegraphRange() : context.attackRange);
             context.telegraphIndicator?.SetSprite(weapon != null && weapon.GetTelegraphSprite() != null ? weapon.GetTelegraphSprite() : null);
             context.telegraphIndicator?.ShowIndicator();

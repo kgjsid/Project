@@ -94,7 +94,25 @@ namespace Item.Data
             if (attackType.HasFlag(AttackType.Projectile))
                 return RANGED_TELEGRAPH_LENGTH;
             if (attackType.HasFlag(AttackType.Charge))
-                return charge.dashDuration * charge.dashDuration;
+                return charge.dashSpeed * charge.dashDuration;
+            return 0f;
+        }
+
+        public int GetTelegraphCount()
+        {
+            if (attackType.HasFlag(AttackType.Projectile))
+                return Mathf.Max(1, projectile.projectileCount);
+            if (attackType.HasFlag(AttackType.Raycast))
+                return Mathf.Max(1, raycast.beamCount);
+            return 1;
+        }
+
+        public float GetTelegraphSpread()
+        {
+            if (attackType.HasFlag(AttackType.Projectile))
+                return projectile.spreadAngle;
+            if (attackType.HasFlag(AttackType.Raycast))
+                return raycast.spreadAngle;
             return 0f;
         }
     }
