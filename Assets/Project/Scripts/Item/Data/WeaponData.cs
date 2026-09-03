@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using Core.System;
+using Core.System.Attack;
 
 namespace Item.Data
 {
@@ -72,6 +73,9 @@ namespace Item.Data
         public RaycastStats raycast;
         public ChargeStats charge;
 
+        [Header("Attack Pattern (비우면 단발 공격)")]
+        public AttackPattern attackPattern;
+        
         private const float RANGED_TELEGRAPH_LENGTH = 5f;
 
         public Sprite GetTelegraphSprite()
